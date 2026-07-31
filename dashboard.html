@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>BB Company Dashboard</title>
+
+<link rel="icon" href="data:,">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f3efff;
+  padding-bottom:120px;
+}
+
+/* HEADER */
+
+.header{
+  background:rgba(0,0,50,0.7);
+  color:white;
+  padding:15px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.header-left{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.header-left img{
+  width:55px;
+}
+
+.header-text h2{
+  margin:0;
+  font-size:24px;
+}
+
+.header-text p{
+  margin:0;
+  font-size:14px;
+}
+
+/* BELL */
+
+.bell{
+  position:relative;
+  cursor:pointer;
+  font-size:28px;
+}
+
+.badge{
+  position:absolute;
+  top:-5px;
+  right:-8px;
+  background:#ff4d8d;
+  color:white;
+  border-radius:50%;
+  width:22px;
+  height:22px;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  font-weight:bold;
+}
+
+/* PROFILE */
+
+.profile-card{
+  margin:15px;
+  background:rgba(255,255,255,0.5);
+  border-radius:20px;
+  padding:15px;
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+}
+
+.profile-left{
+  display:flex;
+  gap:15px;
+}
+
+.avatar{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  overflow:hidden;
+  background:#ccc;
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.verse{
+  background:rgba(255,255,255,0.7);
+  padding:15px;
+  border-radius:15px;
+  width:45%;
+}
+
+/* GRID */
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+  padding:15px;
+}
+
+.box{
+  background:white;
+  border-radius:20px;
+  overflow:hidden;
+  display:flex;
+  cursor:pointer;
+}
+
+.box-icon{
+  width:90px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-size:35px;
+}
+
+.green{
+  background:#2cbfa3;
+}
+
+.pink{
+  background:#e94a8b;
+}
+
+.yellow{
+  background:#e9b028;
+}
+
+.blue{
+  background:#4d74ff;
+}
+
+.box-text{
+  padding:15px;
+  flex:1;
+}
+
+/* EVENTS */
+
+.events{
+  padding:15px;
+}
+
+.events-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.view-all{
+  color:#0a2b60;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.event-card{
+  background:white;
+  border-radius:20px;
+  margin-top:15px;
+  display:flex;
+  overflow:hidden;
+  box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+
+.event-date{
+  background:#0a2b60;
+  color:white;
+  width:90px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  font-weight:bold;
+  padding:10px;
+}
+
+.event-info{
+  flex:1;
+  padding:15px;
+}
+
+.event-info h3{
+  margin:0 0 10px;
+}
+
+.event-info p{
+  margin:6px 0;
+  color:#666;
+}
+
+.event-info i{
+  margin-right:8px;
+  color:#0a2b60;
+}
+
+/* BOTTOM NAV */
+
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  background:white;
+  display:flex;
+  justify-content:space-around;
+  padding:10px 0;
+  box-shadow:0 -2px 10px rgba(0,0,0,0.1);
+}
+
+.nav-item{
+  text-align:center;
+  cursor:pointer;
+  color:#777;
+}
+
+.nav-item.active{
+  color:#0a2b60;
+  font-weight:bold;
+}
+
+.nav-item i{
+  font-size:24px;
+}
+
+/* NOTIFICATION PAGE */
+
+.notification-page{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:#f4f1fb;
+  z-index:9999;
+  display:none;
+  flex-direction:column;
+}
+
+.notification-header{
+  background:white;
+  padding:20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.left-header{
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+.back-btn{
+  font-size:28px;
+  cursor:pointer;
+}
+
+.notification-item{
+  background:white;
+  margin:15px;
+  padding:18px;
+  border-radius:12px;
+}
+
+.mark-btn{
+  border:none;
+  background:#0a2b60;
+  color:white;
+  padding:10px 16px;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+@media(max-width:768px){
+
+  .profile-card{
+    flex-direction:column;
+  }
+
+  .verse{
+    width:100%;
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<div class="header">
+
+  <div class="header-left">
+
+    <img src="images/bb.logo.png">
+
+    <div class="header-text">
+
+      <h2>BB COMPANY</h2>
+
+      <p>MANAGEMENT APP</p>
+
+    </div>
+
+  </div>
+
+  <div class="bell"
+  onclick="openNotifications()">
+
+    <i class="fa-solid fa-bell"></i>
+
+    <div class="badge"
+    id="notifyBadge">
+
+      0
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- PROFILE -->
+
+<div class="profile-card">
+
+  <div class="profile-left">
+
+    <div class="avatar">
+
+      <img id="dashboardProfileImage"
+      src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
+
+    </div>
+
+    <div>
+
+      <h2>Good Morning!</h2>
+
+      <h1 id="dashboardName">
+        No Name
+      </h1>
+
+      <h3 id="dashboardCompany">
+        No Company
+      </h3>
+
+      <p>🟢 Active</p>
+
+    </div>
+
+  </div>
+
+  <div class="verse">
+
+    <h3>Verse of the Day</h3>
+
+    <p>
+      “We have this hope as an anchor
+      for the soul, firm and secure.”
+    </p>
+
+    <b>— Hebrews 6:19</b>
+
+  </div>
+
+</div>
+
+<!-- GRID -->
+
+<div class="grid">
+
+  <div class="box"
+  onclick="window.location.href='attendance.html'">
+
+    <div class="box-icon green">
+
+      <i class="fa-regular fa-calendar-check"></i>
+
+    </div>
+
+    <div class="box-text">
+
+      <h3>ATTENDANCE</h3>
+
+      <p>Roll Call & Attendance Tracking</p>
+
+    </div>
+
+  </div>
+
+  <div class="box">
+
+    <div class="box-icon pink">
+
+      <i class="fa-regular fa-comments"></i>
+
+    </div>
+
+    <div class="box-text"
+    onclick="window.location.href='chat.html'">
+
+      <h3>CHAT</h3>
+
+      <p>Communicate with Company Members</p>
+
+    </div>
+
+  </div>
+
+  <div class="box"
+  onclick="window.location.href='achievements.html'">
+
+    <div class="box-icon yellow">
+
+      <i class="fa-solid fa-trophy"></i>
+
+    </div>
+
+    <div class="box-text">
+
+      <h3>ACHIEVEMENTS</h3>
+
+      <p>Awards & Participation History</p>
+
+    </div>
+
+  </div>
+
+  <div class="box"
+  onclick="window.location.href='profile.html'">
+
+    <div class="box-icon blue">
+
+      <i class="fa-regular fa-user"></i>
+
+    </div>
+
+    <div class="box-text">
+
+      <h3>MEMBER PROFILES</h3>
+
+      <p>View & Manage Member Information</p>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- EVENTS -->
+
+<div class="events">
+
+  <div class="events-header">
+
+    <h2>UPCOMING EVENTS</h2>
+
+    <div class="view-all"
+    onclick="window.location.href='attendance.html'">
+    VIEW ALL
+    </div>
+
+  </div>
+
+  <div id="upcomingEvents"></div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+
+<div class="bottom-nav">
+
+  <div class="nav-item active">
+
+    <i class="fa-solid fa-house"></i>
+
+    <div>Home</div>
+
+  </div>
+
+  <div class="nav-item"
+  onclick="window.location.href='attendance.html'">
+
+    <i class="fa-regular fa-calendar"></i>
+
+    <div>Attendance</div>
+
+  </div>
+
+  <div class="nav-item"
+  onclick="window.location.href='chat.html'">
+
+    <i class="fa-regular fa-comments"></i>
+
+    <div>Chat</div>
+
+  </div>
+
+  <div class="nav-item"
+  onclick="window.location.href='achievements.html'">
+
+    <i class="fa-solid fa-trophy"></i>
+
+    <div>Achievements</div>
+
+  </div>
+
+  <div class="nav-item"
+  onclick="window.location.href='profile.html'">
+
+    <i class="fa-regular fa-user"></i>
+
+    <div>Profiles</div>
+
+  </div>
+
+</div>
+
+<!-- NOTIFICATION PAGE -->
+
+<div class="notification-page"
+id="notificationPage">
+
+  <div class="notification-header">
+
+    <div class="left-header">
+
+      <i class="fa-solid fa-arrow-left back-btn"
+      onclick="closeNotifications()"></i>
+
+      <h2>Notifications</h2>
+
+    </div>
+
+    <button class="mark-btn"
+    onclick="markAllAsRead()">
+
+      Mark All Read
+
+    </button>
+
+  </div>
+
+  <div id="notificationList"></div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getFirestore,
+  collection,
+  getDocs
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* FIREBASE CONFIG */
+const firebaseConfig = {
+  apiKey: "AIzaSyAHmIUT6Wbh_lVrMoirhY9Z18xc57fSFZ8",
+  authDomain: "yb1-ae18e.firebaseapp.com",
+  projectId: "yb1-ae18e",
+  storageBucket: "yb1-ae18e.firebasestorage.app",
+  messagingSenderId: "278406966206",
+  appId: "1:278406966206:web:3dbf470d1a0c63a8dbe7ef"
+};
+
+/* INIT FIREBASE */
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+/* =========================
+   UPCOMING EVENTS (FIXED)
+========================= */
+
+async function loadUpcomingEvents() {
+
+  const snapshot = await getDocs(collection(db, "events"));
+
+  const container = document.getElementById("upcomingEvents");
+  container.innerHTML = "";
+
+  if (snapshot.empty) {
+    container.innerHTML = `
+      <div class="event-card">
+        <div class="event-date">
+          <div>No</div>
+          <div style="font-size:14px;">Event</div>
+        </div>
+        <div class="event-info">
+          <h3>No Upcoming Events</h3>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  snapshot.forEach(doc => {
+
+    const data = doc.data();
+
+    container.innerHTML += `
+      <div class="event-card">
+
+        <div class="event-date">
+          <div>EVENT</div>
+          <div style="font-size:14px;">
+            ${data.date || ""}
+          </div>
+        </div>
+
+        <div class="event-info">
+          <h3>${data.title || ""}</h3>
+        </div>
+
+      </div>
+    `;
+  });
+}
+
+/* =========================
+   PROFILE
+========================= */
+
+const dashboardPhoto = localStorage.getItem("profilePhoto");
+
+if (dashboardPhoto) {
+  document.getElementById("dashboardProfileImage").src = dashboardPhoto;
+}
+
+const dashboardName = localStorage.getItem("name");
+
+if (dashboardName) {
+  document.getElementById("dashboardName").innerText = dashboardName;
+}
+
+const dashboardCompany = localStorage.getItem("company");
+
+if (dashboardCompany) {
+  document.getElementById("dashboardCompany").innerText = dashboardCompany;
+}
+
+/* =========================
+   NOTIFICATIONS SYSTEM
+========================= */
+
+let currentEvents = [];
+
+
+/* OPEN NOTIFICATIONS */
+
+window.openNotifications = function () {
+
+  document.getElementById(
+    "notificationPage"
+  ).style.display = "flex";
+
+
+  loadNotifications();
+
+};
+
+
+
+/* CLOSE NOTIFICATIONS */
+
+window.closeNotifications = function () {
+
+  document.getElementById(
+    "notificationPage"
+  ).style.display = "none";
+
+};
+
+
+
+/* MARK ALL READ */
+
+window.markAllAsRead = function () {
+
+
+  localStorage.setItem(
+    "readEvents",
+    JSON.stringify(currentEvents)
+  );
+
+
+  const badge =
+  document.getElementById(
+    "notifyBadge"
+  );
+
+
+  badge.style.display="none";
+
+
+  document.getElementById(
+    "notificationList"
+  ).innerHTML = `
+
+  <div class="notification-item">
+
+    <h3>
+    No New Notifications
+    </h3>
+
+    <p>
+    All notifications have been read.
+    </p>
+
+  </div>
+
+  `;
+
+
+};
+
+
+/* LOAD NOTIFICATIONS */
+
+async function loadNotifications() {
+
+  const snapshot = await getDocs(
+    collection(db,"events")
+  );
+
+
+  const container =
+  document.getElementById(
+    "notificationList"
+  );
+
+
+  const badge =
+  document.getElementById(
+    "notifyBadge"
+  );
+
+
+  container.innerHTML = "";
+
+
+  currentEvents = [];
+
+
+  snapshot.forEach(doc => {
+
+
+    const data = doc.data();
+
+
+    currentEvents.push(doc.id);
+
+
+    const oldRead =
+    JSON.parse(
+      localStorage.getItem("readEvents")
+    ) || [];
+
+
+    // 如果已经读过，就不要显示
+    if(oldRead.includes(doc.id)){
+      return;
+    }
+
+
+
+    container.innerHTML += `
+
+      <div class="notification-item">
+
+        <h3>
+        New Event Announcement
+        </h3>
+
+
+        <p>
+        ${data.title || ""}
+        <br>
+        ${data.date || ""}
+        <br>
+        ${data.time || ""}
+        </p>
+
+
+      </div>
+
+    `;
+
+
+});
+
+
+
+  const oldRead =
+  JSON.parse(
+    localStorage.getItem("readEvents")
+  ) || [];
+
+
+
+  const newEvents =
+  currentEvents.filter(
+    id => !oldRead.includes(id)
+  );
+
+
+
+  if(newEvents.length > 0){
+
+
+    badge.style.display="flex";
+
+
+    badge.innerText =
+    newEvents.length;
+
+
+  }
+  else{
+
+
+    badge.style.display="none";
+
+
+  }
+
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+loadUpcomingEvents();
+
+</script>
+
+</body>
+</html>

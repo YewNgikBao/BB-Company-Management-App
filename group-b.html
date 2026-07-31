@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Group B - Adventure</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#00379a;
+    color:white;
+}
+.header{
+    background:#002c7a;
+    padding:14px 20px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:15px;
+}
+.header img{width:70px;}
+.header-text h1{margin:0;font-size:28px;}
+.header-text p{margin:0;font-size:14px;color:#ddd;}
+
+.page{position:relative;padding:20px;}
+
+.back-btn{
+    position:absolute;
+    left:20px;
+    top:20px;
+    width:60px;
+    height:60px;
+    border:none;
+    border-radius:50%;
+    background:#f5e5b0;
+    color:#002c7a;
+    font-size:28px;
+    cursor:pointer;
+}
+
+.title{
+    text-align:center;
+    font-size:34px;
+    font-weight:bold;
+    margin-top:15px;
+    margin-bottom:35px;
+}
+
+.group-b-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:25px;
+}
+
+.card{
+    background:#f5f3ef;
+    border-radius:20px;
+    padding:20px;
+    text-align:center;
+    box-shadow:0 6px 12px rgba(0,0,0,0.35);
+}
+
+.camping-card{
+    grid-column:1 / span 2;
+    width:55%;
+    margin:auto;
+}
+
+.card img{
+    width:140px;
+    height:140px;
+    object-fit:contain;
+}
+
+.card h2{color:#002c7a;}
+.line{
+    height:2px;
+    background:#d7b25d;
+    margin:15px 0;
+}
+
+.view-btn{
+    width:100%;
+    border:none;
+    background:#5d9cff;
+    color:white;
+    border-radius:8px;
+    padding:16px;
+    font-size:18px;
+    cursor:pointer;
+}
+
+.detail-page{
+    display:none;
+    min-height:100vh;
+}
+
+.detail-box{
+    background:white;
+    color:black;
+    border-radius:25px;
+    padding:30px;
+}
+
+.back-detail{
+    width:55px;
+    height:55px;
+    border:none;
+    border-radius:50%;
+    background:#f5e5b0;
+    color:#002c7a;
+    font-size:26px;
+    cursor:pointer;
+    margin-bottom:20px;
+}
+
+.detail-title{
+    color:#002c7a;
+    font-size:34px;
+    font-weight:bold;
+}
+
+.title-row{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    margin-bottom:20px;
+}
+
+.title-row img{
+    width:80px;
+    height:80px;
+    object-fit:contain;
+}
+
+.title-row h2{
+    margin:0;
+    color:#002c7a;
+    font-size:34px;
+}
+
+.section{
+    background:#f5f5f5;
+    border-radius:18px;
+    padding:24px;
+    margin-top:20px;
+}
+
+.req-next,.req-prev{
+    width:70px;
+    height:70px;
+    border:none;
+    border-radius:50%;
+    background:black;
+    color:white;
+    font-size:30px;
+    cursor:pointer;
+    margin-top:20px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+<img src="images/bb.logo.png">
+<div class="header-text">
+<h1>BB COMPANY</h1>
+<p>MANAGEMENT APP</p>
+</div>
+</div>
+
+<div id="mainPage" class="page">
+
+<button class="back-btn" onclick="window.location.href='proficiency.html'">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<div class="title">3. Group B - Adventure</div>
+
+<div class="group-b-grid">
+
+<div class="card camping-card">
+<img src="images/Camping.png">
+<div class="line"></div>
+<h2>Camping</h2>
+<button class="view-btn" onclick="showPage('campingPage')">
+<i class="fa-regular fa-file-lines"></i> View Requirement
+</button>
+</div>
+
+<div class="card">
+<img src="images/Expedition.png">
+<div class="line"></div>
+<h2>Expedition</h2>
+<button class="view-btn" onclick= "showPage('expeditionPage')">
+<i class="fa-regular fa-file-lines"></i> View Requirement
+</button>
+</div>
+
+<div class="card">
+<img src="images/Fireman.png">
+<div class="line"></div>
+<h2>Fire and Rescue</h2>
+<button class="view-btn" onclick="showPage('firePage')">
+<i class="fa-regular fa-file-lines"></i> View Requirement
+</button>
+</div>
+
+</div>
+</div>
+
+<!-- ================= CAMPING ================= -->
+<div id="campingPage" class="page detail-page">
+<button class="back-detail" onclick="backMain()"><i class="fa-solid fa-arrow-left"></i></button>
+
+<div class="detail-box">
+<div class="title-row">
+    <img src="images/Camping.png">
+    <h2>Camping</h2>
+</div>
+
+<div id="campingBasic">
+<div class="section">
+
+<div class="req-text">
+    <b>
+    Basic level
+    </b>
+
+    <ul>
+       <li>Members applying for this award must have attended a course on camping for a period of 12 lessons and have spent a total of four(4) consecutive days under canvas and have passed a test on the subjects below:</li>
+    </ul>
+
+    <b>By practical, oral or written tests, show an adequate knowledge of :</b>
+
+    <ul>
+        <li>the various types of tents, their particular uses, advantages and disadvantages.</li>
+        <li>ancillary equipment, such as fly sheets, groundsheets and bedding, their correct use and treatment.</li>
+        <li>personal health and hygiene while camping</li>
+        <li>the importance of good campsite selection and layout.</li>
+        <li>the country code.</li>
+    </ul>
+
+    <b>Prepare at least a meal in a group of three or less and show the proper way of starting a fire including preparing a kitchen. Proper hygiene should be observed.</b>
+
+    <b>With the assistance of three Members who do not hold any Camping Awards, carry out the pitchingm striking and packing of a tent completely and correctly for a short period of time as set by the instructor. If possible, the tent should not be a lightweight tent.</b>
+
+    <b>Be able to built a gadget for camping use.</b>
+
+    <b>Basic knots that a Member should be able to tie easily.</b>
+    
+
+    <ul>
+        <li>reef knot</li>
+        <li>figure-of-eight</li>
+        <li>clove hitch</li>
+        <li>round turn and two half hitches</li>
+        <li>double sheet bend</li>
+        <li>timber hitch</li>
+        <li>boutline hitch</li>
+        <li>bowline</li>
+        <li>double black wall hitch</li>
+        <li>marine spike hitch</li>
+    </ul>
+    
+<button class="req-next" onclick="showCampingAdvanced()">
+<i class="fa-solid fa-chevron-right"></i>
+</button>
+
+</div>
+</div>
+</div>
+
+<div id="campingAdvanced" style="display:none;">
+
+<div class="section">
+
+<h3>■ Advanced Level</h3>
+
+<p>
+Members applying for this award must have attended a course on camping
+for a period of 12 lessons and have spent a total of four (4) consecutive
+days under canvas and who have passed a test on the subjects covered as below.
+</p>
+
+<ul>
+
+<li>
+By practical, oral or written tests, show an adequate knowledge of:
+</li>
+
+<ul>
+<li>
+the care, maintenance and storage of camping, cooking and other equipment
+for the purpose of the camp.
+</li>
+
+<li>
+necessary arrangements for sanitation, hygiene and safety i.e. latrines,
+rubbish disposal, food storage, water supply, washing facilities,
+fire precautions, etc.
+</li>
+</ul>
+
+<li>
+Prepare at least a day's meal in a group of three or less and show the proper
+way of starting a fire including preparing a kitchen.
+Proper hygiene should be observed.
+</li>
+
+<li>
+With the assistance of three Members who do not hold any Camping Awards,
+set up a campsite which include the tent, a kitchen, a toilet,
+campfire and fencing around the site for a limited period of time
+as set by the instructor.
+</li>
+
+<li>
+Basic knots that a Member should be able to tie easily:
+</li>
+
+<ul>
+<li>timber hitch and half turn</li>
+<li>rolling hitch</li>
+<li>fishermen bend</li>
+<li>running bowline</li>
+<li>French bowline</li>
+<li>slip knot</li>
+<li>middleman and butterfly knot</li>
+<li>square lashing</li>
+<li>diagonal lashing</li>
+<li>sheer lashing</li>
+<li>gym lashing</li>
+<li>round lashing</li>
+<li>plus other knots at basic level</li>
+</ul>
+
+</ul>
+
+<button class="req-prev" onclick="showCampingBasic()">
+<i class="fa-solid fa-chevron-left"></i>
+</button>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+<!-- ================= EXPEDITION PAGE 1  ================= -->
+<div id="expeditionPage" class="page detail-page">
+
+<button class="back-detail" onclick="backMain()">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<div class="detail-box">
+
+<div class="title-row">
+    <img src="images/Expedition.png">
+    <h2>Expedition</h2>
+</div>
+
+<div id="expeditionBasic">
+
+<div class="section">
+
+<h3>■ Basic Level</h3>
+
+<ul>
+<li>
+<b>The theory syllabus should cover the following parts:</b>
+
+<ul>
+<li>Packing the rucksack, types of rucksack, equipment needed for the expeditions and how to pack.</li>
+
+<li>Simple cooking. Ability to cook a simple meal under camp conditions.</li>
+
+<li>Basic understanding on the method of use for map and compass reading.</li>
+
+<li>Camp craft, Living in a tent.</li>
+
+<li>Country code.</li>
+</ul>
+
+</li>
+
+<li>
+<b>Practical (by foot)</b>
+
+<ul>
+<li>
+Undertake a walk of at least 16 km in open country
+(preferably rural/in the jungle) following a route selected beforehand,
+and prepare an interesting log of the journey.
+
+An adult leader/officer must accompany the trainee/s throughout the journey.
+</li>
+
+<li>
+Spend one night under canvas using lightweight equipment,
+including the cooking of an evening meal and breakfast.
+</li>
+</ul>
+
+</li>
+
+</ul>
+
+<button class="req-next"
+onclick="showExpeditionAdvanced()">
+<i class="fa-solid fa-chevron-right"></i>
+</button>
+
+</div>
+</div>
+
+<!-- ================= EXPEDITION PAGE 2  ================= -->
+
+<div id="expeditionAdvanced" style="display:none;">
+
+<div class="section">
+
+<h3>■ Advanced Level (Training)</h3>
+
+<ul>
+
+<li>
+<b>Safety Precautions.</b>
+
+Safety factors inherent in sound expedition techniques,
+discipline on the move.
+
+Procedure for dealing with an accident in the type of country
+used for expedition.
+</li>
+
+<li>
+<b>Map and compass.</b>
+
+The nature of map, scale, conventional signs,
+contours, map reference, route planning,
+setting of a map, elementary compass work.
+</li>
+
+<li>
+<b>Camp Craft.</b>
+
+Care of tents, including pitching and striking,
+care and cleaning of campsite, arrangements for cooking,
+sanitation refuse disposal and fire precautions.
+</li>
+
+<li>
+<b>Cooking.</b>
+
+Planning and preparation of hot,
+sustaining meals under conditions to be expected on the test.
+</li>
+
+<li>
+<b>Survival.</b>
+
+Basic survival skills.
+</li>
+
+<li>
+<b>Practical</b>
+
+Undertake an expedition on foot, of at least 24km across normal country,
+such as agricultural or common land, within a cycle or bus ride forms
+most city districts and housing estates.
+
+The expedition is to be completed in two days, including one night spent
+in tents or bivouacs.
+
+Roads are to be used as little as possible.
+
+At least two hot meals are to be prepared during the expedition;
+no food may be bought enroute, but drinking water may be drawn from houses.
+
+All the necessary equipment will be carried.
+
+A similar level of difficulty can be done for expedition in water.
+</li>
+
+</ul>
+
+<button class="req-prev"
+onclick="showExpeditionBasic()">
+<i class="fa-solid fa-chevron-left"></i>
+</button>
+
+</div> <!-- section -->
+</div> <!-- expeditionAdvanced -->
+
+</div> <!-- detail-box -->
+</div> <!-- expeditionPage -->
+
+<!-- ================= FIRE PAGE 1  ================= -->
+<div id="firePage" class="page detail-page">
+
+<button class="back-detail" onclick="backMain()">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<div class="detail-box">
+
+<div class="title-row">
+    <img src="images/Fireman.png">
+    <h2>Fire and Rescue</h2>
+</div>
+
+<div id="fireBasic">
+
+<div class="section">
+
+<h3>■ Basic Level</h3>
+
+<ul>
+
+<li>
+
+<b>Theory</b>
+
+<ul>
+
+<li>Basic knowledge of Fire Science</li>
+
+<li>Methods of extinguishing fire</li>
+
+<li>Common causes of fire</li>
+
+<li>Classification of fire</li>
+
+<li>Escape from fire and smoke</li>
+
+</ul>
+
+</li>
+
+<li>
+
+<b>Practical</b>
+
+<ul>
+
+<li>Fireman's lift.</li>
+
+<li>Emergency Methods of Removing Casualties.</li>
+
+<li>Visit to the Fire Station or Civil Defence Department.</li>
+
+</ul>
+
+</li>
+
+</ul>
+
+<button class="req-next"
+onclick="showFireAdvanced()">
+<i class="fa-solid fa-chevron-right"></i>
+</button>
+
+</div> <!-- section -->
+</div> <!-- fireBasic -->
+
+<!-- ================= FIRE PAGE 2 ================= -->
+
+<div id="fireAdvanced" style="display:none;">
+
+<div class="section">
+
+<h3>■ Advanced Level</h3>
+
+<ul>
+
+<li>
+<b>Theory</b>
+
+<ul>
+
+<li>
+Fire Service Organisation / Civil Defence Organisation
+
+<ul>
+<li>Organisation and structure.</li>
+<li>Functions and duties.</li>
+<li>Rank structure and responsibilities.</li>
+</ul>
+</li>
+
+<li>
+Fire Fighting and Rescue Equipment
+
+<ul>
+<li>Types.</li>
+<li>Construction.</li>
+<li>Maintenance.</li>
+<li>Method Operations.</li>
+</ul>
+</li>
+
+<li>
+Fire Service Appliances
+
+<ul>
+<li>General Structure.</li>
+<li>Breaking Tools.</li>
+<li>Rescue Equipment.</li>
+</ul>
+</li>
+
+<li>
+Water Supply
+
+<ul>
+<li>Fire Hydrant.</li>
+<li>Pools and others.</li>
+</ul>
+</li>
+
+</ul>
+
+</li>
+
+<li>
+<b>Practical</b>
+
+<ul>
+
+<li>
+Method of operating a fire hydrant including connecting the hose,
+turning on the system, cleaning as well as storing the hose and equipment.
+</li>
+
+<li>
+Method of escape from a burning building including ascending and descending methods.
+</li>
+
+<li>
+Visit a fire and rescue station or the local civil defence centre.
+</li>
+
+</ul>
+
+</li>
+
+</ul>
+
+<button class="req-prev"
+onclick="showFireBasic()">
+<i class="fa-solid fa-chevron-left"></i>
+</button>
+
+</div>
+
+</div>
+
+</div> <!-- detail-box -->
+</div> <!-- firePage -->
+
+<script>
+function showPage(pageId){
+
+document.getElementById("mainPage").style.display="none";
+
+const pages = [
+    "campingPage",
+    "expeditionPage",
+    "firePage"
+];
+
+pages.forEach(id=>{
+    const page = document.getElementById(id);
+    if(page){
+        page.style.display="none";
+    }
+});
+
+document.getElementById(pageId).style.display="block";
+
+window.scrollTo(0,0);
+}
+
+function backMain(){
+document.getElementById("mainPage").style.display="block";
+document.getElementById("campingPage").style.display="none";
+document.getElementById("expeditionPage").style.display="none";
+document.getElementById("firePage").style.display="none";
+}
+
+function showCampingAdvanced(){
+document.getElementById("campingBasic").style.display="none";
+document.getElementById("campingAdvanced").style.display="block";
+}
+
+function showCampingBasic(){
+document.getElementById("campingAdvanced").style.display="none";
+document.getElementById("campingBasic").style.display="block";
+}
+
+function showExpeditionAdvanced(){
+
+document.getElementById("expeditionBasic").style.display="none";
+document.getElementById("expeditionAdvanced").style.display="block";
+
+window.scrollTo(0,0);
+
+}
+
+function showExpeditionBasic(){
+
+document.getElementById("expeditionAdvanced").style.display="none";
+document.getElementById("expeditionBasic").style.display="block";
+
+window.scrollTo(0,0);
+
+}
+
+function showFireAdvanced(){
+
+document.getElementById("fireBasic").style.display="none";
+document.getElementById("fireAdvanced").style.display="block";
+
+window.scrollTo(0,0);
+
+}
+
+function showFireBasic(){
+
+document.getElementById("fireAdvanced").style.display="none";
+document.getElementById("fireBasic").style.display="block";
+
+window.scrollTo(0,0);
+
+}
+
+</script>
+
+</body>
+</html>

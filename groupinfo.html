@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Group Info</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f5f8;
+}
+
+/* ================= HEADER ================= */
+
+.header{
+    height:70px;
+    background:#081f63;
+    color:white;
+    display:flex;
+    align-items:center;
+    gap:18px;
+    padding:0 20px;
+    font-size:24px;
+    font-weight:bold;
+    box-shadow:0 3px 10px rgba(0,0,0,.2);
+}
+
+.back-btn{
+    border:none;
+    background:none;
+    color:white;
+    font-size:22px;
+    cursor:pointer;
+}
+
+/* ================= TOP CARD ================= */
+
+.top-card{
+    background:white;
+    margin:20px;
+    border-radius:22px;
+    padding:35px 20px;
+    text-align:center;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+/* ================= PHOTO ================= */
+
+.photo-box{
+    position:relative;
+    width:140px;
+    margin:auto;
+}
+
+#groupPhoto{
+    width:140px;
+    height:140px;
+    border-radius:50%;
+    object-fit:cover;
+    background:#d8d8d8;
+    border:5px solid #081f63;
+}
+
+.camera-btn{
+    position:absolute;
+    bottom:5px;
+    right:5px;
+    width:42px;
+    height:42px;
+    border:none;
+    border-radius:50%;
+    background:#081f63;
+    color:white;
+    cursor:pointer;
+    font-size:18px;
+    box-shadow:0 2px 8px rgba(0,0,0,.3);
+}
+
+.camera-btn:hover{
+    transform:scale(1.08);
+}
+
+/* ================= TITLE ================= */
+
+#groupName{
+    margin-top:20px;
+    margin-bottom:8px;
+    font-size:30px;
+    color:#081f63;
+}
+
+#groupDescription{
+    color:#777;
+    font-size:16px;
+    margin-bottom:18px;
+}
+
+#memberCount{
+    display:inline-block;
+    padding:10px 20px;
+    border-radius:50px;
+    background:#edf2ff;
+    color:#081f63;
+    font-weight:bold;
+}
+
+/* ================= MENU ================= */
+
+.menu{
+    margin:20px;
+}
+
+.menu-title{
+    color:#666;
+    font-size:13px;
+    font-weight:bold;
+    margin-bottom:10px;
+    margin-left:5px;
+}
+
+.menu-item{
+    background:white;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    padding:18px;
+    margin-bottom:12px;
+    cursor:pointer;
+    transition:.2s;
+    box-shadow:0 3px 10px rgba(0,0,0,.06);
+}
+
+.menu-item:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 18px rgba(0,0,0,.12);
+}
+
+.menu-item i{
+    width:42px;
+    font-size:22px;
+    color:#081f63;
+}
+
+.menu-text{
+    flex:1;
+}
+
+.menu-text .title{
+    font-size:18px;
+    font-weight:bold;
+    color:#222;
+}
+
+.menu-text .subtitle{
+    margin-top:5px;
+    font-size:14px;
+    color:#888;
+}
+
+/* ================= SWITCH ================= */
+
+.switch{
+    position:relative;
+    display:inline-block;
+    width:55px;
+    height:30px;
+}
+
+.switch input{
+    display:none;
+}
+
+.slider{
+    position:absolute;
+    inset:0;
+    background:#ccc;
+    border-radius:30px;
+    transition:.3s;
+}
+
+.slider:before{
+    content:"";
+    position:absolute;
+    width:24px;
+    height:24px;
+    left:3px;
+    top:3px;
+    background:white;
+    border-radius:50%;
+    transition:.3s;
+}
+
+.switch input:checked + .slider{
+    background:#081f63;
+}
+
+.switch input:checked + .slider:before{
+    transform:translateX(25px);
+}
+
+/* ================= MEMBER ================= */
+
+.member{
+    display:flex;
+    align-items:center;
+    background:white;
+    padding:14px;
+    border-radius:14px;
+    margin-bottom:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+
+.member-avatar{
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    background:#081f63;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:24px;
+    font-weight:bold;
+    margin-right:15px;
+}
+
+.member-info{
+    flex:1;
+}
+
+.member-name{
+    font-size:18px;
+    font-weight:bold;
+}
+
+.member-role{
+    color:#777;
+    font-size:14px;
+}
+
+.member button{
+    border:none;
+    background:#081f63;
+    color:white;
+    padding:8px 15px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+/* ================= DANGER ================= */
+
+.danger{
+    border-left:6px solid #e53935;
+}
+
+.danger i{
+    color:#e53935;
+}
+
+.danger .title{
+    color:#e53935;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:600px){
+
+    .top-card{
+        margin:15px;
+        padding:25px 15px;
+    }
+
+    #groupPhoto{
+        width:120px;
+        height:120px;
+    }
+
+    .photo-box{
+        width:120px;
+    }
+
+    #groupName{
+        font-size:26px;
+    }
+
+    .menu-item{
+        padding:15px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+    <button class="back-btn" onclick="goBack()">
+        <i class="fa fa-arrow-left"></i>
+    </button>
+
+    <span>Group Info</span>
+
+</div>
+
+<div class="top-card">
+
+    <div class="photo-box">
+
+        <img
+            id="groupPhoto"
+            src="images/group-default.png"
+            alt="Group">
+
+        <button
+            id="changePhotoBtn"
+            class="camera-btn"
+            onclick="changePhoto()">
+
+            <i class="fa-solid fa-camera"></i>
+
+        </button>
+
+    </div>
+
+    <input
+    type="file"
+    id="photoInput"
+    accept="image/*"
+    style="display:none">
+
+    <h2 id="groupName">
+        Loading...
+    </h2>
+
+    <p id="groupDescription">
+        No description
+    </p>
+
+    <div id="memberCount">
+        0 Members
+    </div>
+
+</div>
+
+<div class="menu">
+
+    <div class="menu-title">
+        GROUP SETTINGS
+    </div>
+
+    <div
+        class="menu-item"
+        onclick="changeGroupName()">
+
+        <i class="fa-solid fa-pen"></i>
+
+        <div class="menu-text">
+
+            <div class="title">
+                Change Group Name
+            </div>
+
+            <div class="subtitle">
+                Rename your group
+            </div>
+
+        </div>
+
+    </div>
+
+    <div
+        class="menu-item"
+        onclick="changeDescription()">
+
+        <i class="fa-solid fa-align-left"></i>
+
+        <div class="menu-text">
+
+            <div class="title">
+                Group Description
+            </div>
+
+            <div class="subtitle">
+                Edit description
+            </div>
+
+        </div>
+
+    </div>
+
+    <div
+        class="menu-item"
+        onclick="openMembers()">
+
+        <i class="fa-solid fa-users"></i>
+
+        <div class="menu-text">
+
+            <div class="title">
+                Members
+            </div>
+
+            <div class="subtitle">
+                View all members
+            </div>
+
+        </div>
+
+    </div>
+
+    <div
+        class="menu-item"
+        onclick="addMember()">
+
+        <i class="fa-solid fa-user-plus"></i>
+
+        <div class="menu-text">
+
+            <div class="title">
+                Add Member
+            </div>
+
+            <div class="subtitle">
+                Invite new members
+            </div>
+
+        </div>
+
+    </div>
+
+<div class="menu-item">
+
+    <i class="fa-solid fa-bell"></i>
+
+    <div class="menu-text">
+
+        <div class="title">
+            Notifications
+        </div>
+
+        <div class="subtitle">
+            Receive notifications
+        </div>
+
+    </div>
+
+    <label class="switch">
+
+        <input
+            type="checkbox"
+            id="notificationSwitch"
+            onchange="toggleNotification()">
+
+        <span class="slider"></span>
+
+    </label>
+
+</div>
+
+</div>
+
+<div class="menu">
+
+    <div class="menu-title">
+
+        MEMBERS
+
+    </div>
+
+    <div id="memberList">
+
+    </div>
+
+</div>
+
+<div class="menu">
+
+    <div class="menu-title">
+
+        DANGER ZONE
+
+    </div>
+
+    <div
+        class="menu-item danger"
+        onclick="leaveGroup()">
+
+        <i class="fa-solid fa-right-from-bracket"></i>
+
+        <div class="menu-text">
+
+            <div class="title">
+                Leave Group
+            </div>
+
+            <div class="subtitle">
+                Leave this group
+            </div>
+
+        </div>
+
+    </div>
+
+    <div
+        class="menu-item danger"
+        id="dissolveGroupBtn"
+        onclick="dissolveGroup()">
+
+        <i class="fa-solid fa-trash"></i>
+
+        <div class="menu-text">
+
+            <div class="title">
+                Dissolve Group
+            </div>
+
+            <div class="subtitle">
+                Delete this group forever
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+    getFirestore,
+    doc,
+    getDoc,
+    updateDoc,
+    deleteDoc,
+    arrayRemove,
+    collection,
+    getDocs
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+    getAuth,
+    onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+
+    apiKey: "AIzaSyAHmlUT6WBh_lVrMOirhY9Z18xc57fSFZ8",
+
+    authDomain: "yb1-ae18e.firebaseapp.com",
+
+    projectId: "yb1-ae18e",
+
+    storageBucket: "yb1-ae18e.firebasestorage.app",
+
+    messagingSenderId: "278406966206",
+
+    appId: "1:278406966206:web:3dbf470d1a0c63a8dbe7ef",
+
+    measurementId: "G-YZQGS7NTME"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+const auth = getAuth(app);
+
+let currentUser = "";
+
+const group =
+JSON.parse(
+localStorage.getItem("currentGroup")
+);
+
+if(group){
+
+    document.getElementById("groupName").innerText =
+        group.name || "Unnamed Group";
+
+    document.getElementById("groupDescription").innerText =
+        group.description || "No description";
+
+    document.getElementById("memberCount").innerText =
+        (group.members?.length || 0)
+        + " Members";
+
+    if(group.photo){
+
+        document.getElementById("groupPhoto").src =
+            group.photo;
+
+    }
+
+}
+
+async function loadGroup(){
+
+    if(!group || !group.id) return;
+
+    const snap = await getDoc(
+        doc(db,"groups",group.id)
+    );
+
+    if(!snap.exists()) return;
+
+    const data = snap.data();
+
+    group.name = data.name;
+    group.description = data.description;
+    group.members = data.members || [];
+    group.photo = data.photo || "";
+    group.owner = data.owner;
+
+    localStorage.setItem(
+        "currentGroup",
+        JSON.stringify(group)
+    );
+
+    document.getElementById("groupName").innerText =
+        group.name;
+
+    document.getElementById("groupDescription").innerText =
+        group.description || "No description";
+
+    document.getElementById("memberCount").innerText =
+        group.members.length + " Members";
+
+    if(group.photo){
+
+        document.getElementById("groupPhoto").src =
+            group.photo;
+
+    }
+
+    loadMembers();
+
+}
+
+async function changeGroupName(){
+
+    const newName = prompt(
+        "Enter new group name",
+        group.name
+    );
+
+    if(!newName) return;
+
+    await updateDoc(
+        doc(db,"groups",group.id),
+        {
+            name:newName
+        }
+    );
+
+    group.name = newName;
+
+    localStorage.setItem(
+        "currentGroup",
+        JSON.stringify(group)
+    );
+
+    document.getElementById("groupName").innerText =
+        newName;
+
+    alert("Group name updated!");
+
+}
+
+async function changeDescription(){
+
+    const newDescription = prompt(
+        "Enter group description",
+        group.description || ""
+    );
+
+    if(newDescription === null) return;
+
+    await updateDoc(
+        doc(db,"groups",group.id),
+        {
+            description:newDescription
+        }
+    );
+
+    group.description = newDescription;
+
+    localStorage.setItem(
+        "currentGroup",
+        JSON.stringify(group)
+    );
+
+    document.getElementById(
+        "groupDescription"
+    ).innerText = newDescription;
+
+    alert("Description updated!");
+
+}
+
+async function toggleNotification(){
+
+    const enabled =
+        document.getElementById(
+            "notificationSwitch"
+        ).checked;
+
+    await updateDoc(
+        doc(db,"groups",group.id),
+        {
+            notification: enabled
+        }
+    );
+
+}
+
+function changePhoto(){
+
+    document
+    .getElementById("photoInput")
+    .click();
+
+}
+
+document.getElementById("photoInput").addEventListener("change", function(e){
+
+    const file = e.target.files[0];
+
+    if(!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = async function(event){
+
+        const image = event.target.result;
+
+        document.getElementById("groupPhoto").src = image;
+
+        group.photo = image;
+
+        localStorage.setItem(
+            "currentGroup",
+            JSON.stringify(group)
+        );
+
+        await updateDoc(
+            doc(db,"groups",group.id),
+            {
+                photo:image
+            }
+        );
+
+        alert("Group photo updated!");
+
+    };
+
+    reader.readAsDataURL(file);
+
+});
+
+async function loadMembers(){
+
+    const box =
+    document.getElementById("memberList");
+
+
+    box.innerHTML="";
+
+
+    if(!group.members) return;
+
+
+
+    const usersSnap =
+    await getDocs(
+        collection(db,"users")
+    );
+
+
+
+    let userList = {};
+
+
+
+    usersSnap.forEach((doc)=>{
+
+        userList[doc.id] =
+        doc.data();
+
+    });
+
+
+
+    group.members.forEach(member=>{
+
+
+        let user =
+        userList[member];
+
+
+
+        if(user){
+
+
+            box.innerHTML += `
+
+
+            <div class="member">
+
+
+                <div class="member-avatar">
+
+                    ${user.name.charAt(0)}
+
+                </div>
+
+
+
+                <div class="member-info">
+
+
+                    <div class="member-name">
+
+                        ${user.name}
+
+                    </div>
+
+
+                    <div class="member-role">
+
+                        ${
+                            member === group.owner
+                            ? "Owner"
+                            : "Member"
+                        }
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+            `;
+
+
+        }
+
+    });
+
+
+}
+
+if(group && group.id){
+
+    loadGroup();
+
+}
+
+onAuthStateChanged(auth,(user)=>{
+
+    if(!user) return;
+
+    currentUser = user.uid;
+
+    if(group.owner !== currentUser){
+
+        document.getElementById(
+            "dissolveGroupBtn"
+        ).style.display = "none";
+
+    }
+
+});
+
+function openMembers(){
+
+    document
+    .getElementById("memberList")
+    .scrollIntoView({
+        behavior:"smooth"
+    });
+
+}
+
+function addMember(){
+
+    window.location="addmember.html";
+
+}
+
+async function leaveGroup(){
+
+    if(!confirm("Leave this group?"))
+        return;
+
+    await updateDoc(
+
+        doc(db,"groups",group.id),
+
+        {
+            members:arrayRemove(currentUser)
+        }
+
+    );
+
+    alert("You left the group.");
+
+    history.back();
+
+}
+
+async function dissolveGroup(){
+
+    if(!confirm("Delete this group permanently?"))
+        return;
+
+    await deleteDoc(
+
+        doc(db,"groups",group.id)
+
+    );
+
+    alert("Group deleted.");
+
+    window.location="chat.html";
+
+}
+
+function goBack(){
+
+    window.location.href = "chat.html";
+
+}
+
+window.goBack = goBack;
+
+window.openMembers = openMembers;
+window.addMember = addMember;
+
+window.changeDescription =
+changeDescription;
+
+window.toggleNotification =
+toggleNotification;
+
+window.changeGroupName = changeGroupName;
+
+window.leaveGroup =
+leaveGroup;
+
+window.dissolveGroup =
+dissolveGroup;
+
+window.changePhoto = changePhoto;
+
+</script>
+
+</body>
+</html>

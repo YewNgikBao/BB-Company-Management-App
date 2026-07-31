@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Proficiency Achievement Awards</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#032b84;
+    background-image:
+    radial-gradient(circle at center,#1d4ed8 0%,#032b84 70%);
+    min-height:100vh;
+    color:white;
+}
+
+/* HEADER */
+
+.header{
+    background:#002c7a;
+    padding:14px 20px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:15px;
+}
+.header img{width:70px;}
+.header-text h1{margin:0;font-size:28px;}
+.header-text p{margin:0;font-size:14px;color:#ddd;}
+
+/* TITLE */
+
+.top-section{
+    position:relative;
+    padding:25px 20px 10px;
+}
+
+.page-title{
+    text-align:center;
+    font-size:30px;
+    font-weight:bold;
+    margin:0;
+    line-height:1.3;
+}
+
+/* BACK BUTTON */
+
+.back-btn{
+    position:absolute;
+    right:25px;
+    top:18px;
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    border:none;
+    background:#f4df9f;
+    color:#002c7a;
+    font-size:28px;
+    cursor:pointer;
+    box-shadow:0 4px 10px rgba(0,0,0,0.3);
+    transition:0.2s;
+}
+
+.back-btn:hover{
+    transform:scale(1.05);
+}
+
+/* AWARD LIST */
+
+.award-container{
+    padding:20px 20px 40px;
+}
+
+.award-btn{
+    width:100%;
+    background:linear-gradient(to bottom,#f5e5b0,#e7cf8b);
+    border:none;
+    border-radius:22px;
+    margin-bottom:22px;
+    padding:22px 20px;
+    display:flex;
+    align-items:center;
+    gap:20px;
+    cursor:pointer;
+    box-shadow:
+    inset 0 0 0 3px rgba(255,255,255,0.3),
+    0 6px 12px rgba(0,0,0,0.35);
+    transition:0.2s;
+}
+
+.award-btn:hover{
+    transform:translateY(-2px);
+}
+
+.award-icon{
+    font-size:52px;
+    color:#7b5521;
+    min-width:70px;
+    text-align:center;
+}
+
+.award-text{
+    color:#001f66;
+    font-size:22px;
+    font-weight:bold;
+    text-align:left;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<div class="header">
+
+    <img src="images/bb.logo.png">
+
+    <div class="header-text">
+        <h1>BB COMPANY</h1>
+        <p>MANAGEMENT APP</p>
+    </div>
+
+</div>
+
+<!-- TITLE -->
+
+<div class="top-section">
+
+    <h1 class="page-title">
+        Proficiency Achievement Awards
+    </h1>
+
+    <!-- BACK BUTTON -->
+    <button class="back-btn" onclick="goBack()">
+        <i class="fa-solid fa-arrow-left"></i>
+    </button>
+
+</div>
+
+<!-- COMPULSORY -->
+
+<button class="award-btn"
+onclick="window.location.href='compulsory.html'">
+
+    <div class="award-icon">
+        <i class="fa-solid fa-scroll"></i>
+    </div>
+
+    <div class="award-text">
+        1. Compulsory Award
+    </div>
+
+</button>
+
+<!-- GROUP A -->
+
+<button class="award-btn"
+onclick="window.location.href='group-a.html'">
+
+    <div class="award-icon">
+        <i class="fa-solid fa-palette"></i>
+    </div>
+
+    <div class="award-text">
+        2. Group A - Interest
+    </div>
+
+</button>
+
+<!-- GROUP B -->
+
+<button class="award-btn"
+onclick="window.location.href='group-b.html'">
+
+    <div class="award-icon">
+        <i class="fa-solid fa-compass"></i>
+    </div>
+
+    <div class="award-text">
+        3. Group B - Interest
+    </div>
+
+</button>
+
+<!-- GROUP C -->
+
+<button class="award-btn"
+onclick="window.location.href='group-c.html'">
+
+    <div class="award-icon">
+        <i class="fa-solid fa-handshake"></i>
+    </div>
+
+    <div class="award-text">
+        4. Group C - Community
+    </div>
+
+</button>
+
+<!-- GROUP D -->
+
+<button class="award-btn"
+onclick="window.location.href='group-d.html'">
+
+    <div class="award-icon">
+        <i class="fa-solid fa-person-running"></i>
+    </div>
+
+    <div class="award-text">
+        5. Group D - Physical
+    </div>
+
+</button>
+
+<script>
+
+/* BACK TO FIRST PAGE */
+
+function goBack(){
+
+    /* 换成你的第一页档案名字 */
+    window.location.href = "achievements.html";
+
+}
+
+</script>
+
+</body>
+</html>

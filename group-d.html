@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Group D - Physical</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#00379a;
+    color:white;
+}
+
+/* HEADER */
+.header{
+    background:#002c7a;
+    padding:14px 20px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:15px;
+}
+.header img{width:70px;}
+.header-text h1{margin:0;font-size:28px;}
+.header-text p{margin:0;font-size:14px;color:#ddd;}
+
+/* PAGE */
+.page{
+    position:relative;
+    padding:20px;
+}
+
+/* BACK BUTTON */
+.back-btn{
+    position:absolute;
+    left:20px;
+    top:20px;
+    width:60px;
+    height:60px;
+    border:none;
+    border-radius:50%;
+    background:#f5e5b0;
+    color:#002c7a;
+    font-size:28px;
+    cursor:pointer;
+}
+
+/* TITLE */
+.title{
+    text-align:center;
+    font-size:34px;
+    font-weight:bold;
+    margin:15px 0 30px;
+}
+
+/* GRID */
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:25px;
+}
+
+/* CARD */
+.card{
+    background:#f5f3ef;
+    border-radius:20px;
+    padding:20px;
+    text-align:center;
+    box-shadow:0 6px 12px rgba(0,0,0,0.35);
+}
+
+.card img{
+    width:130px;
+    height:130px;
+    object-fit:contain;
+}
+
+.card h2{
+    color:#002c7a;
+    font-size:18px;
+    margin-top:10px;
+}
+
+.line{
+    height:2px;
+    background:#d7b25d;
+    margin:15px 0;
+}
+
+/* BUTTON */
+.view-btn{
+    width:100%;
+    border:none;
+    background:#5d9cff;
+    color:white;
+    border-radius:8px;
+    padding:15px;
+    font-size:17px;
+    cursor:pointer;
+}
+
+/* PAGE SYSTEM */
+.page-slide{
+    display:none;
+}
+
+.page-slide.active{
+    display:block;
+}
+
+/* ARROWS */
+.arrow{
+    position:fixed;
+    bottom:25px;
+    width:60px;
+    height:60px;
+    border:none;
+    border-radius:50%;
+    background:white;
+    color:#002c7a;
+    font-size:26px;
+    cursor:pointer;
+    z-index:999;
+}
+
+.arrow.right{
+    right:20px;
+}
+
+.arrow.left{
+    left:20px;
+}
+
+/* DETAIL PAGE */
+.detail-page{
+    display:none;
+    padding:20px;
+}
+
+.detail-box{
+    background:white;
+    color:black;
+    border-radius:25px;
+    padding:30px;
+}
+
+.back-detail{
+    width:55px;
+    height:55px;
+    border:none;
+    border-radius:50%;
+    background:#f5e5b0;
+    color:#002c7a;
+    font-size:26px;
+    cursor:pointer;
+    margin-bottom:20px;
+}
+
+.athletics-table{
+width:100%;
+border-collapse:collapse;
+font-size:14px;
+background:white;
+}
+
+.athletics-table th,
+.athletics-table td{
+border:1px solid #bfbfbf;
+padding:8px;
+text-align:center;
+color:black;
+}
+
+.athletics-table th{
+background:#f2f2f2;
+font-weight:bold;
+}
+
+.athletics-table tr td:first-child{
+font-weight:bold;
+}
+
+.section{
+    background:#f5f5f5;
+    color:black;
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:20px;
+}
+
+.detail-box{
+    background:white;
+    color:black;
+    border-radius:25px;
+    padding:30px;
+    min-height:1200px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<div class="header">
+<img src="images/bb.logo.png">
+<div class="header-text">
+<h1>BB COMPANY</h1>
+<p>MANAGEMENT APP</p>
+</div>
+</div>
+
+<!-- MAIN PAGE -->
+<div id="mainPage" class="page">
+
+<button class="back-btn"
+onclick="window.location.href='proficiency.html'">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<div class="title">5. Group D - Physical</div>
+
+<!-- PAGE 1 -->
+<div id="page1" class="page-slide active">
+
+<div class="grid">
+
+<div class="card">
+<img src="images/Athletics.png">
+<div class="line"></div>
+<h2>Athletics</h2>
+<button class="view-btn"
+onclick="showPage('athleticsPage')">
+View Requirement
+</button>
+</div>
+
+<div class="card">
+<img src="images/Gymnastics.png">
+<div class="line"></div>
+<h2>Gymnastics</h2>
+<button class="view-btn"
+onclick="showPage('gymnasticsPage')">
+View Requirement
+</button>
+</div>
+
+<div class="card">
+<img src="images/Martial Art.png">
+<div class="line"></div>
+<h2>Martial Arts</h2>
+<button class="view-btn"
+onclick="showPage('martialArtsPage')">
+View Requirement
+</button>
+</div>
+
+<div class="card">
+<img src="images/Physical Training.png">
+<div class="line"></div>
+<h2>Physical Training</h2>
+<button class="view-btn"
+onclick="showPage('physicalTrainingPage')">
+View Requirement
+</button>
+</div>
+
+</div>
+
+<button class="arrow right"
+onclick="nextPage()">
+<i class="fa-solid fa-chevron-right"></i>
+</button>
+
+</div>
+
+<!-- PAGE 2 -->
+<div id="page2" class="page-slide">
+
+<div class="grid">
+
+<div class="card">
+<img src="images/Sports.png">
+<div class="line"></div>
+<h2>Sport</h2>
+<button class="view-btn"
+onclick="showPage('sportPage')">
+View Requirement
+</button>
+</div>
+
+<div class="card">
+<img src="images/Swimming.png">
+<div class="line"></div>
+<h2>Swimming</h2>
+<button class="view-btn"
+onclick="showPage('swimmingPage')">
+View Requirement
+</button>
+</div>
+
+<div class="card">
+<img src="images/Water Adventure.png">
+<div class="line"></div>
+<h2>Water Adventure</h2>
+<button class="view-btn"
+onclick="showPage('waterAdventurePage')">
+View Requirement
+</button>
+</div>
+
+</div>
+
+<button class="arrow left"
+onclick="prevPage()">
+<i class="fa-solid fa-chevron-left"></i>
+</button>
+
+</div>
+
+</div>
+
+<!-- ================= ATHLETICS ================= -->
+<div id="athleticsPage" class="detail-page">
+
+<button class="back-detail"
+onclick="backToMain()">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<div class="detail-box">
+
+<div style="display:flex;align-items:flex-start;gap:30px;">
+
+<img src="images/Athletics.png"
+style="width:140px;height:140px;object-fit:contain;">
+
+<h1 style="color:#002c7a;font-weight:normal;">
+Athletics
+</h1>
+
+</div>
+
+<hr>
+
+<h2 style="color:#002c7a;">
+Requirements
+</h2>
+
+<div class="section">
+
+<div style="overflow-x:auto;">
+<table class="athletics-table">
+
+<tr>
+<th rowspan="2">Events</th>
+<th colspan="2">Boys</th>
+<th colspan="2">Girls</th>
+</tr>
+
+<tr>
+<th>Basic</th>
+<th>Advanced</th>
+<th>Basic</th>
+<th>Advanced</th>
+</tr>
+
+<tr>
+<td colspan="5" style="font-weight:bold;background:#d9d9d9;">
+GROUP A
+</td>
+</tr>
+
+<tr>
+<td>100 metres</td>
+<td>13.4 sec</td>
+<td>12.7 sec</td>
+<td>14.0 sec</td>
+<td>13.3 sec</td>
+</tr>
+
+<tr>
+<td>200 metres</td>
+<td>28.4 sec</td>
+<td>27.4 sec</td>
+<td>28.9 sec</td>
+<td>27.9 sec</td>
+</tr>
+
+<tr>
+<td>400 metres</td>
+<td>69.5 sec</td>
+<td>63.6 sec</td>
+<td>70.0 sec</td>
+<td>64.1 sec</td>
+</tr>
+
+<tr>
+<td>800 metres</td>
+<td>2 min 42 sec</td>
+<td>2 min 28 sec</td>
+<td>2 min 55 sec</td>
+<td>2 min 37 sec</td>
+</tr>
+
+<tr>
+<td>1500 metres</td>
+<td>5 min 53 sec</td>
+<td>5 min 13 sec</td>
+<td>6 min 10 sec</td>
+<td>5 min 25 sec</td>
+</tr>
+
+<tr>
+<td>Hurdles</td>
+<td>75m / 13.4 sec</td>
+<td>75m / 12.9 sec</td>
+<td>75m / 13.9 sec</td>
+<td>75m / 13.4 sec</td>
+</tr>
+
+<tr>
+<td colspan="5" style="font-weight:bold;background:#d9d9d9;">
+GROUP B
+</td>
+</tr>
+
+<tr>
+<td>High Jump</td>
+<td>1m 22cm</td>
+<td>1m 37cm</td>
+<td>1m 12cm</td>
+<td>1m 30cm</td>
+</tr>
+
+<tr>
+<td>Long Jump</td>
+<td>4m 27cm</td>
+<td>4m 88cm</td>
+<td>4m 17cm</td>
+<td>4m 78cm</td>
+</tr>
+
+<tr>
+<td>Triple Jump</td>
+<td>9m 14cm</td>
+<td>9m 75cm</td>
+<td>9m 04cm</td>
+<td>9m 55cm</td>
+</tr>
+
+<tr>
+<td>Javelin</td>
+<td>27m 43cm</td>
+<td>32m</td>
+<td>27m 33cm</td>
+<td>31m 50cm</td>
+</tr>
+
+<tr>
+<td>Discus</td>
+<td>25m 91cm</td>
+<td>30m 04cm</td>
+<td>25m 81cm</td>
+<td>29m 94cm</td>
+</tr>
+
+<tr>
+<td>Shot Put (6lb)</td>
+<td>9m 75cm</td>
+<td>10m 36cm</td>
+<td>9m 65cm</td>
+<td>10m 26cm</td>
+</tr>
+
+</table>
+</div>
+
+<br>
+
+<p>
+Times and distances are based on synthetic surfaces.
+Officers may use their own discretion to minimally alter the
+time and distances when on different running surfaces.
+</p>
+
+<p>
+Members are required to choose 2 events from each group
+at both levels.
+Several attempts may be given before the best time or
+distance is taken.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= GYMNASTICS PAGE 1 ================= -->
+<div id="gymnasticsPage" class="detail-page">
+
+<button class="back-detail"
+onclick="backToMain()">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<div class="detail-box">
+
+<div style="display:flex;align-items:flex-start;gap:30px;">
+
+<img src="images/Gymnastics.png"
+style="width:140px;height:140px;object-fit:contain;">
+
+<h1 style="color:#002c7a;font-weight:normal;">
+Gymnastic
+</h1>
+
+</div>
+
+<hr>
+
+<h2 style="color:#002c7a;">
+Requirements
+</h2>
+
+<div class="section">
+
+<ul>
+
+<li><b>Agility</b></li>
+<ul>
+<li>Hand stand</li>
+<li>Head stand</li>
+<li>Cartwheel</li>
+<li>Backward roll</li>
+<li>Dive roll over three feet</li>
+</ul>
+
+<br>
+
+<li><b>Vaulting</b></li>
+<ul>
+<li>Knee vault</li>
+<li>Through vault</li>
+<li>Face vault</li>
+<li>Long horse (or box)</li>
+<li>Cat spring</li>
+<li>Horizontal stride vault</li>
+<li>Forward roll followed by arm over swing</li>
+</ul>
+
+<br>
+
+<li><b>Trampoline</b></li>
+<ul>
+<li>Swivel hips</li>
+<li>High tuck front drop</li>
+<li>High pike back drop</li>
+<li>Back drop half twist to stand</li>
+<li>Half turntable</li>
+<li>Knee drop front somersault</li>
+</ul>
+
+<br>
+
+<li><b>Parallel bars</b></li>
+<ul>
+<li>Forward roll from straddle seat</li>
+<li>Shoulder balance</li>
+<li>Bent arm over swing from straddle seat at end of bars</li>
+<li>Kick to handstand and over swing from straddle seat at end of bars</li>
+<li>Short upstart</li>
+</ul>
+
+<br>
+
+<li><b>Horizontal bars</b></li>
+<ul>
+<li>Single leg upraise</li>
+<li>Mill circles forward or backward</li>
+<li>Short backward circle</li>
+<li>Hock swing dismount</li>
+<li>Short upstart</li>
+<li>Forward roll</li>
+</ul>
+
+<br>
+
+<li><b>Strength and stamina</b></li>
+<ul>
+<li>15 Press-ups</li>
+<li>Size heavens</li>
+<li>Upward circle</li>
+<li>Rope climb 5m</li>
+<li>Skipping</li>
+<li>Running 400m in 70 seconds</li>
+</ul>
+
+</div>
+
+<div style="text-align:right;">
+
+<button onclick="showGymnasticsAdvanced()"
+style="
+width:70px;
+height:70px;
+border:none;
+border-radius:50%;
+background:black;
+color:white;
+font-size:28px;
+cursor:pointer;
+">
+
+<i class="fa-solid fa-chevron-right"></i>
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= GYMNASTICS PAGE 2 ================= -->
+<div id="gymnasticsAdvancedPage" class="detail-page">
+
+<button class="back-detail"
+onclick="backToMain()">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<div class="detail-box">
+
+<div style="display:flex;align-items:flex-start;gap:30px;">
+
+<img src="images/Gymnastics.png"
+style="width:140px;height:140px;object-fit:contain;">
+
+<h1 style="color:#002c7a;font-weight:normal;">
+Gymnastic
+</h1>
+
+</div>
+
+<hr>
+
+<h2 style="color:#002c7a;">
+Requirements
+</h2>
+
+<div class="section">
+
+<h3>■ Basic Level</h3>
+
+<p>
+Awarded to members who have attended a course and training in gymnastics by a qualified and competent instructor.
+The course and training must cover a period of three months.
+Members have to complete any two of the above categories.
+</p>
+
+<br>
+
+<h3>■ Advanced Level</h3>
+
+<p>
+Awarded to members who have attained basic level during the previous session or who have attended further training in gymnastics.
+Members must have completed a further four of the above categories not completed in Basic Level.
+</p>
+
+</div>
+
+<div style="text-align:right;">
+
+<button onclick="showPage('gymnasticsPage')"
+style="
+width:70px;
+height:70px;
+border:none;
+border-radius:50%;
+background:black;
+color:white;
+font-size:28px;
+cursor:pointer;
+">
+
+<i class="fa-solid fa-chevron-left"></i>
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= MARTIAL ARTS ================= -->
+<div id="martialArtsPage" class="detail-page">
+
+<button class="back-detail" onclick="backToMain()">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<div class="detail-box">
+
+<div style="display:flex;align-items:flex-start;gap:30px;">
+<img src="images/Martial Art.png"
+style="width:140px;height:140px;object-fit:contain;">
+
+<h1 style="color:#002c7a;font-weight:normal;">
+Martial Arts
+</h1>
+</div>
+
+<hr>
+
+<h2 style="color:#002c7a;">Requirements</h2>
+
+<p>
+This award is given to those who is of good attendance and pass the exam from an accredited martial arts organisation. Company should seek the Executive Committe's approval for exam from other martial arts organisation.
+</p>
+
+<table style="width:100%;border-collapse:collapse;text-align:center;margin-top:20px;">
+
+<tr>
+<th colspan="2" style="border:1px solid #999;padding:10px;">
+Judo
+</th>
+
+<th colspan="2" style="border:1px solid #999;padding:10px;">
+Taekwando / Karate
+</th>
+</tr>
+
+<tr>
+<th style="border:1px solid #999;padding:10px;">
+Belt Colour
+</th>
+
+<th style="border:1px solid #999;padding:10px;">
+Stage
+</th>
+
+<th style="border:1px solid #999;padding:10px;">
+Belt Colour
+</th>
+
+<th style="border:1px solid #999;padding:10px;">
+Stage
+</th>
+</tr>
+
+<tr>
+<td style="border:1px solid #999;padding:10px;">Green</td>
+<td style="border:1px solid #999;padding:10px;">Basic</td>
+<td style="border:1px solid #999;padding:10px;">Blue</td>
+<td style="border:1px solid #999;padding:10px;">Basic</td>
+</tr>
+
+<tr>
+<td style="border:1px solid #999;padding:10px;">Brown</td>
+<td style="border:1px solid #999;padding:10px;">Advanced</td>
+<td style="border:1px solid #999;padding:10px;">Brown 2</td>
+<td style="border:1px solid #999;padding:10px;">Advanced</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+<!-- ================= PHYSICAL TRAINING ================= -->
+<div id="physicalTrainingPage" class="detail-page">
+
+<button class="back-detail" onclick="backToMain()">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<div class="detail-box">
+
+<div style="display:flex;align-items:flex-start;gap:30px;">
+<img src="images/Physical Training.png"
+style="width:140px;height:140px;object-fit:contain;">
+
+<h1 style="color:#002c7a;font-weight:normal;">
+Physical Training
+</h1>
+</div>
+
+<hr>
+
+<h2 style="color:#002c7a;">Requirements</h2>
+
+<h3>■ Basic Level</h3>
+
+<h4>Theory</h4>
+
+<p>
+Awarded to members who have attended a course on the following:
+</p>
+
+<ul>
+<li>The basic principles of physical training.</li>
+<li>Understanding the need for warm-ups.</li>
+</ul>
+
+<h4>Practical</h4>
+
+<ul>
+<li>
+Attended training sessions comprising of 1/2 hour per training.
+Training sessions should include warming up, circuit training,
+farley, short distance jogging, variable training,
+movement training, physical efficiency exercise and warm down.
+</li>
+
+<li>
+Show satisfactory improvement during training.
+</li>
+
+<li>
+Achieve a standard of performance appropriate to age and natural ability.
+</li>
+</ul>
+
+<hr>
+
+<h3>■ Advanced Level</h3>
+
+<h4>Theory</h4>
+
+<p>
+Awarded to members who have attended a course on the following:
+</p>
+
+<ul>
+<li>
+Knowledge on the functions of muscles, blood circulation,
+brain system during and after training.
+</li>
+
+<li>
+Principles of anaerobic training, aerobic training,
+and lactate threshold.
+</li>
+</ul>
+
+<h4>Practical</h4>
+
+<ul>
+
+<li>
+Have shown further improvement in his/her performance
+for a further period of another one (1) session.
+</li>
+
+<li>
+Be able to lead other members in physical training.
+He/She should be able to show ability to lead a systematic training
+for the other members for preparation for sports.
+</li>
+
+<li>
+Achieve a standard of performance appropriate to age and natural ability.
+</li>
+
+</ul>
+
+</div>
+</div>
+
+<!-- ================= SPORTS ================= -->
+<div id="sportPage" class="detail-page">
+
+<button class="back-detail" onclick="backToMain()">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<div class="detail-box">
+
+<div style="display:flex;align-items:flex-start;gap:30px;">
+<img src="images/Sports.png"
+style="width:140px;height:140px;object-fit:contain;">
+
+<h1 style="color:#002c7a;font-weight:normal;">
+Sports
+</h1>
+</div>
+
+<hr>
+
+<h2 style="color:#002c7a;">Requirements</h2>
+
+<h3>■ Basic Level</h3>
+
+<p>
+Awarded to Members who qualify as follows:
+</p>
+
+<ul>
+
+<li>
+Participate in the activity for a period covering at least one (1)
+academic year.
+</li>
+
+<li>
+Attend training and instructional periods,
+and show progress in their personal performance.
+</li>
+
+<li>
+Be actively involved in competitions in Company,
+School, State, National or International levels.
+Squad, class, sports house and club levels are not recognised.
+</li>
+
+<li>
+Show knowledge of the sports in its wider aspect,
+e.g. history, rules, competitions, etc.
+</li>
+
+</ul>
+
+<hr>
+
+<h3>■ Advanced Level</h3>
+
+<p>
+Awarded to members who have attained the basic level
+in the previous year and who have achieved the following:
+</p>
+
+<h4>Either</h4>
+
+<ul>
+
+<li>
+Continue to participate actively in the same sports
+for another session.
+</li>
+
+<li>
+Show further progress in the sports
+and have attained further skills.
+</li>
+
+<li>
+Participate actively in competitions on a higher level
+than those in the basic level in which he/she should be playing
+against better teams such as district teams,
+state teams and/or national teams.
+</li>
+
+<li>
+If it is a team sport,
+he/she should be playing in a regular position
+i.e. striker for football.
+</li>
+
+</ul>
+
+<h4>Or</h4>
+
+<ul>
+
+<li>
+Participate in another sport for another session
+and have qualified for that sport as required
+in basic level.
+</li>
+
+</ul>
+
+</div>
+</div>
+
+<!-- ================= SWIMMING PAGE 1 ================= -->
+<div id="swimmingPage" class="detail-page">
+
+<button class="back-detail"
+onclick="backToMain()">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<div class="detail-box">
+
+<div style="display:flex;align-items:flex-start;gap:30px;">
+
+<img src="images/Swimming.png"
+style="width:140px;height:140px;object-fit:contain;">
+
+<h1 style="color:#002c7a;font-weight:normal;">
+Swimming
+</h1>
+
+</div>
+
+<hr>
+
+<h2 style="color:#002c7a;">
+Requirements
+</h2>
+
+<div class="section">
+
+<h3>■ Basic Level</h3>
+
+<p>
+Awarded to members who have:
+</p>
+
+<ul>
+<li>
+Undertaken one of the following tests within the following time limit:
+</li>
+</ul>
+
+<table class="athletics-table">
+
+<tr>
+<th>Category / Speed</th>
+<th>Boys</th>
+<th>Girls</th>
+</tr>
+
+<tr>
+<td>100m Free Style</td>
+<td>1 min 45 sec</td>
+<td>1 min 55 sec</td>
+</tr>
+
+<tr>
+<td>100m Butterfly Style</td>
+<td>2 min 15 sec</td>
+<td>2 min 25 sec</td>
+</tr>
+
+<tr>
+<td>100m Breast Stroke</td>
+<td>2 min 10 sec</td>
+<td>2 min 20 sec</td>
+</tr>
+
+<tr>
+<td>100m Back Stroke</td>
+<td>2 min 00 sec</td>
+<td>2 min 10 sec</td>
+</tr>
+
+<tr>
+<td>400m (Any Style)</td>
+<td>No time limit</td>
+<td>No time limit</td>
+</tr>
+
+</table>
+
+<br>
+
+<ul>
+<li>Tread water for 30 seconds.</li>
+<li>Swim 15 meters under water for a period of 17 seconds.</li>
+</ul>
+
+</div>
+
+<div style="text-align:right;">
+
+<button onclick="showSwimmingAdvanced()"
+style="
+width:70px;
+height:70px;
+border:none;
+border-radius:50%;
+background:black;
+color:white;
+font-size:28px;
+cursor:pointer;
+">
+
+<i class="fa-solid fa-chevron-right"></i>
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= SWIMMING PAGE 2 ================= -->
+<div id="swimmingAdvancedPage" class="detail-page">
+
+<button class="back-detail"
+onclick="backToMain()">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<div class="detail-box">
+
+<div style="display:flex;align-items:flex-start;gap:30px;">
+
+<img src="images/Swimming.png"
+style="width:140px;height:140px;object-fit:contain;">
+
+<h1 style="color:#002c7a;font-weight:normal;">
+Swimming
+</h1>
+
+</div>
+
+<hr>
+
+<h2 style="color:#002c7a;">
+Requirements
+</h2>
+
+<div class="section">
+
+<h3>■ Advanced Level</h3>
+
+<p>
+Awarded to members who have:
+</p>
+
+<ul>
+<li>
+Passed one of the following tests within the time limit:
+</li>
+</ul>
+
+<table class="athletics-table">
+
+<tr>
+<th>Category / Speed</th>
+<th>Boys</th>
+<th>Girls</th>
+</tr>
+
+<tr>
+<td>100m Free Style</td>
+<td>1 min 30 sec</td>
+<td>1 min 40 sec</td>
+</tr>
+
+<tr>
+<td>100m Butterfly Style</td>
+<td>1 min 55 sec</td>
+<td>2 min 05 sec</td>
+</tr>
+
+<tr>
+<td>100m Breast Stroke</td>
+<td>1 min 50 sec</td>
+<td>2 min 20 sec</td>
+</tr>
+
+<tr>
+<td>100m Back Stroke</td>
+<td>1 min 50 sec</td>
+<td>2 min 00 sec</td>
+</tr>
+
+<tr>
+<td>
+Rampai Individu<br>
+(25m Butterfly Stroke,<br>
+25m Front Crawl)
+</td>
+<td>1 min 45 sec</td>
+<td>1 min 55 sec</td>
+</tr>
+
+</table>
+
+<br>
+
+<ul>
+
+<li>
+Dive satisfactorily from a height of at least 2 metres above water.
+</li>
+
+<li>
+Swim on the surface for at least 5.5 metres, dive to at least 1.6m,
+and raise a dumb-bell or an equivalent object weighing 500 grams
+and return to the starting point with the weight; or,
+to swim 18 metres under water commencing with a dive or plunge.
+</li>
+
+<li>
+Swim 400 metres free style within 11 minutes 56 seconds.
+</li>
+
+</ul>
+
+</div>
+
+<div style="text-align:right;">
+
+<button onclick="showPage('swimmingPage')"
+style="
+width:70px;
+height:70px;
+border:none;
+border-radius:50%;
+background:black;
+color:white;
+font-size:28px;
+cursor:pointer;
+">
+
+<i class="fa-solid fa-chevron-left"></i>
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= WATER ADVENTURE PAGE 1 ================= -->
+<div id="waterAdventurePage" class="detail-page">
+
+<button class="back-detail"
+onclick="backToMain()">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<div class="detail-box">
+
+<div style="display:flex;align-items:flex-start;gap:30px;">
+
+<img src="images/Water Adventure.png"
+style="width:140px;height:140px;object-fit:contain;">
+
+<h1 style="color:#002c7a;font-weight:normal;">
+Water Adventure
+</h1>
+
+</div>
+
+<hr>
+
+<h2 style="color:#002c7a;">
+Requirements
+</h2>
+
+<div class="section">
+
+<p>
+Members should have passed the Swimming Award before attempting this award.
+They may choose any one of the following:
+</p>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+
+<ul>
+<li>Board Sailing</li>
+<li>Blackwater Rafting</li>
+<li>Jet Skiing</li>
+<li>Motor Cruising</li>
+<li>Tubing</li>
+<li>Sailing</li>
+<li>Snorkelling</li>
+<li>Kayaking</li>
+</ul>
+
+<ul>
+<li>Canoeing</li>
+<li>Scuba Diving</li>
+<li>Jet Boating</li>
+<li>White Water Rafting</li>
+<li>Water Skiing</li>
+<li>Surfing</li>
+<li>Surf Skiing</li>
+<li>Catamaran</li>
+</ul>
+
+</div>
+
+<br>
+
+<p>
+Below is the syllabus for the CANOEING AWARD,
+which may be used as a guideline for the other activities.
+</p>
+
+<h3>■ Basic Level</h3>
+
+<h4>Theory</h4>
+
+<ul>
+<li>Types of canoe and the history of canoeing</li>
+<li>Know the Water Safety Code</li>
+<li>Proper way of maintaining a canoe and proper way for storing</li>
+</ul>
+
+<h4>Practical</h4>
+
+<ul>
+<li>Carrying a canoe single-handed or double.</li>
+<li>Demonstrate on a canoe the methods of rescue i.e. T rescue and H rescue.</li>
+<li>Demonstrate forward and backward paddling and emergency stop travelling in both directions.</li>
+<li>Canoe for at least 1km and back.</li>
+</ul>
+
+</div>
+
+<div style="text-align:right;">
+
+<button onclick="showWaterAdventureAdvanced()"
+style="
+width:70px;
+height:70px;
+border:none;
+border-radius:50%;
+background:black;
+color:white;
+font-size:28px;
+cursor:pointer;
+">
+
+<i class="fa-solid fa-chevron-right"></i>
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= WATER ADVENTURE PAGE 2 ================= -->
+<div id="waterAdventureAdvancedPage" class="detail-page">
+
+<button class="back-detail"
+onclick="backToMain()">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<div class="detail-box">
+
+<div style="display:flex;align-items:flex-start;gap:30px;">
+
+<img src="images/Water Adventure.png"
+style="width:140px;height:140px;object-fit:contain;">
+
+<h1 style="color:#002c7a;font-weight:normal;">
+Water Adventure
+</h1>
+
+</div>
+
+<hr>
+
+<h2 style="color:#002c7a;">
+Requirements
+</h2>
+
+<div class="section">
+
+<h3>■ Advanced Level</h3>
+
+<h4>Theory</h4>
+
+<ul>
+<li>Demonstratestrate all the strokes that have been taught in the class.This includes forward and backward paddling,emergency stops,sweep strokes,recovery by means of a siap support,sculling draw,draw strokes and ferry glide.</li>
+<li>Be able to carry out running repairs on the type of canoe in which the test is to be taken.</li>
+<li>Answer correctly oral questions on the principles of canoe camping, on safety on the rules and on access problems in candidate's own locality. </li>
+</ul>
+
+<B>
+N.B.
+</B>
+<p>
+Members who have sat for an examination set by the Malaysian Canoe Association or other certified Canoeing Association in or outside the country and have been awarded at least a 3 Star can qualify for this award. Members who have gone for a 10-day training with 'Tunas Samudera' under the auspicious program of Kementerian Belia & Sukan Malaysia(Ministry of Youth & Sports Malaysia) would automatically be awarded the Advanced Level.
+</p>
+</div>
+
+<div style="text-align:right;">
+
+<button onclick="showPage('waterAdventurePage')"
+style="
+width:70px;
+height:70px;
+border:none;
+border-radius:50%;
+background:black;
+color:white;
+font-size:28px;
+cursor:pointer;
+">
+
+<i class="fa-solid fa-chevron-left"></i>
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function nextPage(){
+document.getElementById("page1").classList.remove("active");
+document.getElementById("page2").classList.add("active");
+}
+
+function prevPage(){
+document.getElementById("page2").classList.remove("active");
+document.getElementById("page1").classList.add("active");
+}
+
+function showPage(id){
+
+document.getElementById("mainPage").style.display="none";
+
+document.querySelectorAll(".detail-page").forEach(page=>{
+page.style.display="none";
+});
+
+document.getElementById(id).style.display="block";
+
+window.scrollTo(0,0);
+
+}
+
+function backToMain(){
+
+document.getElementById("mainPage").style.display="block";
+
+document.querySelectorAll(".detail-page").forEach(page=>{
+page.style.display="none";
+});
+
+window.scrollTo(0,0);
+
+}
+
+function showGymnasticsAdvanced(){
+
+document.getElementById("mainPage").style.display="none";
+
+document.querySelectorAll(".detail-page").forEach(page=>{
+page.style.display="none";
+});
+
+document.getElementById("gymnasticsAdvancedPage").style.display="block";
+
+window.scrollTo(0,0);
+
+}
+
+function showSwimmingAdvanced(){
+
+document.getElementById("mainPage").style.display="none";
+
+document.querySelectorAll(".detail-page").forEach(page=>{
+page.style.display="none";
+});
+
+document.getElementById("swimmingAdvancedPage").style.display="block";
+
+window.scrollTo(0,0);
+
+}
+
+function showWaterAdventureAdvanced(){
+
+document.getElementById("mainPage").style.display="none";
+
+document.querySelectorAll(".detail-page").forEach(page=>{
+page.style.display="none";
+});
+
+document.getElementById("waterAdventureAdvancedPage").style.display="block";
+
+window.scrollTo(0,0);
+
+}
+
+</script>
+
+</body>
+</html>

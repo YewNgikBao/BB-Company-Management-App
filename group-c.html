@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Group C - Community</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#00379a;
+    color:white;
+}
+
+/* HEADER */
+.header{
+    background:#002c7a;
+    padding:14px 20px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:15px;
+}
+.header img{width:70px;}
+.header-text h1{margin:0;font-size:28px;}
+.header-text p{margin:0;font-size:14px;color:#ddd;}
+
+/* PAGE */
+.page{
+    position:relative;
+    padding:20px;
+}
+
+/* BACK BUTTON */
+.back-btn{
+    position:absolute;
+    left:20px;
+    top:20px;
+    width:60px;
+    height:60px;
+    border:none;
+    border-radius:50%;
+    background:#f5e5b0;
+    color:#002c7a;
+    font-size:28px;
+}
+
+/* TITLE */
+.title{
+    text-align:center;
+    font-size:34px;
+    font-weight:bold;
+    margin:15px 0 25px;
+}
+
+/* GRID */
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:25px;
+}
+
+/* CARD */
+.card{
+    background:#f5f3ef;
+    border-radius:20px;
+    padding:20px;
+    text-align:center;
+}
+
+.card img{
+    width:120px;
+    height:120px;
+}
+
+.card h2{
+    color:#002c7a;
+    font-size:18px;
+}
+
+.line{
+    height:2px;
+    background:#d7b25d;
+    margin:12px 0;
+}
+
+/* BUTTON */
+.view-btn{
+    width:100%;
+    background:#5d9cff;
+    border:none;
+    padding:14px;
+    color:white;
+    border-radius:8px;
+    font-size:16px;
+}
+
+/* PAGE SYSTEM */
+.page-slide{
+    display:none;
+}
+
+.page-slide.active{
+    display:block;
+}
+
+/* NAV ARROWS */
+.arrow{
+    position:fixed;
+    bottom:25px;
+    z-index:999;
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    border:none;
+    background:white;
+    color:#002c7a;
+    font-size:24px;
+    cursor:pointer;
+}
+
+.arrow.right{
+    right:20px;
+}
+
+.arrow.left{
+    left:20px;
+}
+
+/* DETAIL PAGE */
+.detail-page{
+    display:none;
+}
+
+.detail-box{
+    background:white;
+    border-radius:25px;
+    padding:30px;
+    color:black;
+}
+
+.back-detail{
+    width:55px;
+    height:55px;
+    border:none;
+    border-radius:50%;
+    background:#f5e5b0;
+    color:#002c7a;
+    font-size:26px;
+}
+
+.section{
+    background:#f5f5f5;
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:20px;
+}
+
+.detail-title{
+    color:#002c7a;
+    font-size:34px;
+    font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<img src="images/bb.logo.png">
+<div class="header-text">
+<h1>BB COMPANY</h1>
+<p>MANAGEMENT APP</p>
+</div>
+</div>
+
+<!-- MAIN -->
+<div id="mainPage" class="page">
+
+<button class="back-btn" onclick="window.location.href='proficiency.html'">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<div class="title">4. Group C - Community</div>
+
+<!-- PAGE 1 -->
+<div id="page1" class="page-slide active">
+
+<div class="grid">
+
+<!-- 1 -->
+<div class="card">
+<img src="images/Citizenship.png">
+<div class="line"></div>
+<h2>Citizenship</h2>
+<button class="view-btn" onclick="showPage('citizenshipPage')">View Requirement</button>
+</div>
+
+<!-- 2 -->
+<div class="card">
+<img src="images/Community Service.png">
+<div class="line"></div>
+<h2>Community Service</h2>
+<button class="view-btn" onclick="showPage('communityPage')">View Requirement</button>
+</div>
+
+<!-- 3 -->
+<div class="card">
+<img src="images/Environmental Conservation.png">
+<div class="line"></div>
+<h2>Environmental Conservation</h2>
+<button class="view-btn" onclick="showPage('environmentPage')">View Requirement</button>
+</div>
+
+<!-- 4 -->
+<div class="card">
+<img src="images/First Aid.png">
+<div class="line"></div>
+<h2>First Aid</h2>
+<button class="view-btn" onclick="showPage('firstAidPage')">View Requirement</button>
+</div>
+
+</div>
+
+<button class="arrow right" onclick="nextPage()">
+<i class="fa-solid fa-chevron-right"></i>
+</button>
+
+</div>
+
+<!-- PAGE 2 -->
+<div id="page2" class="page-slide">
+
+<div class="grid">
+
+<!-- 5 -->
+<div class="card">
+<img src="images/Safety.png">
+<div class="line"></div>
+<h2>Safety</h2>
+<button class="view-btn" onclick="showPage('safetyPage')">View Requirement</button>
+</div>
+
+<!-- 6 -->
+<div class="card">
+<img src="images/Social Entreprenuership.png">
+<div class="line"></div>
+<h2>Social Entrepreneurship</h2>
+<button class="view-btn" onclick="showPage('socialPage')">View Requirement</button>
+</div>
+
+<!-- 7 -->
+<div class="card">
+<img src="images/Sustainability.png">
+<div class="line"></div>
+<h2>Sustainability</h2>
+<button class="view-btn" onclick="showPage('sustainabilityPage')">View Requirement</button>
+</div>
+
+</div>
+
+<button class="arrow left" onclick="prevPage()">
+<i class="fa-solid fa-chevron-left"></i>
+</button>
+
+</div>
+
+</div>
+
+<!-- ================= CITIZENSHIP  ================= -->
+<div id="citizenshipPage" class="detail-page">
+
+<div class="page">
+
+<button class="back-detail" onclick="backToMain()">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<div class="detail-box">
+
+<div style="display:flex;align-items:flex-start;gap:30px;">
+<img src="images/Citizenship.png"
+style="width:140px;height:140px;object-fit:contain;">
+
+<div class="detail-title">
+Citizenship
+</div>
+</div>
+
+<hr>
+
+<h2 style="color:#002c7a;">Requirements</h2>
+
+<div class="section">
+
+<h3>■ Basic Level</h3>
+
+<p>
+Members should attend a course of at least covering a period of
+3 months on one of the following topics:
+</p>
+
+<ul>
+<li>The National Government</li>
+<li>Judicial systems</li>
+<li>Anti-drug abuse</li>
+<li>Crime prevention</li>
+</ul>
+
+<h3>■ Advanced Level</h3>
+
+<p>
+Either individually or in a group, make a further detailed study
+on the above topics.
+The study must cover the following areas:
+</p>
+
+<ul>
+<li>The respective agencies involved in the topic chosen</li>
+
+<li>
+Their contacts and various people involved in running
+those agencies
+</li>
+
+<li>
+Other NGO's involved in assisting these agencies
+</li>
+
+<li>
+Make a few visits to the agencies involved
+</li>
+
+<li>
+How to get yourself involved in supporting the government's efforts
+</li>
+</ul>
+
+</div>
+
+</div>
+</div>
+</div>
+
+<!-- ================= COMMUNITY SERVICE  ================= -->
+<div id="communityPage" class="detail-page">
+
+<div class="page">
+
+<button class="back-detail" onclick="backToMain()">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<div class="detail-box">
+
+<div style="display:flex;align-items:flex-start;gap:30px;">
+<img src="images/Community Service.png"
+style="width:140px;height:140px;object-fit:contain;">
+
+<h1 style="color:#002c7a;font-weight:normal;">
+Community Service
+</h1>
+</div>
+
+<hr>
+
+<h2 style="color:#002c7a;">Requirements</h2>
+
+<div class="section">
+
+<h3>■ Basic Level</h3>
+
+<ul>
+
+<li>
+Demonstrate a working knowledge and understanding of the role and
+work of the various community service organisations within the
+community e.g. Special Service for the Handicaps, children and
+elderly, members' Home and Training Centre etc.
+</li>
+
+<li>
+Volunteer at a particular service organisation
+for at least 15 hours.
+</li>
+
+<li>
+Prepare a detailed report on the project and evaluate the work done,
+its effect on the recipient and the understanding the members have
+gained. The report can be in the format of written report or
+presentation using visual aids.
+</li>
+
+</ul>
+
+<h3>■ Advanced Level</h3>
+
+<ul>
+
+<li>
+Members must have attended a course covering the following topics:
+The problems of those involved in any of the following areas of
+community service:
+Children, Youth, Adults, Elderly, the Handicapped,
+Drug Addicts, Immigrants, Refugees.
+</li>
+
+<li>
+Conduct a detailed study of the work of service organisations
+operating in Malaysia aside from those done at Basic Level.
+Members must have made visits to a few of the organisations listed
+in their study.
+</li>
+
+<li>
+Plan and carry out a service project of at least
+25 hours duration with any organisations.
+</li>
+
+</ul>
+
+</div>
+
+</div>
+</div>
+</div>
+
+<!-- ================= ENVIRONMENTAL CONSERVATION  ================= -->
+<div id="environmentPage" class="detail-page">
+
+<div class="page">
+
+<button class="back-detail" onclick="backToMain()">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<div class="detail-box">
+
+<div style="display:flex;align-items:flex-start;gap:30px;">
+<img src="images/Environmental Conservation.png"
+style="width:140px;height:140px;object-fit:contain;">
+
+<h1 style="color:#002c7a;font-weight:normal;">
+Environmental Conservation
+</h1>
+</div>
+
+<hr>
+
+<h2 style="color:#002c7a;">Requirements</h2>
+
+<div class="section">
+
+<h3>■ Basic Level</h3>
+
+<ul>
+
+<li>Know the minimum impact code.</li>
+
+<li>
+Suggest ways of re-using the following items:
+<ul>
+<li>glass jars</li>
+<li>plastics ice-cream containers</li>
+<li>books, Christmas cards, greeting cards</li>
+<li>postage stamps</li>
+<li>toys</li>
+<li>old clothes</li>
+</ul>
+</li>
+
+<li>
+Investigate and report on local opportunities for recycling three
+of the following items:
+<ul>
+<li>newspaper</li>
+<li>glass</li>
+<li>scrap metal</li>
+</ul>
+</li>
+
+<li>
+Prepare a scrapbook of twenty newspaper and magazine articles
+about conservation and write a thoughtful comment about each article.
+</li>
+
+</ul>
+
+<h3>■ Advanced Level</h3>
+
+<ul>
+
+<li>
+Collect plastic, metal and glass rubbish from beach,
+lakeshores or stream and explain how three of these items
+could harm wildlife.
+</li>
+
+<li>
+Present a 5-minutes talk to a small group of people.
+</li>
+
+<li>
+Describe six things Malaysian motorists can do
+to conserve fossil fuels.
+</li>
+
+<li>
+Prepare an eye-catching and informative feature page (pages)
+for a teenage newspaper or magazine about rare and endangered
+plants and animals in Malaya.
+</li>
+
+<li>
+Interview a member of a non-government conservation group about
+the group's activities. Take part in one of their projects to
+improve a local place e.g.
+<ul>
+<li>remove rubbish and weeds</li>
+<li>plant trees and shrubs</li>
+<li>plant and maintain a flower garden</li>
+</ul>
+</li>
+
+</ul>
+
+</div>
+
+</div>
+</div>
+</div>
+
+<!-- ================= FIRST AID PAGE 1 ================= -->
+
+<div id="firstAidPage" class="page detail-page">
+
+<button class="back-detail" onclick="backToMain()">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<div class="detail-box">
+
+<div style="display:flex;align-items:flex-start;gap:30px;">
+<img src="images/First Aid.png"
+style="width:140px;height:140px;object-fit:contain;">
+
+<div class="detail-title">
+First Aid
+</div>
+
+</div>
+
+<hr>
+
+<h2 style="color:#002c7a;">Requirements</h2>
+
+<div class="section">
+
+<h3>■ Basic Level</h3>
+
+<ul>
+
+<li>
+The Principles and practice of First Aid
+<ul>
+<li>Definition and aim.</li>
+<li>Responsibilities of the First Aider.</li>
+<li>Principles of the treatment of wounds.</li>
+</ul>
+</li>
+
+<li>Dressings and its application</li>
+
+<li>Burns and scalds</li>
+
+<li>
+Shock
+<ul>
+<li>Definition.</li>
+<li>Causes and dangers.</li>
+<li>Signs and symptoms.</li>
+<li>Treatment.</li>
+</ul>
+</li>
+
+<li>
+Resuscitation
+<ul>
+<li>Cardio Pulmonary Resuscitation (CPR).</li>
+</ul>
+</li>
+
+<li>
+Fractures
+<ul>
+<li>Definition of fracture</li>
+<li>Types of fractures</li>
+<li>Simple fracture</li>
+<li>Compound fracture</li>
+<li>Comminuted fracture</li>
+<li>Complicated fracture</li>
+<li>Signs and symptoms</li>
+<li>Danger of fracture</li>
+<li>Treatment of fracture</li>
+<li>Wooden splints</li>
+<li>Splint less</li>
+<li>Improvised</li>
+</ul>
+</li>
+
+</ul>
+
+</div>
+
+<div style="text-align:right;">
+<button onclick="showFirstAidAdvanced()"
+style="width:70px;height:70px;border:none;border-radius:50%;background:black;color:white;font-size:28px;cursor:pointer;">
+<i class="fa-solid fa-chevron-right"></i>
+</button>
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= FIRST AID PAGE 2 ================= -->
+
+<div id="firstAidAdvancedPage" class="page detail-page">
+
+<button class="back-detail" onclick="backToMain()">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<div class="detail-box">
+
+<div style="display:flex;align-items:flex-start;gap:30px;">
+<img src="images/First Aid.png"
+style="width:140px;height:140px;object-fit:contain;">
+
+<div class="detail-title">
+First Aid
+</div>
+
+</div>
+
+<hr>
+
+<h2 style="color:#002c7a;">Requirements</h2>
+
+<div class="section">
+
+<h3>■ Advanced Level</h3>
+
+<ul>
+
+<li>Wounds</li>
+
+<li>
+Unconsciousness
+<ul>
+<li>Definition.</li>
+<li>Danger and causes.</li>
+<li>Level of consciousness.</li>
+<li>Management of unconscious casualty.</li>
+<li>The recovery position.</li>
+</ul>
+</li>
+
+<li>
+Application of Roller
+<ul>
+<li>Rules for application.</li>
+<li>Roller bandaging of:</li>
+<li>Skull</li>
+<li>Eye</li>
+<li>Palm</li>
+<li>Elbow</li>
+<li>Knee</li>
+<li>Chest</li>
+<li>Abdomen</li>
+<li>Foot</li>
+</ul>
+</li>
+
+<li>
+Types of Burns and Treatment
+<ul>
+<li>Thermal burns</li>
+<li>Electrical burns</li>
+<li>Chemical burns</li>
+<li>Hot/cold burns</li>
+</ul>
+</li>
+
+<li>
+Miscellaneous Conditions
+<ul>
+<li>Gastritis</li>
+<li>Rashes</li>
+<li>Bruises</li>
+<li>Cough</li>
+<li>Dislocation</li>
+<li>Epilepsy</li>
+<li>Sprain</li>
+<li>Cramps</li>
+<li>Stings and bites</li>
+</ul>
+</li>
+
+<li>Transportation of Casualty</li>
+
+</ul>
+
+</div>
+
+<div style="text-align:right;">
+<button onclick="showPage('firstAidPage')"
+style="width:70px;height:70px;border:none;border-radius:50%;background:black;color:white;font-size:28px;cursor:pointer;">
+<i class="fa-solid fa-chevron-left"></i>
+</button>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ================= SAFETY ================= -->
+
+<div id="safetyPage" class="page detail-page">
+
+<button class="back-detail" onclick="backToMain()">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<div class="detail-box">
+
+<div style="display:flex;align-items:flex-start;gap:30px;">
+<img src="images/Safety.png"
+style="width:140px;height:140px;object-fit:contain;">
+
+<div class="detail-title">
+Safety
+</div>
+
+</div>
+
+<hr>
+
+<h2 style="color:#002c7a;">
+Requirements
+</h2>
+
+<div class="section">
+
+<h3>■ Basic Level</h3>
+
+<p>
+Members are to complete the following tasks:
+</p>
+
+<ul>
+
+<li>
+Present on:
+<ul>
+<li>
+The causes of accidents and prevention of accidents from happening at home, school, water, road and sports.
+</li>
+<li>
+Personal physical safety.
+</li>
+</ul>
+</li>
+
+<li>
+Organize a safety campaign either at school or at a local church on the prevention of accidents and personal physical safety.
+</li>
+
+<li>
+Conduct a risk assessment of your Company Parade meeting place.
+</li>
+
+</ul>
+
+<h3>■ Advanced Level</h3>
+
+<p>
+Research on Cyber Safety for young people and present on:
+</p>
+
+<ul>
+
+<li>Digital Citizenship</li>
+<li>Privacy and Security</li>
+<li>Principles of Cyber Security</li>
+<li>Cyberbullying</li>
+<li>Personal Data and Identity Theft</li>
+
+</ul>
+
+<p>
+Any other topics deems appropriate by the Officer/Instructor.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= SOCIAL ENTREPRENEURSHIP ================= -->
+<div id="socialPage" class="detail-page">
+
+<div class="page">
+
+<button class="back-detail" onclick="backToMain()">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<div class="detail-box">
+
+<div style="display:flex;align-items:center;gap:25px;">
+<img src="images/Social Entreprenuership.png"
+width="140">
+
+<h1 style="color:#002c7a;font-size:32px;">
+Social Entrepreneurship
+</h1>
+</div>
+
+<hr>
+
+<h2 style="color:#002c7a;">Requirements</h2>
+
+<div class="section">
+
+<h3>■ Basic Level</h3>
+
+<p>
+Individual member participates in an entrepreneurship project with a social enterprise.
+Upon completion of the project, the Member(s) will need to present on the summary of the project highlighting:
+</p>
+
+<ul>
+<li>Goals and objectives</li>
+<li>Venue & Time</li>
+<li>Problem statement and solutions</li>
+<li>Stakeholders</li>
+<li>Impact on the local community</li>
+<li>Financial</li>
+<li>Reflection on the project</li>
+</ul>
+
+<p>
+Alternatively, a research study can done on a project done by a social enterprise
+outside of Malaysia and presents on the summary with similar points as above.
+</p>
+
+<h3>■ Advanced Level</h3>
+
+<p>
+Members individually or in a group of up to five individuals to propose,
+plan and execute a 3 months entrepreneurship project that positively impacts
+a local community.
+</p>
+
+<p>
+The business project idea has to be approved by the Company Officer before commencement.
+Upon completion of the project, the Member(s) will need to present the outcome
+of the project highlighting:
+</p>
+
+<ul>
+<li>Goals and objectives</li>
+<li>Venue & Time</li>
+<li>Problem statement and solutions</li>
+<li>Stakeholders</li>
+<li>Impact on the local community</li>
+<li>Financial</li>
+<li>Reflection on the project</li>
+</ul>
+
+</div>
+
+</div>
+</div>
+</div>
+
+<!-- ================= SUSTAINABILITY ================= -->
+<div id="sustainabilityPage" class="detail-page">
+
+<div class="page">
+
+<button class="back-detail" onclick="backToMain()">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<div class="detail-box">
+
+<div style="display:flex;align-items:center;gap:25px;">
+<img src="images/Sustainability.png" 
+width="140">
+
+<h1 style="color:#002c7a;font-size:32px;">
+Sustainability
+</h1>
+</div>
+
+<hr>
+
+<h2 style="color:#002c7a;">Requirements</h2>
+
+<div class="section">
+
+<h3>■ Basic Level</h3>
+
+<p>
+Member individually or Members in a group of up to ten individuals within a Company
+undertakes a project contributing to a Sustainable Development Goal (SDG).
+The project has to:
+</p>
+
+<ul>
+<li>Contribute to at least one (1) SDG.</li>
+<li>
+Directly impact positively to a local community within the region/district
+of the BB Company.
+</li>
+</ul>
+
+<p>To be awarded this badge, the member(s) must:</p>
+
+<ul>
+<li>
+Complete the project over a minimum of 3 sessions with a total of minimum 15 hours.
+</li>
+
+<li>
+Submit a post-project report in either a written report,
+presentation slides or a video presentation.
+</li>
+</ul>
+
+<h3>■ Advanced Level</h3>
+
+<p>
+In a group of a minimum of two members and up to twenty members from at least
+two different Companies, undertake a project contributing to a Sustainable
+Development Goal (SDG). The project has to:
+</p>
+
+<ul>
+<li>
+Contribute to at least one (1) SDG that has not been undertaken at the Basic Level
+by the individual member.
+</li>
+
+<li>
+Directly impact positively to a local community within the region/district
+of the BB Company.
+</li>
+</ul>
+
+<p>To be awarded this badge, the member(s) must:</p>
+
+<ul>
+<li>
+Complete the project over a minimum of 6 sessions with a total of minimum 30 hours.
+</li>
+
+<li>
+Submit a post-project report in either a written report,
+presentation slides or a video presentation.
+</li>
+</ul>
+
+</div>
+
+</div>
+</div>
+</div>
+
+</div>
+
+<script>
+
+function nextPage(){
+document.getElementById("page1").classList.remove("active");
+document.getElementById("page2").classList.add("active");
+}
+
+function prevPage(){
+document.getElementById("page2").classList.remove("active");
+document.getElementById("page1").classList.add("active");
+}
+
+
+function backToMain(){
+
+document.getElementById("mainPage").style.display="block";
+
+document.querySelectorAll(".detail-page").forEach(page=>{
+    page.style.display="none";
+});
+
+window.scrollTo(0,0);
+
+}
+
+function showPage(id){
+
+document.getElementById("mainPage").style.display="none";
+
+document.querySelectorAll(".detail-page").forEach(page=>{
+    page.style.display="none";
+});
+
+document.getElementById(id).style.display="block";
+
+window.scrollTo(0,0);
+
+}
+
+function showFirstAidAdvanced(){
+
+document.getElementById("mainPage").style.display="none";
+
+document.querySelectorAll(".detail-page").forEach(page=>{
+page.style.display="none";
+});
+
+document.getElementById("firstAidAdvancedPage").style.display="block";
+
+window.scrollTo(0,0);
+
+}
+
+</script>
+
+</body>
+</html>

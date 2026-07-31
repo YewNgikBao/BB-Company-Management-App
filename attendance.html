@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Attendance</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+body{
+  margin:0;
+  font-family:Arial;
+  background:#f4f1fb;
+  padding-bottom:100px;
+}
+
+.header{
+  background:rgba(0,0,50,0.7);
+  color:white;
+  padding:15px;
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+.header img{
+  width:70px;
+}
+
+.header-text h1{
+  margin:0;
+  font-size:32px;
+}
+
+.header-text p{
+  margin:0;
+  font-size:16px;
+}
+
+.container{
+  padding:20px;
+}
+
+.card{
+  background:white;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
+
+.card h2{
+  margin-top:0;
+}
+
+.check-btn{
+  border:none;
+  padding:18px 25px;
+  border-radius:10px;
+  color:white;
+  font-size:18px;
+  cursor:pointer;
+}
+
+.enabled{
+  background:#0066ff;
+}
+
+.disabled{
+  background:#bfbfbf;
+  cursor:not-allowed;
+}
+
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  background:white;
+  display:flex;
+  justify-content:space-around;
+  padding:10px 0;
+}
+
+.nav-item{
+  text-align:center;
+  color:#777;
+}
+
+.active{
+  color:#c79b1b;
+}
+
+.nav-item i{
+  font-size:24px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+
+  <img src="images/bb.logo.png">
+  <div class="header-text">
+
+  <h1>BB COMPANY</h1>
+  <p>MANAGEMENT APP</p>
+
+  </div>
+
+</div>
+
+<div id="announcementBox"></div>
+
+<div class="container"
+id="eventsContainer">
+</div>
+
+<div class="bottom-nav">
+
+  <div class="nav-item"
+  onclick="window.location.href='dashboard.html'">
+
+    <i class="fa-solid fa-house"></i>
+    <div>Home</div>
+
+  </div>
+
+  <div class="nav-item active">
+
+    <i class="fa-regular fa-calendar-check"></i>
+    <div>Attendance</div>
+
+  </div>
+
+  <div class="nav-item"
+  onclick="window.location.href='chat.html'">
+
+    <i class="fa-regular fa-comments"></i>
+    <div>Chat</div>
+
+  </div>
+
+  <div class="nav-item"
+  onclick="window.location.href='achievements.html'">
+
+    <i class="fa-solid fa-trophy"></i>
+    <div>Achievements</div>
+
+  </div>
+
+  <div class="nav-item"
+  onclick="window.location.href='profile.html'">
+
+  <i class="fa-regular fa-user"></i>
+  <div>Profiles</div>
+
+</div>
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  onSnapshot
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+// FIREBASE CONFIG
+const firebaseConfig = {
+
+  apiKey: "AIzaSyAHmIUT6Wbh_lVrMoirhY9Z18xc57fSFZ8",
+
+  authDomain: "yb1-ae18e.firebaseapp.com",
+
+  projectId: "yb1-ae18e",
+
+  storageBucket: "yb1-ae18e.firebasestorage.app",
+
+  messagingSenderId: "278406966206",
+
+  appId: "1:278406966206:web:3dbf470d1a0c63a8dbe7ef"
+
+};
+
+
+// START FIREBASE
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getFirestore(app);
+
+
+// REALTIME ANNOUNCEMENTS
+
+const announcementBox =
+document.getElementById(
+  "announcementBox"
+);
+
+onSnapshot(
+
+  collection(db,"announcements"),
+
+  (snapshot)=>{
+
+    announcementBox.innerHTML = "";
+
+    snapshot.forEach(doc=>{
+
+      const data = doc.data();
+
+      announcementBox.innerHTML += `
+
+        <div style="
+          background:#fff3cd;
+          margin:20px;
+          padding:15px;
+          border-radius:15px;
+          box-shadow:0 2px 5px rgba(0,0,0,0.1);
+        ">
+
+          <h3>
+          ${data.title}
+          </h3>
+
+          <p>
+          ${data.message}
+          </p>
+
+          <small>
+          ${data.date}
+          </small>
+
+        </div>
+
+      `;
+    });
+
+  }
+
+);
+
+
+// LOAD EVENTS
+async function loadEvents(){
+
+  const snapshot =
+  await getDocs(
+    collection(db,"events")
+  );
+
+  const container =
+  document.getElementById(
+    "eventsContainer"
+  );
+
+  container.innerHTML = "";
+
+  const dashboardEvents = [];
+
+  snapshot.forEach(doc => {
+
+  const data = doc.data();
+
+  window[`event_${doc.id}`] = data;
+
+  dashboardEvents.push({
+    title: data.title,
+    date: data.date,
+    time: data.time,
+    venue: data.venue
+  });
+
+  const notifications = JSON.parse(
+    localStorage.getItem("dashboardNotifications")
+  ) || [];
+
+  const exists = notifications.some(
+    item => item.title === data.title
+  );
+
+  if (!exists) {
+
+    notifications.push({
+      title: "Attendance Reminder",
+      message: `${data.title} on ${data.date} at ${data.time}`
+    });
+
+    localStorage.setItem(
+      "dashboardNotifications",
+      JSON.stringify(notifications)
+    );
+  }
+
+  localStorage.setItem(
+    "events",
+    JSON.stringify(dashboardEvents)
+  );
+
+  const now = new Date();
+
+  const current =
+  now.getHours() * 60 +
+  now.getMinutes();
+
+  const start =
+  data.startHour * 60 +
+  data.startMinute;
+
+  const end =
+  data.endHour * 60 +
+  data.endMinute;
+
+  let buttonClass =
+  "disabled";
+
+  let disabled =
+  "disabled";
+
+  const today = new Date();
+
+  const eventDate = new Date(
+    data.date.split("/").reverse().join("-")
+  );
+
+  const sameDay =
+    today.getFullYear() === eventDate.getFullYear() &&
+    today.getMonth() === eventDate.getMonth() &&
+    today.getDate() === eventDate.getDate();
+
+    console.log(
+  "Today:",
+  today,
+  "Event:",
+  eventDate,
+  "Same Day:",
+  sameDay
+);                                                        
+
+  if (
+    sameDay &&
+    current >= start &&
+    current <= end
+  ){
+
+    buttonClass = "enabled";
+    disabled = "";
+  }
+
+  container.innerHTML += `
+
+    <div class="card">
+
+      <div>
+
+        <h2>${data.title}</h2>
+
+        <p>Date : ${data.date}</p>
+
+        <p>Time : ${data.time}</p>
+
+        <p>Clothes : ${data.clothes}</p>
+
+        <p>Venue : ${data.venue}</p>
+
+        <p>
+        Check in :
+        ${data.checkin}
+        </p>
+
+      </div>
+
+      <button
+      class="check-btn ${buttonClass}"
+      ${disabled}
+
+      onclick="checkIn('${doc.id}')">
+
+        Check In
+
+      </button>
+
+    </div>
+
+  `;
+});
+
+window.checkIn = function(id){
+
+  localStorage.setItem(
+    "selectedEvent",
+    JSON.stringify(
+      window[`event_${id}`]
+    )
+  );
+
+  window.location.href =
+  "checkin.html";
+
+};
+
+}
+
+loadEvents();
+
+
+</script>
+
+</body>
+</html>

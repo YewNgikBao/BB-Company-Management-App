@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Your Awards</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+
+/* ================= BODY ================= */
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#032b84;
+}
+
+/* ================= HEADER ================= */
+
+.header{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:15px;
+    color:white;
+}
+
+.logo{
+    width:70px;
+    height:70px;
+    object-fit:contain;
+}
+
+.header-text h1{
+    margin:0;
+    font-size:32px;
+}
+
+.header-text p{
+    margin:0;
+    font-size:18px;
+}
+
+/* ================= MAIN ================= */
+
+.main-box{
+    background:white;
+    margin:15px;
+    border-radius:25px;
+    overflow:hidden;
+    min-height:78vh;
+}
+
+/* ================= TABS ================= */
+
+.tabs{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+}
+
+.tab{
+    text-align:center;
+    padding:25px 10px;
+    font-size:22px;
+    font-weight:bold;
+    border-bottom:5px solid #ccc;
+    cursor:pointer;
+}
+
+.active-tab{
+    border-bottom:8px solid #0b1d63;
+}
+
+/* ================= CONTENT ================= */
+
+.content{
+    padding:20px;
+}
+
+.hidden{
+    display:none;
+}
+
+/* ================= RIGHT ARM ================= */
+
+.right-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:20px;
+}
+
+.award{
+    text-align:center;
+}
+
+.award img{
+    width:60px;
+    height:60px;
+    object-fit:contain;
+}
+
+.btn-row{
+    display:flex;
+    justify-content:center;
+    gap:5px;
+    margin-top:8px;
+}
+
+.btn{
+    width:36px;
+    height:30px;
+    border-radius:6px;
+    border:2px solid #333;
+    background:white;
+    font-weight:bold;
+    cursor:pointer;
+    font-size:15px;
+}
+
+.b-active{
+    background:#ffd500;
+}
+
+.a-active{
+    background:red;
+    color:white;
+    border:2px solid red;
+}
+
+/* ================= LEFT ARM ================= */
+
+.left-wrapper{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:30px;
+    width:100%;
+}
+
+.left-top{
+    width:100%;
+    display:flex;
+    justify-content:center;
+}
+
+.left-middle,
+.left-middle2,
+.left-scholastic{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:35px;
+    justify-items:center;
+
+    /* 关键：强制“行高度” */
+    row-gap:25px;
+
+    margin-bottom:25px;   /*  每排真实分隔 */
+}
+
+.left-bottom{
+    display:grid;
+    grid-template-columns:repeat(10,1fr);
+    gap:8px;
+}
+
+.left-item{
+    text-align:center;
+}
+
+.left-item img{
+    width:75px;
+    height:75px;
+    object-fit:contain;
+}
+
+.small-left img{
+    width:42px;
+    height:42px;
+}
+
+.check{
+    width:30px;
+    height:30px;
+    border:2px solid #bbb;
+    border-radius:5px;
+    margin:auto;
+    margin-top:5px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    font-size:20px;
+}
+
+.checked{
+    background:#0ca844;
+    color:white;
+}
+
+/* ================= EDINBURGH ================= */
+
+.ed-btns{
+    display:flex;
+    justify-content:center;
+    gap:4px;
+    margin-top:6px;
+}
+
+.ed-btn{
+    width:28px;
+    height:28px;
+    border:none;
+    border-radius:5px;
+    background:#ddd;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.ed-active{
+    background:#0ca844;
+    color:white;
+}
+
+/* ================= RANK ================= */
+
+.rank-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:20px;
+}
+
+.rank-item{
+    text-align:center;
+}
+
+.rank-cloth{
+    width:130px;
+    height:210px;
+    background:#111;
+    margin:auto;
+    position:relative;
+    overflow:hidden;
+    border-radius:0 0 30px 30px;
+}
+
+.rank-line{
+    position:absolute;
+    left:0;
+    width:100%;
+    height:24px;
+    background:white;
+    clip-path:polygon(
+        0 0,
+        50% 45%,
+        100% 0,
+        100% 55%,
+        50% 100%,
+        0 55%
+    );
+}
+
+.line1{ bottom:15px; }
+.line2{ bottom:50px; }
+.line3{ bottom:85px; }
+.line4{ bottom:120px; }
+
+/* ================= BUTTONS ================= */
+
+.bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:30px;
+}
+
+.next-btn{
+    background:#f5d67b;
+    border:none;
+    padding:12px 22px;
+    border-radius:25px;
+    font-size:20px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.label{
+    font-size:20px;
+    color:#d4a514;
+    font-weight:bold;
+}
+
+/* ================= PREVIEW ================= */
+
+.preview-page{
+    padding:20px;
+}
+
+.preview-title{
+    font-size:30px;
+    font-weight:bold;
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.preview-container{
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    gap:40px;
+    flex-wrap:wrap;
+}
+
+/* ================= RIGHT PREVIEW ================= */
+
+.black-right{
+    width:420px;
+    height:620px;
+    background:black;
+    border-radius:0 0 55px 55px;
+    position:relative;
+    overflow:hidden;
+}
+
+.preview-right{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:10px;
+    padding:25px;
+}
+
+.preview-badge{
+    width:58px;
+    height:58px;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:transparent;
+}
+
+.preview-red{
+    background:red;
+}
+
+.preview-right img{
+    width:48px;
+    height:48px;
+    object-fit:contain;
+}
+
+/* ================= RANK PREVIEW ================= */
+
+.rank-preview{
+    position:absolute;
+    bottom:20px;
+    left:0;
+    width:100%;
+}
+
+.rank-strip{
+    width:100%;
+    height:30px;
+    background:white;
+    margin-top:10px;
+    clip-path:polygon(
+        0 0,
+        50% 45%,
+        100% 0,
+        100% 55%,
+        50% 100%,
+        0 55%
+    );
+}
+
+/* ================= LEFT PREVIEW ================= */
+
+.black-left{
+    width:420px;
+    min-height:520px;
+    background:black;
+    padding:20px;
+    box-sizing:border-box;
+    border-radius:10px;
+}
+
+.preview-left{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.preview-left-top{
+    display:flex;
+    justify-content:center;
+    width:100%;
+    margin-bottom:20px;
+}
+
+.preview-left-middle,
+.preview-left-middle2,
+.preview-left-scholastic{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+    margin-top:18px;
+}
+
+.preview-left-bottom{
+    width:100%;
+    display:flex;
+    justify-content:flex-start;
+    align-items:center;
+    flex-wrap:nowrap;
+    margin-top:18px;
+    overflow:hidden;
+    box-sizing:border-box;
+}
+
+.preview-left-bottom img{
+    width:34px;
+    height:34px;
+    object-fit:contain;
+    flex:0 0 auto;
+}
+
+.preview-left img{
+    width:62px;
+    height:62px;
+}
+
+
+/* ================= BACK BUTTON ================= */
+
+.back-btn{
+    position:fixed;
+    top:90px;
+    right:20px;
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    border:none;
+    background:#f4dd9c;
+    color:#111;
+    font-size:28px;
+    cursor:pointer;
+    z-index:999;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+
+<img class="logo"
+src="images/bb.logo.png">
+
+<div class="header-text">
+
+<h1>BB COMPANY</h1>
+<p>MANAGEMENT APP</p>
+
+</div>
+
+</div>
+
+<button class="back-btn"
+onclick="goBack()">
+
+<i class="fa-solid fa-arrow-left"></i>
+
+</button>
+
+<div class="main-box">
+
+<div class="tabs">
+
+<div class="tab active-tab"
+id="chooseTab"
+onclick="showChoose()">
+
+Choose Awards & Ranking
+
+</div>
+
+<div class="tab"
+id="yourTab"
+onclick="showPreview()">
+
+Your Awards
+
+</div>
+
+</div>
+
+<div id="chooseArea">
+
+<!-- PAGE 1 -->
+
+<div id="page1"
+class="content">
+
+<div class="right-grid"
+id="rightGrid"></div>
+
+<div class="bottom">
+
+<div class="label">
+Select right arm awards
+</div>
+
+<button class="next-btn"
+onclick="showPage(2)">
+
+NEXT →
+
+</button>
+
+</div>
+
+</div>
+
+<!-- PAGE 2 -->
+
+<div id="page2"
+class="content hidden">
+
+<div class="left-wrapper">
+
+<div class="left-top"
+id="leftTop"></div>
+
+<div class="left-middle"
+id="leftMiddle"></div>
+
+<div class="left-middle2"
+id="leftMiddle2"></div>
+
+<div class="left-scholastic"
+id="leftScholastic"></div>
+
+<div class="left-bottom"
+id="leftBottom"></div>
+
+</div>
+
+<div class="bottom">
+
+<button class="next-btn"
+onclick="showPage(1)">
+
+← BACK
+
+</button>
+
+<div class="label">
+Select left arm awards
+</div>
+
+<button class="next-btn"
+onclick="showPage(3)">
+
+NEXT →
+
+</button>
+
+</div>
+
+</div>
+
+<!-- PAGE 3 -->
+
+<div id="page3"
+class="content hidden">
+
+<div class="rank-grid"
+id="rankGrid"></div>
+
+<div class="bottom">
+
+<button class="next-btn"
+onclick="showPage(2)">
+
+← BACK
+
+</button>
+
+<div class="label">
+Select ranking
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- PREVIEW -->
+
+<div id="previewArea"
+class="hidden">
+
+<div class="preview-page">
+
+<div class="preview-title">
+Your Awards
+</div>
+
+<div class="preview-container">
+
+<!-- RIGHT -->
+
+<div>
+
+<h2 style="text-align:center;color:#0b1d63;">
+Right Arm
+</h2>
+
+<div class="black-right">
+
+<div class="preview-right"
+id="previewRight"></div>
+
+<div class="rank-preview"
+id="rankPreview"></div>
+
+</div>
+
+</div>
+
+<!-- LEFT -->
+
+<div>
+
+<h2 style="text-align:center;color:#0b1d63;">
+Left Arm
+</h2>
+
+<div class="black-left">
+
+<div class="preview-left">
+
+<div class="preview-left-top"
+id="previewLeftTop"></div>
+
+<div class="preview-left-middle"
+id="previewLeftMiddle"></div>
+
+<div class="preview-left-middle2"
+id="previewLeftMiddle2"></div>
+
+<div class="preview-left-scholastic"
+id="previewLeftScholastic"></div>
+
+<div class="preview-left-bottom"
+id="previewLeftBottom"></div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* ================= RIGHT ARM ================= */
+
+let rightAwards =
+JSON.parse(localStorage.getItem("rightAwards")) || [];
+
+if(rightAwards.length===0){
+
+let rightImages = [
+
+"images/Target.png",
+"images/Arts.png",
+"images/Athletics.png",
+"images/Bandsmans.png",
+"images/Buglers.png",
+"images/Camping.png",
+"images/Christian Education.png",
+"images/Citizenship.png",
+"images/Communication.png",
+"images/Community Service.png",
+"images/Computer Knowledge.png",
+"images/Crafts.png",
+"images/Drill.png",
+"images/Drummers.png",
+"images/Environmental Conservation.png",
+"images/Expedition.png",
+"images/Financial Stewardship.png",
+"images/Fireman.png",
+"images/First Aid.png",
+"images/Gymnastics.png",
+"images/Hobbies.png",
+"images/International Relations.png",
+"images/Life Saving.png",
+"images/Martial Art.png",
+"images/Nature Awareness.png",
+"images/Physical Training.png",
+"images/Pipers.png",
+"images/Recruitment.png",
+"images/Safety.png",
+"images/Social Entreprenuership.png",
+"images/Sports.png",
+"images/Sustainability.png",
+"images/Swimming.png",
+"images/Water Adventure.png",
+
+];
+
+
+rightImages.forEach((img,index)=>{
+
+rightAwards.push({
+
+img:img,
+b:false,
+a:false,
+noA:false
+
+});
+
+});
+
+rightAwards[0].noA=true;
+
+}
+
+/* ================= LEFT ARM ================= */
+
+let leftAwards =
+JSON.parse(localStorage.getItem("bb_leftAwards")) || [];
+
+if(leftAwards.length===0){
+
+const leftImages = [
+
+"images/Founder.png",          // 0 Founder Award
+"images/Presidents.png",        // 1 President Award
+"images/Gold.png",         // 2 Gold
+"images/Dofe Gold.png",        // 3 Edinburgh Award
+"images/Scholastic Gold.png",           // 4
+"images/Scholastic Silver.png",           // 5
+"images/Scholastic Bronze.png",           // 6
+"images/Long-Year.png",     // 7 Long Service
+"images/NCO Proficiency Star.png",           // 8
+"images/Three-Years.png",       // 9 Three Year Service
+"images/Junior One-Year.png",   //10 Junior Service
+"images/One-Year.png",       //11
+"images/One-Year.png",       //12
+"images/One-Year.png",       //13
+"images/One-Year.png",       //14
+"images/One-Year.png",       //15
+"images/One-Year.png",       //16
+"images/One-Year.png",       //17
+"images/One-Year.png",       //18
+"images/One-Year.png"        //19
+
+];
+
+leftImages.forEach(img=>{
+
+leftAwards.push({
+
+img:img,
+selected:false
+
+});
+
+});
+
+}
+
+/* ================= EDINBURGH ================= */
+
+let edinburgh =
+JSON.parse(localStorage.getItem("edinburgh")) || {
+
+bronze:false,
+silver:false,
+gold:false
+
+};
+
+/* ================= RANK ================= */
+
+let ranks =
+JSON.parse(localStorage.getItem("ranks")) || [
+
+{lines:0,selected:false},
+{lines:1,selected:false},
+{lines:2,selected:false},
+{lines:3,selected:false},
+{lines:4,selected:false}
+
+];
+
+/* ================= SAVE ================= */
+
+function saveData(){
+
+localStorage.setItem(
+"rightAwards",
+JSON.stringify(rightAwards)
+);
+
+localStorage.setItem(
+"bb_leftAwards",
+JSON.stringify(leftAwards)
+);
+
+localStorage.setItem(
+"edinburgh",
+JSON.stringify(edinburgh)
+);
+
+localStorage.setItem(
+"ranks",
+JSON.stringify(ranks)
+);
+
+}
+
+/* ================= RIGHT ================= */
+
+function renderRight(){
+
+const grid=
+document.getElementById("rightGrid");
+
+grid.innerHTML="";
+
+rightAwards.forEach((a,index)=>{
+
+grid.innerHTML+=`
+
+<div class="award">
+
+<img src="${a.img}">
+
+<div class="btn-row">
+
+<button class="btn
+${a.b ? 'b-active':''}"
+onclick="toggleB(${index})">
+
+B
+
+</button>
+
+${a.noA ? '' : `
+
+<button class="btn
+${a.a ? 'a-active':''}"
+onclick="toggleA(${index})">
+
+A
+
+</button>
+
+`}
+
+</div>
+
+</div>
+
+`;
+
+});
+
+renderPreview();
+
+}
+
+function toggleB(i){
+
+/* ================= MAIN BADGE ================= */
+/* 第一粒 */
+
+if(i===0){
+
+    rightAwards[0].b =
+    !rightAwards[0].b;
+
+    /* 如果取消第一粒 */
+    /* 全部一起取消 */
+
+    if(!rightAwards[0].b){
+
+        for(let x=1;x<rightAwards.length;x++){
+
+            rightAwards[x].b = false;
+            rightAwards[x].a = false;
+
+        }
+
+    }
+
+}
+
+/* ================= OTHER BADGES ================= */
+
+else{
+
+    rightAwards[i].b =
+    !rightAwards[i].b;
+
+    /* 只要选其他 */
+    /* 自动开第一粒 */
+
+    if(rightAwards[i].b){
+
+        rightAwards[0].b = true;
+
+    }
+
+    /* 如果取消 B */
+    /* A 也一起取消 */
+
+    else{
+
+        rightAwards[i].a = false;
+
+    }
+
+}
+
+saveData();
+renderRight();
+
+}
+
+function toggleA(i){
+
+/* A 一定需要 B */
+
+if(!rightAwards[i].b){
+
+    rightAwards[i].b = true;
+
+}
+
+/* 只要选其他奖章 */
+/* 第一粒自动开启 */
+
+rightAwards[0].b = true;
+
+rightAwards[i].a =
+!rightAwards[i].a;
+
+saveData();
+renderRight();
+
+}
+
+/* ================= LEFT ================= */
+
+function renderLeft(){
+
+document.getElementById(
+"leftTop"
+).innerHTML=
+leftHTML(0,false);
+
+document.getElementById(
+"leftMiddle"
+).innerHTML=
+
+leftHTML(1,false)+
+leftHTML(2,false)+
+edinburghHTML();
+
+document.getElementById(
+"leftMiddle2"
+).innerHTML=
+
+leftHTML(4,false)+
+leftHTML(5,false)+
+leftHTML(6,false);
+
+document.getElementById(
+"leftScholastic"
+).innerHTML=
+
+leftHTML(7,false)+
+leftHTML(8,false)+
+leftHTML(9,false);
+
+let bottom="";
+
+for(let i=10;i<=19;i++){
+
+bottom+=leftHTML(i,true);
+
+}
+
+document.getElementById(
+"leftBottom"
+).innerHTML=
+bottom;
+
+renderPreview();
+
+}
+
+function leftHTML(index,small){
+
+const a=leftAwards[index];
+
+return `
+
+<div class="left-item
+${small ? 'small-left':''}">
+
+<img src="${a.img}">
+
+<div class="check
+${a.selected ? 'checked':''}"
+onclick="toggleLeft(${index})">
+
+${a.selected ? '✓':''}
+
+</div>
+
+</div>
+
+`;
+
+}
+
+/* ================= EDINBURGH ================= */
+
+function edinburghHTML(){
+
+    let edinburghImage = "images/Dofe Bronze.png";
+
+    if (edinburgh.silver) {
+        edinburghImage = "images/Dofe Silver.png";
+    }
+
+    if (edinburgh.gold) {
+        edinburghImage = "images/Dofe Gold.png";
+    }
+
+    return `
+
+<div class="left-item">
+
+<img src="${edinburghImage}">
+
+<div class="ed-btns">
+
+<button class="ed-btn
+${edinburgh.bronze ? 'ed-active':''}"
+onclick="setEdinburgh('bronze')">
+B
+</button>
+
+<button class="ed-btn
+${edinburgh.silver ? 'ed-active':''}"
+onclick="setEdinburgh('silver')">
+S
+</button>
+
+<button class="ed-btn
+${edinburgh.gold ? 'ed-active':''}"
+onclick="setEdinburgh('gold')">
+G
+</button>
+
+</div>
+
+</div>
+
+`;
+
+}
+
+function setEdinburgh(type){
+
+    // 如果已经是选中的 → 再按一次取消
+    if(edinburgh[type] === true){
+        edinburgh[type] = false;
+    }else{
+        // 先清掉其他
+        edinburgh.bronze = false;
+        edinburgh.silver = false;
+        edinburgh.gold = false;
+
+        // 再开启当前
+        edinburgh[type] = true;
+    }
+
+    saveData();
+    renderLeft();
+}
+
+function toggleLeft(i){
+
+/* ================= FOUNDER ================= */
+/* Founder = index 0 */
+/* Need President (index 1) */
+
+if(i===0){
+
+    if(!leftAwards[1].selected){
+        alert("Need President Award first");
+        return;
+    }
+
+    leftAwards[0].selected =
+    !leftAwards[0].selected;
+
+}
+
+/* ================= PRESIDENT ================= */
+/* President = index 1 */
+/* Need NCO Star (9) + Three Year (10) */
+
+else if(i===1){
+
+    if(
+        !leftAwards[9].selected ||
+        !leftAwards[10].selected
+    ){
+        alert("Need NCO Star and Three Year first");
+        return;
+    }
+
+    leftAwards[1].selected =
+    !leftAwards[1].selected;
+
+}
+
+/* ================= EDINBURGH ================= */
+/* Bronze = 2 */
+/* Silver = 3 */
+/* Gold = 4 */
+/* ONLY ONE CAN SELECT */
+
+/* ================= LONG YEAR ================= */
+/* Long Year = index 7 */
+/* Need Three Year + 5 One Year */
+
+else if(i===7){
+
+    let enough = true;
+
+    for(let x=11; x<=15; x++){
+
+        if(!leftAwards[x].selected){
+            enough = false;
+        }
+
+    }
+
+    if(
+        !leftAwards[9].selected ||
+        !enough
+    ){
+        alert("Need Three Year and 5 One Year first");
+        return;
+    }
+
+    leftAwards[7].selected =
+    !leftAwards[7].selected;
+
+}
+
+/* ================= THREE YEAR ================= */
+/* Three Year = index 9 */
+/* Need 3 One Year */
+
+else if(i===9){
+
+    let enough = true;
+
+    for(let x=11; x<=13; x++){
+
+        if(!leftAwards[x].selected){
+            enough = false;
+        }
+
+    }
+
+    if(!enough){
+
+        alert("Need 3 One Year first");
+        return;
+
+    }
+
+    leftAwards[9].selected =
+    !leftAwards[9].selected;
+
+}
+
+/* ================= NORMAL ================= */
+
+else{
+
+    leftAwards[i].selected =
+    !leftAwards[i].selected;
+
+}
+
+saveData();
+renderLeft();
+renderPreview();
+
+}
+
+
+/* ================= RANK ================= */
+
+function renderRanks(){
+
+const grid=
+document.getElementById("rankGrid");
+
+grid.innerHTML="";
+
+ranks.forEach((r,index)=>{
+
+let linesHTML="";
+
+for(let i=1;i<=r.lines;i++){
+
+linesHTML += `
+<div class="rank-line line${i}"></div>
+`;
+
+}
+
+grid.innerHTML += `
+
+<div class="rank-item">
+
+<div class="rank-cloth">
+
+${linesHTML}
+
+</div>
+
+<div class="check
+${r.selected ? 'checked':''}"
+onclick="toggleRank(${index})">
+
+${r.selected ? '✓':''}
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+function toggleRank(i){
+
+ranks.forEach(r=>r.selected=false);
+
+ranks[i].selected=true;
+
+saveData();
+
+renderRanks();
+
+renderPreview();
+
+}
+
+/* ================= PREVIEW ================= */
+
+function renderPreview(){
+
+/* RIGHT */
+
+const right=
+document.getElementById("previewRight");
+
+right.innerHTML="";
+
+rightAwards.forEach(a=>{
+
+if(a.b || a.a){
+
+right.innerHTML+=`
+
+<div class="preview-badge
+${a.a ? 'preview-red':''}">
+
+<img src="${a.img}">
+
+</div>
+
+`;
+
+}
+
+});
+
+/* RANK */
+
+const rankPreview=
+document.getElementById("rankPreview");
+
+let selectedRank=
+ranks.find(r=>r.selected);
+
+let html="";
+
+if(selectedRank){
+
+for(let i=0;i<selectedRank.lines;i++){
+
+html+=`
+<div class="rank-strip"></div>
+`;
+
+}
+
+}
+
+rankPreview.innerHTML=html;
+
+/* LEFT RESET */
+
+document.getElementById(
+"previewLeftTop"
+).innerHTML="";
+
+document.getElementById(
+"previewLeftMiddle"
+).innerHTML="";
+
+document.getElementById(
+"previewLeftMiddle2"
+).innerHTML="";
+
+document.getElementById(
+"previewLeftScholastic"
+).innerHTML="";
+
+document.getElementById(
+"previewLeftBottom"
+).innerHTML="";
+
+/* TOP */
+
+if(leftAwards[0].selected){
+
+document.getElementById(
+"previewLeftTop"
+).innerHTML=
+`<img src="${leftAwards[0].img}">`;
+
+}
+
+/* SECOND ROW */
+
+let middle="";
+
+if(leftAwards[1].selected){
+
+middle +=
+`<img src="${leftAwards[1].img}">`;
+
+}
+
+if(leftAwards[2].selected){
+
+middle +=
+`<img src="${leftAwards[2].img}">`;
+
+}
+
+if(edinburgh.bronze){
+
+middle +=
+`<img src="images/Dofe Bronze.png">`;
+
+}
+
+if(edinburgh.silver){
+
+middle +=
+`<img src="images/Dofe Silver.png">`;
+
+}
+
+if(edinburgh.gold){
+
+middle +=
+`<img src="images/Dofe Gold.png">`;
+
+}
+
+document.getElementById(
+"previewLeftMiddle"
+).innerHTML=
+middle;
+
+/* THIRD ROW */
+
+let special="";
+
+for(let i=4;i<=6;i++){
+
+if(leftAwards[i].selected){
+
+special +=
+`<img src="${leftAwards[i].img}">`;
+
+}
+
+}
+
+document.getElementById(
+"previewLeftMiddle2"
+).innerHTML=
+special;
+
+/* FOURTH ROW */
+
+let service="";
+
+for(let i=7;i<=9;i++){
+
+if(leftAwards[i].selected){
+
+service +=
+`<img src="${leftAwards[i].img}">`;
+
+}
+
+}
+
+document.getElementById(
+"previewLeftScholastic"
+).innerHTML=
+service;
+
+/* BOTTOM */
+
+let bottom="";
+
+for(let i=10;i<=19;i++){
+
+if(leftAwards[i].selected){
+
+bottom +=
+`<img src="${leftAwards[i].img}">`;
+
+}
+
+}
+
+const bottomDiv = document.getElementById("previewLeftBottom");
+
+bottomDiv.innerHTML = bottom;
+
+const count = bottomDiv.children.length;
+
+if(count>0){
+
+    const badgeWidth = 34;
+    const clothWidth = 380;
+
+    let gap = (clothWidth - badgeWidth*count)/(count-1);
+
+    if(count==1) gap = 0;
+
+    if(gap<0) gap = 0;
+
+    bottomDiv.style.gap = gap + "px";
+
+    [...bottomDiv.children].forEach(img=>{
+
+        img.style.width = badgeWidth + "px";
+        img.style.height = badgeWidth + "px";
+
+    });
+
+}
+
+}
+
+/* ================= PAGE ================= */
+
+function showPage(page){
+
+document.querySelectorAll(".content")
+.forEach(c=>c.classList.add("hidden"));
+
+document.getElementById(
+"page"+page
+).classList.remove("hidden");
+
+}
+
+/* ================= TAB ================= */
+
+function showPreview(){
+
+document.getElementById(
+"previewArea"
+).classList.remove("hidden");
+
+document.getElementById(
+"chooseArea"
+).classList.add("hidden");
+
+document.getElementById(
+"yourTab"
+).classList.add("active-tab");
+
+document.getElementById(
+"chooseTab"
+).classList.remove("active-tab");
+
+renderPreview();
+
+}
+
+function showChoose(){
+
+document.getElementById(
+"previewArea"
+).classList.add("hidden");
+
+document.getElementById(
+"chooseArea"
+).classList.remove("hidden");
+
+document.getElementById(
+"yourTab"
+).classList.remove("active-tab");
+
+document.getElementById(
+"chooseTab"
+).classList.add("active-tab");
+
+}
+
+/* ================= START ================= */
+
+renderRight();
+renderLeft();
+renderRanks();
+
+/* ================= BACK ================= */
+
+function goBack(){
+
+window.location.href=
+"achievements.html";
+
+}
+
+</script>
+
+</body>
+</html>

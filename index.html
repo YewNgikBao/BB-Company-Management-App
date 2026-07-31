@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BB Company App</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: linear-gradient(#0b2a4a, #0d3d6b);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: white;
+}
+
+.container {
+  width: 340px;
+  text-align: center;
+}
+
+/* LOGO */
+.header img {
+  width: 70px;
+}
+
+.header h2 {
+  margin: 5px 0 0;
+}
+
+.header p {
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+/* CARD */
+.card {
+  background: #e6e1ea;
+  padding: 20px;
+  border-radius: 20px;
+  color: black;
+  margin-top: 15px;
+}
+
+/* TOGGLE */
+.toggle {
+  display: flex;
+  background: #ccc;
+  border-radius: 20px;
+  margin-bottom: 15px;
+}
+
+.toggle button {
+  flex: 1;
+  border: none;
+  padding: 10px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.active {
+  background: #1f4f85;
+  color: white;
+}
+
+/* INPUT */
+input {
+  width: 90%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 10px;
+  border: 1px solid #999;
+}
+
+/* BUTTON */
+button.submit {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 20px;
+  background: #1f4f85;
+  color: white;
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+button.submit:disabled {
+  background: grey;
+  cursor: not-allowed;
+}
+
+button.submit{
+  opacity:1 !important;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- LOGO -->
+  <div class="header">
+    <img src="images/bb.logo.png">
+
+    <h2>BB COMPANY</h2>
+    <p>MANAGEMENT APP</p>
+  </div>
+
+  <div class="card">
+
+    <!-- TOGGLE -->
+    <div class="toggle">
+      <button id="loginBtn">Log in</button>
+      <button id="registerBtn" class="active">Register</button>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="registerForm">
+
+      <input type="text"
+      id="name"
+      placeholder="Enter your full name">
+
+      <input type="text"
+      id="phone"
+      placeholder="Enter mobile (60+)">
+
+      <input type="password"
+      id="regPassword"
+      placeholder="Create password">
+
+      <div id="regError" class="error"></div>
+
+      <button class="submit"
+      id="registerSubmit">
+      Register
+      </button>
+
+    </div>
+
+    <!-- LOGIN -->
+    <div id="loginForm" style="display:none;">
+
+      <input type="text"
+      id="loginPhone"
+      placeholder="Enter mobile (60+)">
+
+      <input type="password"
+      id="loginPassword"
+      placeholder="Enter password">
+
+      <div id="loginError" class="error"></div>
+
+      <button class="submit"
+      id="loginSubmit">
+      Log in
+      </button>
+
+    </div>
+
+  </div>
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+
+getAuth,
+createUserWithEmailAndPassword,
+signInWithEmailAndPassword
+
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+
+getFirestore,
+doc,
+setDoc,
+serverTimestamp
+
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyAHmlUT6WBh_lVrMOirhY9Z18xc57fSFZ8",
+
+authDomain: "yb1-ae18e.firebaseapp.com",
+
+projectId: "yb1-ae18e",
+
+storageBucket: "yb1-ae18e.firebasestorage.app",
+
+messagingSenderId: "278406966206",
+
+appId: "1:278406966206:web:3dbf470d1a0c63a8dbe7ef",
+
+measurementId: "G-YZQGS7NTME"
+
+};
+
+const app =
+initializeApp(firebaseConfig);
+
+const auth =
+getAuth(app);
+
+const db =
+getFirestore(app);
+
+// TOGGLE
+const loginBtn =
+document.getElementById("loginBtn");
+
+const registerBtn =
+document.getElementById("registerBtn");
+
+const loginForm =
+document.getElementById("loginForm");
+
+const registerForm =
+document.getElementById("registerForm");
+
+loginBtn.onclick = () => {
+
+  loginForm.style.display = "block";
+  registerForm.style.display = "none";
+
+  loginBtn.classList.add("active");
+  registerBtn.classList.remove("active");
+};
+
+registerBtn.onclick = () => {
+
+  loginForm.style.display = "none";
+  registerForm.style.display = "block";
+
+  registerBtn.classList.add("active");
+  loginBtn.classList.remove("active");
+};
+
+
+// REGISTER VALIDATION
+const name =
+document.getElementById("name");
+
+const phone =
+document.getElementById("phone");
+
+const regPassword =
+document.getElementById("regPassword");
+
+const registerSubmit =
+document.getElementById("registerSubmit");
+
+const regError =
+document.getElementById("regError");
+
+
+// LOGIN VALIDATION
+const loginPhone =
+document.getElementById("loginPhone");
+
+const loginPassword =
+document.getElementById("loginPassword");
+
+const loginSubmit =
+document.getElementById("loginSubmit");
+
+const loginError =
+document.getElementById("loginError");
+
+
+// REGISTER BUTTON
+registerSubmit.onclick = async () => {
+
+const email =
+phone.value + "@bb.com";
+
+try{
+
+const userCredential =
+await createUserWithEmailAndPassword(
+auth,
+email,
+regPassword.value
+);
+
+const user =
+userCredential.user;
+
+await setDoc(
+
+doc(db,"users",user.uid),
+
+{
+name:name.value,
+phone:phone.value,
+uid:user.uid,
+createdAt:serverTimestamp()
+}
+
+);
+
+localStorage.setItem(
+"name",
+name.value
+);
+
+localStorage.setItem(
+"phone",
+phone.value
+);
+
+alert("Register Success!");
+
+window.location.href =
+"dashboard.html";
+
+}
+catch(error){
+
+regError.innerText =
+error.message;
+
+console.log(error);
+
+}
+
+};
+
+
+// LOGIN BUTTON
+loginSubmit.onclick = async () => {
+
+const email =
+loginPhone.value + "@bb.com";
+
+try{
+
+await signInWithEmailAndPassword(
+auth,
+email,
+loginPassword.value
+);
+
+alert("Login Success!");
+
+window.location.href =
+"dashboard.html";
+
+localStorage.setItem(
+"phone",
+loginPhone.value
+);
+
+}
+catch(error){
+
+loginError.innerText =
+"Wrong phone or password";
+
+}
+
+};
+
+</script>
+
+</body>
+</html>

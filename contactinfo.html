@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>Private Chat Info</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+body{
+
+    margin:0;
+
+    font-family:Arial;
+
+    background:#ece8ff;
+
+}
+
+.header{
+
+    background:rgba(0,0,50,.7);
+
+    color:white;
+
+    padding:18px;
+
+    display:flex;
+
+    align-items:center;
+
+}
+
+.back-btn{
+
+    font-size:24px;
+
+    cursor:pointer;
+
+}
+
+.title{
+
+    flex:1;
+
+    text-align:center;
+
+    font-size:24px;
+
+    font-weight:bold;
+
+}
+
+.profile{
+
+    background:white;
+
+    margin:20px;
+
+    border-radius:20px;
+
+    padding:30px;
+
+    text-align:center;
+
+}
+
+.avatar{
+
+    width:140px;
+
+    height:140px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:3px solid #081f63;
+
+    background:#ddd;
+
+}
+
+.name{
+
+    margin-top:15px;
+
+    font-size:28px;
+
+    font-weight:bold;
+
+}
+
+.phone{
+
+    margin-top:8px;
+
+    color:#666;
+
+    font-size:18px;
+
+}
+
+.menu{
+
+    margin:20px;
+
+}
+
+.item{
+
+    background:white;
+
+    border-radius:15px;
+
+    padding:18px;
+
+    margin-bottom:12px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    cursor:pointer;
+
+    font-size:18px;
+
+}
+
+.delete{
+
+    color:red;
+
+}
+
+.switch{
+
+    transform:scale(1.4);
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<div class="back-btn"
+onclick="history.back()">
+
+<i class="fa fa-arrow-left"></i>
+
+</div>
+
+<div class="title">
+
+Contact Info
+
+</div>
+
+</div>
+
+<div class="profile">
+
+<img
+id="userPhoto"
+class="avatar"
+src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
+
+<div
+id="userName"
+class="name">
+
+User
+
+</div>
+
+<div
+id="userPhone"
+class="phone">
+
++60
+
+</div>
+
+</div>
+
+<div class="menu">
+
+<div
+class="item"
+onclick="searchChat()">
+
+<span>
+
+🔍 Search Chat
+
+</span>
+
+<i class="fa fa-chevron-right"></i>
+
+</div>
+
+<div class="item">
+
+<span>
+
+🔕 Mute Notifications
+
+</span>
+
+<input
+id="muteSwitch"
+type="checkbox"
+class="switch"
+onchange="toggleMute()">
+
+</div>
+
+<div
+class="item"
+onclick="blockUser()">
+
+<span>
+
+🚫 Block User
+
+</span>
+
+<i class="fa fa-chevron-right"></i>
+
+</div>
+
+<div
+class="item delete"
+onclick="deleteChat()">
+
+<span>
+
+🗑 Delete Chat
+
+</span>
+
+<i class="fa fa-chevron-right"></i>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+
+getFirestore,
+doc,
+updateDoc,
+arrayUnion,
+setDoc,
+getDoc,
+getDocs,
+collection
+
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+    getAuth
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig={
+
+apiKey:"AIzaSyAHmlUT6WBh_lVrMOirhY9Z18xc57fSFZ8",
+
+authDomain:"yb1-ae18e.firebaseapp.com",
+
+projectId:"yb1-ae18e",
+
+storageBucket:"yb1-ae18e.firebasestorage.app",
+
+messagingSenderId:"278406966206",
+
+appId:"1:278406966206:web:3dbf470d1a0c63a8dbe7ef"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+const auth = getAuth(app);
+
+const user =
+JSON.parse(
+localStorage.getItem("privateUser")
+);
+
+if(!user){
+
+    alert("No user selected");
+
+    history.back();
+
+}
+
+if(user){
+
+document.getElementById("userName").innerText=user.name;
+
+document.getElementById("userPhone").innerText=user.phone;
+
+if(user.photo){
+
+document.getElementById("userPhoto").src=user.photo;
+
+}
+
+}
+
+window.searchChat = function(){
+
+    localStorage.setItem("searchChat","true");
+
+    localStorage.setItem("searchUser", user.name);
+
+    window.location.href = "chat.html";
+
+}
+
+window.toggleMute=function(){
+
+localStorage.setItem(
+
+"mute_"+user.uid,
+
+document.getElementById("muteSwitch").checked
+
+);
+
+}
+
+window.blockUser = async function(){
+
+    if(!confirm("Block this user?")) return;
+
+    const me = auth.currentUser.uid;
+
+    await updateDoc(
+        doc(db,"users",auth.currentUser.uid),
+        {
+            ["blockedUsers."+user.uid]: true
+        }
+    );
+
+    alert("User Blocked");
+
+}
+
+window.deleteChat = async function(){
+
+    if(!confirm("Delete chat for yourself?")) return;
+
+    const chatName=user.name;
+
+    const snapshot=await getDocs(
+
+        collection(
+
+            db,
+
+            "chats",
+
+            chatName,
+
+            "messages"
+
+        )
+
+    );
+
+    for(const message of snapshot.docs){
+
+        await updateDoc(
+
+            message.ref,
+
+            {
+
+                hiddenFor:arrayUnion(auth.currentUser.uid)
+
+            }
+
+        );
+
+    }
+
+    alert("Chat deleted");
+
+    history.back();
+
+}
+
+</script>
+
+</body>
+
+</html>

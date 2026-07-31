@@ -1,0 +1,2992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Group A - Interest</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#032b84;
+    color:white;
+}
+
+/* HEADER */
+
+.header{
+    background:#002c7a;
+    padding:14px 20px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:15px;
+}
+.header img{width:70px;}
+.header-text h1{margin:0;font-size:28px;}
+.header-text p{margin:0;font-size:14px;color:#ddd;}
+
+/* PAGE */
+
+.page{
+    display:none;
+    min-height:100vh;
+}
+
+.page.active{
+    display:block;
+}
+
+/* TOP */
+
+.top-bar{
+    position:relative;
+    padding:25px 20px 10px;
+}
+
+.back-btn{
+    position:absolute;
+    left:20px;
+    top:18px;
+    width:58px;
+    height:58px;
+    border:none;
+    border-radius:50%;
+    background:#f4df9f;
+    color:#002c7a;
+    font-size:28px;
+    cursor:pointer;
+    box-shadow:0 4px 10px rgba(0,0,0,0.3);
+}
+
+.page-title{
+    text-align:center;
+    font-size:34px;
+    margin:0;
+    font-weight:normal;
+}
+
+/* GRID */
+
+.award-grid{
+    padding:10px 25px 50px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
+}
+
+.award-card{
+    background:#f5f3ef;
+    border-radius:20px;
+    padding:20px;
+    text-align:center;
+    box-shadow:0 6px 15px rgba(0,0,0,0.35);
+    position:relative;
+}
+
+.award-card img{
+    width:120px;
+    height:120px;
+    object-fit:contain;
+}
+
+.award-name{
+    color:#002c7a;
+    font-size:22px;
+    margin:15px 0 20px;
+}
+
+.line{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+}
+
+.line::before,
+.line::after{
+    content:"";
+    width:90px;
+    height:2px;
+    background:#d6bb68;
+}
+
+.requirement-btn{
+    margin-top:25px;
+    width:100%;
+    border:none;
+    background:#5d9cff;
+    color:white;
+    font-size:20px;
+    padding:18px;
+    border-radius:10px;
+    cursor:pointer;
+    box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
+
+.requirement-btn i{
+    margin-right:10px;
+}
+
+/* PAGE ARROWS */
+
+.arrow-left,
+.arrow-right{
+    position:fixed;
+    bottom:20px;
+    font-size:70px;
+    color:white;
+    cursor:pointer;
+}
+
+.arrow-left{
+    left:20px;
+}
+
+.arrow-right{
+    right:20px;
+}
+
+/* REQUIREMENT PAGE */
+
+.requirement-page{
+    display:none;
+    padding-bottom:40px;
+}
+
+.requirement-page.active{
+    display:block;
+}
+
+.req-top{
+    position:relative;
+}
+
+.req-back{
+    position:absolute;
+    left:20px;
+    top:20px;
+    width:58px;
+    height:58px;
+    border:none;
+    border-radius:50%;
+    background:#f4df9f;
+    color:#002c7a;
+    font-size:28px;
+    cursor:pointer;
+    z-index:10;
+}
+
+.req-card{
+    background:#f5f5f5;
+    color:#111;
+    width:88%;
+    margin:20px auto;
+    border-radius:25px;
+    padding:30px;
+    box-sizing:border-box;
+}
+
+.req-header{
+    display:flex;
+    align-items:flex-start;
+    gap:25px;
+}
+
+.req-header img{
+    width:140px;
+}
+
+.req-title{
+    font-size:30px;
+    color:#002c7a;
+    margin-top:15px;
+}
+
+.req-divider{
+    margin:20px 0;
+    border:none;
+    border-top:2px solid #ddd;
+}
+
+.req-section-title{
+    color:#002c7a;
+    font-size:20px;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
+.req-text{
+    font-size:18px;
+    line-height:1.6;
+}
+
+.req-text ul{
+    margin-top:10px;
+}
+
+.req-text li{
+    margin-bottom:10px;
+}
+
+.level-title{
+    font-size:20px;
+    font-weight:bold;
+    margin:25px 0 10px;
+}
+
+.next-page-btn{
+    position:fixed;
+    right:40px;
+    top:50%;
+    transform:translateY(-50%);
+    width:72px;
+    height:72px;
+    border-radius:50%;
+    border:none;
+    background:black;
+    color:white;
+    font-size:40px;
+    cursor:pointer;
+}
+
+@media(max-width:900px){
+
+    .award-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= MAIN PAGE ================= -->
+
+<div class="page active" id="mainPage">
+
+    <div class="header">
+
+        <img src="images/bb.logo.png">
+        <div class="header-text">
+            <h1>BB COMPANY</h1>
+            <p>MANAGEMENT APP</p>
+        </div>
+
+    </div>
+
+    <div class="top-bar">
+
+        <button class="back-btn"
+        onclick="window.location.href='proficiency.html'">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+        <h1 class="page-title">
+            2. Group A - Interest
+        </h1>
+
+    </div>
+
+    <!-- PAGE 1 -->
+
+    <div class="page active" id="page1">
+
+        <div class="award-grid">
+
+            <!-- ARTS -->
+
+            <div class="award-card">
+
+                <img src="images/Arts.png">
+
+                <div class="line">
+                    <div class="award-name">Arts</div>
+                </div>
+
+                <button class="requirement-btn"
+                onclick="openRequirement('artsReq')">
+
+                    <i class="fa-regular fa-file-lines"></i>
+                    View Requirement
+
+                </button>
+
+            </div>
+
+            <!-- BANDSMAN -->
+
+            <div class="award-card">
+
+                <img src="images/Bandsmans.png">
+
+                <div class="line">
+                    <div class="award-name">Bandsman</div>
+                </div>
+
+                <button class="requirement-btn"
+                onclick="openRequirement('bandsmanReq')">
+
+                    <i class="fa-regular fa-file-lines"></i>
+                    View Requirement
+
+                </button>
+
+            </div>
+
+            <!-- BUGLER -->
+
+            <div class="award-card">
+
+                <img src="images/Buglers.png">
+
+                <div class="line">
+                    <div class="award-name">Bugler</div>
+                </div>
+
+                <button class="requirement-btn"
+                onclick="openRequirement('buglerReq')">
+
+                    <i class="fa-regular fa-file-lines"></i>
+                    View Requirement
+
+                </button>
+
+            </div>
+
+            <!-- COMMUNICATION -->
+
+            <div class="award-card">
+
+                <img src="images/Communication.png">
+
+                <div class="line">
+                    <div class="award-name">Communications</div>
+                </div>
+
+                <button class="requirement-btn"
+                onclick="openRequirement('communicationReq1')">
+
+                    <i class="fa-regular fa-file-lines"></i>
+                    View Requirement
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="arrow-right"
+        onclick="nextPage()">
+            <i class="fa-solid fa-caret-right"></i>
+        </div>
+
+    </div>
+
+    <!-- PAGE 2 -->
+
+    <div class="page" id="page2">
+
+        <div class="award-grid">
+
+            <div class="award-card">
+                <img src="images/Computer Knowledge.png">
+                <div class="line">
+                    <div class="award-name">
+                        Computer Knowledge
+                    </div>
+                </div>
+                <button class="requirement-btn"
+                onclick="openRequirement('computerReq1')">
+                    <i class="fa-regular fa-file-lines"></i>
+                    View Requirement
+                </button>
+            </div>
+
+            <div class="award-card">
+                <img src="images/Crafts.png">
+                <div class="line">
+                    <div class="award-name">Crafts</div>
+                </div>
+                <button class="requirement-btn"
+                onclick="openRequirement('craftReq')">    
+                    <i class="fa-regular fa-file-lines"></i>
+                    View Requirement
+                </button>
+            </div>
+
+            <div class="award-card">
+                <img src="images/Drummers.png">
+                <div class="line">
+                    <div class="award-name">Drummers</div>
+                </div>
+                <button class="requirement-btn"
+                onclick="openRequirement('drummersReq')">
+                    <i class="fa-regular fa-file-lines"></i>
+                    View Requirement
+                </button>
+            </div>
+
+            <div class="award-card">
+                <img src="images/Financial Stewardship.png">
+                <div class="line">
+                    <div class="award-name">
+                        Financial Stewardship
+                    </div>
+                </div>
+                <button class="requirement-btn"
+                onclick="openRequirement('financialReq1')">
+                    <i class="fa-regular fa-file-lines"></i>
+                    View Requirement
+                </button>
+            </div>
+
+        </div>
+
+        <div class="arrow-left"
+        onclick="prevPage()">
+            <i class="fa-solid fa-caret-left"></i>
+        </div>
+
+        <div class="arrow-right"
+        onclick="goPage3()">
+            <i class="fa-solid fa-caret-right"></i>
+        </div>
+
+    </div>
+
+    <!-- PAGE 3 -->
+
+    <div class="page" id="page3">
+
+        <div class="award-grid">
+
+            <div class="award-card">
+                <img src="images/Hobbies.png">
+                <div class="line">
+                    <div class="award-name">Hobbies</div>
+                </div>
+
+               <button class="requirement-btn"
+                onclick="openRequirement('hobbiesReq')">
+                   <i class="fa-regular fa-file-lines"></i>
+                   View Requirement
+                </button>
+            </div>
+
+            <div class="award-card">
+                <img src="images/International Relations.png">
+                <div class="line">
+                    <div class="award-name">
+                        International Relations
+                    </div>
+                </div>
+                <button class="requirement-btn"
+                onclick="openRequirement('internationalReq1')">
+                    <i class="fa-regular fa-file-lines"></i>
+                    View Requirement
+                </button>
+            </div>
+
+            <div class="award-card">
+                <img src="images/Life Saving.png">
+                <div class="line">
+                    <div class="award-name">
+                        Life Saving
+                    </div>
+                </div>
+                <button class="requirement-btn"
+                onclick="openRequirement('lifeSavingReq1')">
+                    <i class="fa-regular fa-file-lines"></i>
+                    View Requirement
+                </button>
+            </div>
+
+            <div class="award-card">
+                <img src="images/Nature Awareness.png">
+                <div class="line">
+                    <div class="award-name">
+                        Nature Awareness
+                    </div>
+                </div>
+                <button class="requirement-btn"
+                onclick="openRequirement('natureReq1')">
+                    <i class="fa-regular fa-file-lines"></i>
+                    View Requirement
+                </button>
+            </div>
+
+        </div>
+
+        <div class="arrow-left"
+        onclick="backPage2()">
+            <i class="fa-solid fa-caret-left"></i>
+        </div>
+
+        <div class="arrow-right"
+        onclick="goPage4()">
+            <i class="fa-solid fa-caret-right"></i>
+        </div>
+
+    </div>
+
+    <!-- PAGE 4 -->
+
+    <div class="page" id="page4">
+
+        <div class="award-grid">
+
+            <div class="award-card">
+                <img src="images/Pipers.png">
+
+                <div class="line">
+                    <div class="award-name">Pipers</div>
+                </div>
+
+                <button class="requirement-btn"
+                onclick="openRequirement('piperReq1')">
+                    <i class="fa-regular fa-file-lines"></i>
+                    View Requirement
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="arrow-left"
+        onclick="backPage3()">
+            <i class="fa-solid fa-caret-left"></i>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= ARTS REQUIREMENT ================= -->
+
+<div class="requirement-page"
+id="artsReq">
+
+    <div class="header">
+
+        <img src="images/bb.logo.png">
+
+        <div class="header-text">
+            <h1>BB COMPANY</h1>
+            <p>MANAGEMENT APP</p>
+        </div>
+
+    </div>
+
+    <div class="req-top">
+
+        <button class="req-back"
+        onclick="closeRequirement('artsReq')">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+    </div>
+
+    <div class="req-card">
+
+        <div class="req-header">
+
+            <img src="images/Arts.png">
+
+            <div class="req-title">Arts</div>
+
+        </div>
+
+        <hr class="req-divider">
+
+        <div class="req-section-title">
+            Requirements
+        </div>
+
+        <div class="req-text">
+
+            <div class="level-title">
+                Option 1: As an individual
+            </div>
+
+            <ul>
+                <li>Choose a subject and obtain Award Officer’s approval prior to commencement.</li>
+
+                <li>Submit work at regular intervals for a period of time.</li>
+
+                <li>Keep a logbook of time spent and work done.</li>
+
+                <li>Present the end results for assessment.</li>
+
+                <li>The Member must do work without any assistance from others.</li>
+            </ul>
+
+            <div class="level-title">
+                Option 2: In a group at a badge class
+            </div>
+
+            <ul>
+                <li>Group chooses a subject and obtain Award Officer’s approval before commencement.</li>
+
+                <li>An instructor oversees the class. The end results are presented for assessment.</li>
+            </ul>
+
+            <p>
+            Members can choose from the activities listed below. However, the list of activities for the award is not limited to those below and an instructor has the liberty to permit other suitable activities.
+            </p>
+
+            <ul>
+                <li>Architectural Appreciation</li>
+                <li>Art e.g. Painting, Sculpture Montage, Drama & Mime</li>
+                <li>Drawing & Design</li>
+                <li>Orchestral & Chamber music</li>
+                <li>Lino Printing</li>
+                <li>Musical activity or appreciation other than BB band or other bands</li>
+                <li>Print Making</li>
+                <li>Producing the Coy. Magazine</li>
+                <li>Singing</li>
+                <li>Theatre Appreciation</li>
+                <li>Writing (pose & verse)</li>
+                <li>Engraving</li>
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= BANDSMAN ================= -->
+
+<div class="requirement-page"
+id="bandsmanReq">
+
+    <div class="header">
+
+        <img src="images/bb.logo.png">
+
+        <div class="header-text">
+            <h1>BB COMPANY</h1>
+            <p>MANAGEMENT APP</p>
+        </div>
+
+    </div>
+
+    <div class="req-top">
+
+        <button class="req-back"
+        onclick="closeRequirement('bandsmanReq')">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+    </div>
+
+    <div class="req-card">
+
+        <div class="req-header">
+
+            <img src="images/Bandsmans.png">
+
+            <div class="req-title">Bandsman</div>
+
+        </div>
+
+        <hr class="req-divider">
+
+        <div class="req-section-title">
+            Requirements
+        </div>
+
+        <div class="req-text">
+
+            <div class="level-title">
+                ■ Basic Level
+            </div>
+
+            <ul>
+                <li>Has been an active member of a BB band for at least a year playing the instrument to be tested on.</li>
+            </ul>
+
+            <div class="level-title">
+                • Theory
+            </div>
+
+            <ul>
+                <li>Understand the basic theory of music and gone through a written examination.</li>
+            </ul>
+
+            <div class="level-title">
+                • Practical
+            </div>
+
+            <ul>
+                <li>Must have performed at least three (3) times to the public/non-BB audience.</li>
+
+                <li>Show knowledge in the care and maintenance of the particular instrument.</li>
+
+                <li>Read at sight any simple piece given by the examiner.</li>
+            </ul>
+
+            <div class="level-title">
+                ■ Advanced Level
+            </div>
+
+            <ul>
+                <li>Has been an active member of a BB band for a further one year playing the same instrument in which one was tested at the Basic Level.</li>
+            </ul>
+
+            <div class="level-title">
+                • Practical
+            </div>
+
+            <ul>
+                <li>Play two pieces of music of one’s own selection.</li>
+
+                <li>Must have performed at least another three (3) times in public in the period of time.</li>
+
+                <li>Read at sight a more difficult piece given by the examiner.</li>
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= BUGLER ================= -->
+
+<div class="requirement-page"
+id="buglerReq">
+
+    <div class="header">
+
+        <img src="images/bb.logo.png">
+
+        <div class="header-text">
+            <h1>BB COMPANY</h1>
+            <p>MANAGEMENT APP</p>
+        </div>
+
+    </div>
+
+    <div class="req-top">
+
+        <button class="req-back"
+        onclick="closeRequirement('buglerReq')">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+    </div>
+
+    <div class="req-card">
+
+        <div class="req-header">
+
+            <img src="images/Buglers.png">
+
+            <div class="req-title">Bugler</div>
+
+        </div>
+
+        <hr class="req-divider">
+
+        <div class="req-section-title">
+            Requirements
+        </div>
+
+        <div class="req-text">
+
+            <div class="level-title">
+                ■ Basic Level
+            </div>
+
+            <ul>
+                <li>Has been an active member of a BB band for at least a year playing the instrument to be tested on.</li>
+            </ul>
+
+            <div class="level-title">
+                • Theory
+            </div>
+
+            <ul>
+                <li>Understand the basic theory of music and gone through a written examination.</li>
+            </ul>
+
+            <div class="level-title">
+                • Practical
+            </div>
+
+            <ul>
+                <li>Must have performed at least three (3) times to the public/non-BB audience.</li>
+
+                <li>Show knowledge in the care and maintenance of the particular instrument.</li>
+
+                <li>Read at sight any simple piece given by the examiner.</li>
+
+                <li>Play correctly last post or retreat, reveille, fall-in, first dinner call, warning parade, band and double.</li>
+            </ul>
+
+            <div class="level-title">
+                ■ Advanced Level
+            </div>
+
+            <ul>
+                <li>Has been an active member of a BB band for a further one year playing the same instrument in which one was tested at the Basic Level.</li>
+            </ul>
+
+            <div class="level-title">
+                • Practical
+            </div>
+
+            <ul>
+                <li>Play two pieces of music of one’s own selection.</li>
+
+                <li>Must have performed at least another three (3) times in public in the period of time.</li>
+
+                <li>Read at sight a more difficult piece given by the examiner.</li>
+
+                <li>Play correctly a further five additional calls not tested in basic level.</li>
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= COMMUNICATION PAGE 1 ================= -->
+
+<div class="requirement-page active-none"
+id="communicationReq1">
+
+    <div class="header">
+
+        <img src="images/bb.logo.png">
+
+        <div class="header-text">
+            <h1>BB COMPANY</h1>
+            <p>MANAGEMENT APP</p>
+        </div>
+
+    </div>
+
+    <div class="req-top">
+
+        <button class="req-back"
+        onclick="closeRequirement('communicationReq1')">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+    </div>
+
+    <div class="req-card">
+
+        <div class="req-header">
+
+            <img src="images/Communication.png">
+
+            <div class="req-title">Communications</div>
+
+        </div>
+
+        <hr class="req-divider">
+
+        <div class="req-section-title">
+            Requirements
+        </div>
+
+        <div class="req-text">
+
+            <div class="level-title">
+                ■ Basic Level
+            </div>
+
+            <div class="level-title">
+                • Theory
+            </div>
+
+            <p>
+            Members are to complete at least 3 lessons in the Communication Topic List.
+            </p>
+
+            <div class="level-title">
+                • Practical
+            </div>
+
+            <p>
+            <b>Part 1 : Personal Communication</b>
+            </p>
+
+            <p>
+            Conduct an 1-to-1 interview with parent/guardian/teacher/officers/church youth advisor (or equivalent) with the duration of no less than 15 minutes and present the summary of the interview with the Officer-in-charge.
+            </p>
+
+            <p>
+            <b>Part 2 : Public Communication</b>
+            </p>
+
+            <p>
+            <b>Option 1:</b>
+            Give a presentation/speech to a squad/group on topics selected by the Officer/Instructor.
+            </p>
+
+            <p>
+            <b>Option 2:</b>
+            Participate in a group discussion/debate on topics selected by the Officer/Instructor.
+            </p>
+
+            <p>
+            <b>Option 3:</b>
+            Manage the Company’s Social Media Platform (at least 1 platform) for not less than 1 month.
+            </p>
+
+        </div>
+
+    </div>
+
+    <button class="next-page-btn"
+    onclick="goCommunication2()">
+        ›
+    </button>
+
+</div>
+
+<!-- ================= COMMUNICATION PAGE 2 ================= -->
+
+<div class="requirement-page"
+id="communicationReq2">
+
+    <div class="header">
+
+        <img src="images/bb.logo.png">
+
+        <div class="header-text">
+            <h1>BB COMPANY</h1>
+            <p>MANAGEMENT APP</p>
+        </div>
+
+    </div>
+
+    <div class="req-top">
+
+        <button class="req-back"
+        onclick="backCommunication1()">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+    </div>
+
+    <div class="req-card">
+
+        <div class="req-header">
+
+            <img src="images/Communication.png">
+
+            <div class="req-title">Communications</div>
+
+        </div>
+
+        <hr class="req-divider">
+
+        <div class="req-section-title">
+            Requirements
+        </div>
+
+        <div class="req-text">
+
+            <div class="level-title">
+                ■ Advanced Level
+            </div>
+
+            <div class="level-title">
+                • Theory
+            </div>
+
+            <p>
+            Members are to complete at least 3 lessons in the Communication Topic List.
+            </p>
+
+            <div class="level-title">
+                • Practical
+            </div>
+
+            <p><b>Part 1 : Personal Communication</b></p>
+
+            <p>
+            Conduct a 1-to-1 interview with the Company Chaplain/Company Captain/Church Leader/School principal with a duration of no less than 15 minutes and present the summary.
+            </p>
+
+            <p><b>Part 2 : Public Communication</b></p>
+
+            <p><b>Option 1:</b>
+            Give a presentation/speech to an audience of not less than 20 people from other BB Company(ies) on topics selected by the Officer/Instructor.
+            </p>
+
+            <p><b>Option 2:</b>
+            Lead a group discussion/debate on topics selected by the Officer/Instructor.
+            </p>
+
+            <p><b>Option 3:</b>
+            Teach a class of Officers/Members basic Malaysia sign language on any topics approved by the Officer/Instructor.
+            </p>
+
+            <p><b>Option 4:</b>
+            Manage the Company’s Social Media Platform (at least 1 platform) for not less than 3 months.
+            </p>
+
+            <div class="level-title">
+                Communication Topic List:
+            </div>
+
+            <ul>
+                <li>History of communication (Compulsory for Basic Level)</li>
+                <li>Basic public speaking</li>
+                <li>Common flaws of communication</li>
+                <li>Conversational skills</li>
+                <li>Emceeing</li>
+                <li>Impromptu speech</li>
+                <li>Media communication</li>
+                <li>Moderating a discussion session</li>
+                <li>Morse Code</li>
+                <li>Phonetic Alphabets</li>
+                <li>Presentation with visual aids</li>
+                <li>Radio Communication</li>
+                <li>Social Media Communication</li>
+                <li>Storytelling</li>
+                <li>Writing skills - formal and informal</li>
+            </ul>
+
+        </div>
+
+    </div>
+
+    <button class="next-page-btn"
+    onclick="backCommunication1()">
+        ‹
+</button>
+
+</div>
+
+<!-- ================= COMPUTER PAGE 1 ================= -->
+
+<div class="requirement-page"
+id="computerReq1">
+
+    <div class="header">
+
+        <img src="images/bb.logo.png">
+
+        <div class="header-text">
+            <h1>BB COMPANY</h1>
+            <p>MANAGEMENT APP</p>
+        </div>
+
+    </div>
+
+    <div class="req-top">
+
+        <button class="req-back"
+        onclick="closeRequirement('computerReq1')">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+    </div>
+
+    <div class="req-card">
+
+        <div class="req-header">
+
+            <img src="images/Computer Knowledge.png">
+
+            <div class="req-title">Computer Knowledge</div>
+
+        </div>
+
+        <hr class="req-divider">
+
+        <div class="req-section-title">
+            Requirements
+        </div>
+
+        <div class="req-text">
+
+            <div class="level-title">
+                ■ Basic Level
+            </div>
+
+            <p><b>Part 1</b></p>
+
+            <p>
+            Members must do a presentation on any of the following topics on Personal Computing:
+            </p>
+
+            <ul>
+                <li>Background, trends and the latest development.</li>
+                <li>Hardware - Desktop, Laptop, Tablet, Mobile...etc.</li>
+                <li>Software - Operating system, Application...etc.</li>
+                <li>Producers - Apple, Dell, Acer, Huawei...etc.</li>
+                <li>Any other related topics.</li>
+            </ul>
+
+            <p><b>Part 2</b></p>
+
+            <p>
+            Members are to carry out one project of any topic using at least two of the following category of software programmes:
+            </p>
+
+            <ul>
+                <li>Word processing</li>
+                <li>Spreadsheet</li>
+                <li>Presentation graphics</li>
+                <li>Photo editing/Digital drawing</li>
+                <li>Webpage Builder</li>
+                <li>Setting up Social Media Platforms</li>
+            </ul>
+
+            <p>
+            The topic of the project has to be approved by the Officer before commencing.
+            </p>
+
+        </div>
+
+    </div>
+
+    <button class="next-page-btn"
+    onclick="goComputer2()">
+        ›
+    </button>
+
+</div>
+
+<!-- ================= COMPUTER PAGE 2 ================= -->
+
+<div class="requirement-page"
+id="computerReq2">
+
+    <div class="header">
+
+        <img src="images/bb.logo.png">
+
+        <div class="header-text">
+            <h1>BB COMPANY</h1>
+            <p>MANAGEMENT APP</p>
+        </div>
+
+    </div>
+
+    <div class="req-top">
+
+        <button class="req-back"
+        onclick="backComputer1()">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+    </div>
+
+    <div class="req-card">
+
+        <div class="req-header">
+
+            <img src="images/Computer Knowledge.png">
+
+            <div class="req-title">Computer Knowledge</div>
+
+        </div>
+
+        <hr class="req-divider">
+
+        <div class="req-section-title">
+            Requirements
+        </div>
+
+        <div class="req-text">
+
+            <div class="level-title">
+                ■ Advanced Level
+            </div>
+
+            <p><b>Part 1</b></p>
+
+            <p>
+            Member must do a presentation on any of the following topics on Cloud Computer:
+            </p>
+
+            <ul>
+                <li>Background, trends and the latest development.</li>
+                <li>Hardware - Server...etc.</li>
+                <li>Software - Operating system, Application...etc.</li>
+                <li>Providers - Google, Microsoft...etc.</li>
+                <li>Any other related topics.</li>
+            </ul>
+
+            <p><b>Part 2</b></p>
+
+            <p>
+            Members are to carry out one project of any topic that benefits the BB Company using at least one of the following category of software programmes:
+            </p>
+
+            <ul>
+                <li>Video editing software</li>
+                <li>Web application development</li>
+                <li>Game application/resource development</li>
+                <li>Mobile app development</li>
+                <li>Internet-Of-Things</li>
+                <li>Generative AI</li>
+            </ul>
+
+            <p>
+            The topic of the project has to be approved by the Officer before commencing.
+            </p>
+
+        </div>
+
+    </div>
+
+    <button class="next-page-btn"
+    onclick="backComputer1()">
+        ‹
+
+</button>
+
+</div>
+
+<!-- ================= CRAFT ================= -->
+
+<div class="requirement-page"
+id="craftReq">
+
+    <div class="header">
+
+        <img src="images/bb.logo.png">
+
+        <div class="header-text">
+            <h1>BB COMPANY</h1>
+            <p>MANAGEMENT APP</p>
+        </div>
+
+    </div>
+
+    <div class="req-top">
+
+        <button class="req-back"
+        onclick="closeRequirement('craftReq')">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+    </div>
+
+    <div class="req-card">
+
+        <div class="req-header">
+
+            <img src="images/Crafts.png">
+
+            <div class="req-title">Craft</div>
+
+        </div>
+
+        <hr class="req-divider">
+
+        <div class="req-section-title">
+            Requirements
+        </div>
+
+        <div class="req-text">
+
+            <div class="level-title">
+                Option 1: As an individual
+            </div>
+
+            <ul>
+                <li>Choose a subject and obtain Award Officer’s approval prior to commencement.</li>
+                <li>Submit work at regular intervals for a period of time.</li>
+                <li>Keep a logbook of time spent and work done.</li>
+                <li>Present the end results for assessment.</li>
+                <li>The Member must do work without any assistance from others.</li>
+            </ul>
+
+            <div class="level-title">
+                Option 2: In a group at a badge class
+            </div>
+
+            <ul>
+                <li>Group chooses a subject and obtain Award Officer’s approval before commencement.</li>
+                <li>An instructor oversees the class. The end results are presented for assessment.</li>
+            </ul>
+
+            <p>
+            Members can choose from the activities listed below.
+            </p>
+
+            <ul>
+                <li>Leatherwork</li>
+                <li>Macrame</li>
+                <li>Origami</li>
+                <li>Pottery</li>
+                <li>Puppetry</li>
+                <li>Household maintenance</li>
+                <li>Rug making</li>
+                <li>Sewing</li>
+                <li>Wood Carving</li>
+                <li>Basketry</li>
+                <li>Metal Work</li>
+                <li>Cooking</li>
+                <li>Carpentry & Woodwork</li>
+                <li>Model Making</li>
+                <li>Marquetry</li>
+                <li>Cane work</li>
+                <li>Canoe Construction</li>
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= DRUMMERS ================= -->
+
+<div class="requirement-page"
+id="drummersReq">
+
+    <div class="header">
+
+        <img src="images/bb.logo.png">
+
+        <div class="header-text">
+            <h1>BB COMPANY</h1>
+            <p>MANAGEMENT APP</p>
+        </div>
+
+    </div>
+
+    <div class="req-top">
+
+        <button class="req-back"
+        onclick="closeRequirement('drummersReq')">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+    </div>
+
+    <div class="req-card">
+
+        <div class="req-header">
+
+            <img src="images/Drummers.png">
+
+            <div class="req-title">Drummers</div>
+
+        </div>
+
+        <hr class="req-divider">
+
+        <div class="req-section-title">
+            Requirements
+        </div>
+
+        <div class="req-text">
+
+            <div class="level-title">■ Basic Level</div>
+
+            <ul>
+                <li>
+                Has been an active member of a BB band for at least a year playing the instrument to be tested on.
+                </li>
+            </ul>
+
+            <div class="level-title">• Theory</div>
+
+            <ul>
+                <li>
+                Understand the basic theory of music and gone through a written examination. The level should be at least at Grade 1 of the ABRSM. Members who have passed the Grade 1 examination for the ABRSM theory of music may be given an exemption.
+                </li>
+            </ul>
+
+            <div class="level-title">• Practical</div>
+
+            <ul>
+                <li>
+                Must have performed at least three (3) times to the public/non-BB audience.
+                </li>
+
+                <li>
+                Show knowledge in the care and maintenance of the particular instrument.
+                </li>
+
+                <li>
+                Read at sight any simple piece given by the examiner.
+                </li>
+            </ul>
+
+            <div class="level-title">■ Advanced Level</div>
+
+            <ul>
+                <li>
+                Has been an active member of a BB band for a further one year playing the same instrument in which one was tested at the Basic Level.
+                </li>
+            </ul>
+
+            <div class="level-title">• Practical</div>
+
+            <ul>
+                <li>
+                Play two pieces of music of one’s own selection. One at a quick tempo and another, at a slower tempo.
+                </li>
+
+                <li>
+                Must have performed at least another three (3) times in public in the period of time.
+                </li>
+
+                <li>
+                Read at sight a more difficult piece given by the examiner.
+                </li>
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= FINANCIAL PAGE 1 ================= -->
+
+<div class="requirement-page"
+id="financialReq1">
+
+    <div class="header">
+
+        <img src="images/bb.logo.png">
+
+        <div class="header-text">
+            <h1>BB COMPANY</h1>
+            <p>MANAGEMENT APP</p>
+        </div>
+
+    </div>
+
+    <div class="req-top">
+
+        <button class="req-back"
+        onclick="closeRequirement('financialReq1')">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+    </div>
+
+    <div class="req-card">
+
+        <div class="req-header">
+
+            <img src="images/Financial Stewardship.png">
+
+            <div class="req-title">
+                Financial Stewardship
+            </div>
+
+        </div>
+
+        <hr class="req-divider">
+
+        <div class="req-section-title">
+            Requirements
+        </div>
+
+        <div class="req-text">
+
+            <div class="level-title">
+                ■ Basic Level
+            </div>
+
+            <div class="level-title">
+                • Theory
+            </div>
+
+            <p>
+            Members must demonstrate knowledge and understanding of:
+            </p>
+
+            <ul>
+                <li>
+                Biblical foundations as a steward of God’s money and Tithing
+                </li>
+
+                <li>God's Ownership (Psalm 24:1)</li>
+                <li>Budgeting (Luke 14:28-30)</li>
+                <li>Saving (Proverbs 21:20)</li>
+                <li>Spend with purpose (Matthew 6:25-34)</li>
+                <li>Giving joyfully (2 Corinthians 9:7)</li>
+            </ul>
+
+            <ul>
+                <li>
+                Personal Budgeting, Spending and Saving
+                </li>
+
+                <li>How to do personal budgeting</li>
+                <li>Expenses Tracking</li>
+                <li>Personal Accounting</li>
+            </ul>
+
+            <p>
+            This can be done via a written or verbal exam.
+            </p>
+
+            <div class="level-title">
+                • Practical
+            </div>
+
+            <p>
+            For a duration of 3 consecutive months, the Member must:
+            </p>
+
+            <ul>
+                <li>
+                Submit a monthly budget on spending, saving and tithing
+                </li>
+
+                <li>
+                Submit a monthly expenses report for the corresponding month(s)
+                </li>
+
+                <li>
+                Submit a reflection report in either written or verbal format
+                </li>
+            </ul>
+
+        </div>
+
+    </div>
+
+    <button class="next-page-btn"
+    onclick="goFinancial2()">
+        ›
+    </button>
+
+</div>
+
+<!-- ================= FINANCIAL PAGE 2 ================= -->
+
+<div class="requirement-page"
+id="financialReq2">
+
+    <div class="header">
+
+        <img src="images/bb.logo.png">
+
+        <div class="header-text">
+            <h1>BB COMPANY</h1>
+            <p>MANAGEMENT APP</p>
+        </div>
+
+    </div>
+
+    <div class="req-top">
+
+        <button class="req-back"
+        onclick="closeRequirement('financialReq2')">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+    </div>
+
+    <div class="req-card">
+
+        <div class="req-header">
+
+            <img src="images/Financial Stewardship.png">
+
+            <div class="req-title">
+                Financial Stewardship
+            </div>
+
+        </div>
+
+        <hr class="req-divider">
+
+        <div class="req-section-title">
+            Requirements
+        </div>
+
+        <div class="req-text">
+
+            <div class="level-title">
+                ■ Advanced Level
+            </div>
+
+            <div class="level-title">
+                • Theory
+            </div>
+
+            <p>
+            Members must show knowledge and understanding of:
+            </p>
+
+            <ul>
+                <li>
+                Biblical teaching on debts and investments
+                </li>
+
+                <li>Keep out of debt (Psalm 37:21)</li>
+                <li>Invest responsibly (Matthew 25:14-30)</li>
+                <li>Financial Risk Management</li>
+            </ul>
+
+            <ul>
+                <li>
+                Project financial management, accountability and integrity
+                </li>
+
+                <li>Project Budgeting</li>
+                <li>Project Accounting</li>
+            </ul>
+
+            <p>
+            This can be done via a written or verbal exam.
+            </p>
+
+            <div class="level-title">
+                • Practical
+            </div>
+
+            <p>
+            Member must:
+            </p>
+
+            <ul>
+                <li>
+                Present on the types of debts and present his/her stand and argument on the pros and cons of debts.
+                </li>
+
+                <li>
+                Present on the types of investment and risks involved.
+                </li>
+
+                <li>
+                Assist in managing a project/event/Company’s finance for at least half a year, supervised by an Officer.
+                </li>
+            </ul>
+
+        </div>
+
+    </div>
+
+    <button class="next-page-btn"
+    onclick="backFinancial1()">
+        ‹
+    </button>
+
+</div>
+
+<!--- == HOBBIES == -->
+
+<div class="requirement-page"
+id="hobbiesReq">
+
+    <div class="header">
+
+        <img src="images/bb.logo.png">
+
+        <div class="header-text">
+            <h1>BB COMPANY</h1>
+            <p>MANAGEMENT APP</p>
+        </div>
+
+    </div>
+
+    <div class="req-top">
+
+        <button class="req-back"
+        onclick="closeRequirement('hobbiesReq')">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+    </div>
+
+    <div class="req-card">
+
+        <div class="req-header">
+
+            <img src="images/Hobbies.png">
+
+            <div class="req-title">Hobby</div>
+
+        </div>
+
+        <hr class="req-divider">
+
+        <div class="req-section-title">
+            Requirements
+        </div>
+
+        <div class="req-text">
+
+            <div class="level-title">
+                Option 1: As an individual
+            </div>
+
+            <ul>
+                <li>Choose a subject and obtain Award Officer’s approval prior to commencement.</li>
+                <li>Submit work at regular intervals for a period of time.</li>
+                <li>Keep a logbook of time spent and work done.</li>
+                <li>Present the end results for assessment.</li>
+                <li>The Member must do work without any assistance from others.</li>
+            </ul>
+
+            <div class="level-title">
+                Option 2: In a group at a badge class
+            </div>
+
+            <ul>
+                <li>Group chooses a subject and obtain Award Officer’s approval before commencement.</li>
+                <li>An instructor oversees the class. The end results are presented for assessment.</li>
+            </ul>
+
+            <p>
+            Members can choose from the activities listed below. However, the list of activities for the award is not limited to those below and an instructor has the liberty to permit other suitable activities.
+            </p>
+
+            <ul>
+                <li>Archaeology & Astronomy</li>
+                <li>Coin & Stamp Collection</li>
+                <li>Cycle Maintenance</li>
+                <li>Video Production</li>
+                <li>Fishing</li>
+                <li>Gemstones</li>
+                <li>Meteorology</li>
+                <li>Motor Mechanics</li>
+                <li>Radio Construction & Electronics</li>
+                <li>Railway Knowledge</li>
+                <li>Reading</li>
+                <li>Photography/Videography</li>
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ===== INTERNATIONAL RELATIONS PAGE 1 ===== -->
+
+<div class="requirement-page"
+id="internationalReq1">
+
+    <div class="header">
+
+        <img src="images/bb.logo.png">
+
+        <div class="header-text">
+            <h1>BB COMPANY</h1>
+            <p>MANAGEMENT APP</p>
+        </div>
+
+    </div>
+
+    <div class="req-top">
+
+        <button class="req-back"
+        onclick="closeRequirement('internationalReq1')">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+    </div>
+
+    <div class="req-card">
+
+        <div class="req-header">
+
+            <img src="images/International Relations.png">
+
+            <div class="req-title">
+                International Relations
+            </div>
+
+        </div>
+
+        <hr class="req-divider">
+
+        <div class="req-section-title">
+            Requirements
+        </div>
+
+        <div class="req-text">
+
+            <div class="level-title">
+                ■ Basic Level
+            </div>
+
+            <div class="level-title">
+                • Theory
+                Members applying for this award should have attended a course of at least 12 classes/hours on the following subjects:
+            </div>
+
+            <ul>
+                <li> BB Asia - the History, current set-up and activities.</li>
+                <li> Study the work of The Boys’ Brigade in three overseas countries in Asia.</li>
+                <li> Prepare a short write up with pictures, maps and information on one of the countries studied.</li>
+            </ul>
+
+            <div class="level-title">
+                • Practical （Choose one）
+            </div>
+
+            <ul>
+                <li>Play an active part in an activity involving BB members from the BB Asia at International Camp, Workshops, Exchange Visits or Correspondence Project by obtaining information that leads to the third item * above.</li>
+                <li>Visit a BB Company within the Asian Region other than Malaysia.</li>
+                <li>Encourage fellow members from the Asian Region to visit Malaysia or take part in activities organized by The Boys’ Brigade.</li>
+            </ul>
+
+        </div>
+
+    </div>
+
+    <button class="next-page-btn"
+    onclick="goInternational2()">
+        ›
+    </button>
+
+</div>
+
+<!-- ===== INTERNATIONAL RELATIONS PAGE 2 ===== -->
+
+<div class="requirement-page"
+id="internationalReq2">
+
+    <div class="header">
+
+        <img src="images/bb.logo.png">
+
+        <div class="header-text">
+            <h1>BB COMPANY</h1>
+            <p>MANAGEMENT APP</p>
+        </div>
+
+    </div>
+
+    <div class="req-top">
+
+        <button class="req-back"
+        onclick="backInternational1()">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+    </div>
+
+    <div class="req-card">
+
+        <div class="req-header">
+
+            <img src="images/International Relations.png">
+
+            <div class="req-title">
+                International Relations
+            </div>
+
+        </div>
+
+        <hr class="req-divider">
+
+        <div class="req-section-title">
+            Requirements
+        </div>
+
+        <div class="req-text">
+
+            <div class="level-title">
+                ■ Advanced Level
+            </div>
+
+            <div class="level-title">
+                • Theory
+            </div>
+
+            <ul>
+                <li>The Global Fellowship (formerly known as The World Conference) - the History, current set-up and activities.</li>
+                <li>Study the work of The Boys’ Brigade in two overseas countries outside Asia.</li>
+            </ul>
+
+            <div class="level-title">
+                • Practical
+            </div>
+
+            <ul>
+                <li>Write to at least 3 members from different countries overseas outside Asia and communicate for at least 3 months.</li>
+                <li>Give a presentation during one of the Company Parades on one country outside Asia.</li>
+                or
+                <li>Prepare a scrapbook in a group or individually on one country which has the BB movement.</li>
+            </ul>
+
+        </div>
+
+    </div>
+
+    <button class="next-page-btn"
+    onclick="backInternational1()">
+        ‹
+    </button>
+
+</div>
+
+<!-- ================= LIFE SAVING PAGE 1 ================= -->
+
+<div class="requirement-page"
+id="lifeSavingReq1">
+
+    <div class="header">
+
+        <img src="images/bb.logo.png">
+
+        <div class="header-text">
+            <h1>BB COMPANY</h1>
+            <p>MANAGEMENT APP</p>
+        </div>
+
+    </div>
+
+    <div class="req-top">
+
+        <button class="req-back"
+        onclick="closeRequirement('lifeSavingReq1')">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+    </div>
+
+    <div class="req-card">
+
+        <div class="req-header">
+
+            <img src="images/Life Saving.png">
+
+            <div class="req-title">
+                Life Saving
+            </div>
+
+        </div>
+
+        <hr class="req-divider">
+
+        <div class="req-section-title">
+            Requirements
+        </div>
+
+        <div class="req-text">
+
+            <div class="level-title">
+                ■ Basic Level
+            </div>
+
+            <p>
+            Awarded to Members who have passed the following examinations which conforms to the R.L.S.S. (Royal Life Saving Society / Persatuan Penyelamat Kelemasan Di Raja) Intermediate Certificate.
+            </p>
+
+            <ul>
+                <li>
+                <b>Water Safety & Rescue</b><br>
+                - Answer 6 questions on Water Safety & the Principles & Methods of Rescue.
+                </li>
+
+                <li>
+                <b>Resuscitation Test</b><br>
+                - Successfully complete the test for ‘Resuscitation Award’ from RLSS.<br>
+                - Alternatively, Members with the First Aid Award (Basic) may be exempted from this requirement.
+                </li>
+
+                <li>
+                <b>Water Tests</b>
+                </li>
+            </ul>
+
+            <p>
+            a) This test represents a situation where your friend who is a nonswimmer has slipped and fallen into the water. This casualty will be in deep water, 1m from the side. Demonstrate a reaching rescue and instruct him how to climb out. (Aids: stick, branch, clothing, towel, etc.)
+            </p>
+
+            <p>
+            b) The current has taken your friend a little further from the side and he is in deep water, 10m away from you. Demonstrate a throwing rescue using an unweighted rope and instruct him how to climb out. You will be allowed up to three (3) attempts to reach the casualty.
+            </p>
+
+            <p>
+            c) An aid that will float is available and you are a swimmer. A weak swimmer is in difficulty in deep water 20m away. Enter deep water with a straddle jump. Demonstrate how a buoyant aid can be used to rescue the casualty by an accompanied rescue. Accompany swimmer 20m back to your entry point and assist him to land.
+            </p>
+
+        </div>
+
+    </div>
+
+    <button class="next-page-btn"
+    onclick="goLifeSaving2()">
+        ›
+    </button>
+
+</div>
+
+<!-- ================= LIFE SAVING PAGE 2 ================= -->
+
+<div class="requirement-page"
+id="lifeSavingReq2">
+
+    <div class="header">
+
+        <img src="images/bb.logo.png">
+
+        <div class="header-text">
+            <h1>BB COMPANY</h1>
+            <p>MANAGEMENT APP</p>
+        </div>
+
+    </div>
+
+    <div class="req-top">
+
+        <button class="req-back"
+        onclick="backLifeSaving1()">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+    </div>
+
+    <div class="req-card">
+
+        <div class="req-header">
+
+            <img src="images/Life Saving.png">
+
+            <div class="req-title">
+                Life Saving
+            </div>
+
+        </div>
+
+        <hr class="req-divider">
+
+        <div class="req-section-title">
+            Requirements
+        </div>
+
+        <div class="req-text">
+
+            <p>
+            d) You do not know the depth and conditions of the water. Take a pole, test the depth, enter the water and wade near enough to the casualty to reach him using the pole. Return the casualty to your point of entry. For test purpose, the casualty will be 4m away from the bank (at the shallow end of the pool).
+            </p>
+
+            <p>
+            e) Demonstrate a throwing rescue using an unweighted rope over 10m. Three attempts are allowed to place the rope within reach of a stationary subject. The subject should be carefully pulled to the side.
+            </p>
+
+            <p>
+            f) This test represents a situation where a casualty has sunk to the bottom and you are helping in the search. Enter the water, swim 10m and demonstrate a feet-first surface dive to the bottom, which shall be 1.5m deep. Swim for two (2) strokes underwater with the body and limbs fully submerged before surfacing and return to your point of entry using the life saving backstroke.
+            </p>
+
+            <p>
+            g) To demonstrate the action that might have to be taken in a surprise situation, the candidate will demonstrate two (2) defense actions as specified by the Examiner, e.g. Reverse, Single Leg Block, Counter to Leg Clutch & Duck Away.
+            </p>
+
+            <p>
+            h) Swim continuously for 150m. (Time Limit: 4 minutes) - 50m headup to front, 50m side stroke and 50m life saving backstroke (without arms). Members who have passed the Swimming Award (Basic) may be exempted from this requirement.
+            </p>
+
+        </div>
+
+    </div>
+
+    <button class="next-page-btn"
+    style="right:130px;"
+    onclick="backLifeSaving1()">
+        ‹
+    </button>
+
+    <button class="next-page-btn"
+    onclick="goLifeSaving3()">
+        ›
+    </button>
+
+</div>
+
+<!-- ================= LIFE SAVING PAGE 3 ================= -->
+
+<div class="requirement-page"
+id="lifeSavingReq3">
+
+    <div class="header">
+
+        <img src="images/bb.logo.png">
+
+        <div class="header-text">
+            <h1>BB COMPANY</h1>
+            <p>MANAGEMENT APP</p>
+        </div>
+
+    </div>
+
+    <div class="req-top">
+
+        <button class="req-back"
+        onclick="backLifeSaving2()">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+    </div>
+
+    <div class="req-card">
+
+        <div class="req-header">
+
+            <img src="images/Life Saving.png">
+
+            <div class="req-title">
+                Life Saving
+            </div>
+
+        </div>
+
+        <hr class="req-divider">
+
+        <div class="req-section-title">
+            Requirements
+        </div>
+
+        <div class="req-text">
+
+            <div class="level-title">
+                ■ Advanced Level
+            </div>
+
+            <p>
+            Awarded to Members who have passed all the following examinations which conforms to the R.L.S.S. (Royal Life Saving Society) Bronze Medallion. Members undertaking this level of the award must hold the First Aid Award (Basic) and Swimming Award (Advanced).
+            </p>
+
+            <p>
+            The examination will consist of three sections:
+            </p>
+
+            <ul>
+                <li>
+                <b>Water Safety & Rescue</b><br>
+                - Answer 6 questions on Water Safety & the Principles & Methods of Rescue (RLSS).
+                </li>
+
+                <li>
+                <b>Emergency Aid</b><br>
+                - Members with the First Aid Award (Basic) will be exempted from the resuscitation, CPR and First Aid requirements of this award.
+                </li>
+
+                <li>
+                <b>Water Tests</b>
+                </li>
+            </ul>
+
+            <p>
+            a) Reaching Rescues:
+            </p>
+
+            <p>
+            This test represents a situation where a non-swimmer has slipped and fallen into the water. The casualty will be in deep water, 2m from the side. Use an article of clothing, demonstrate a reaching rescue and instruct him how to climb out.
+            </p>
+
+            <p>
+            b) Throwing Rescues:
+            </p>
+
+            <p>
+            A non-swimmer is in difficulty 10m away in deep water. Demonstrate a throwing rescue using an unweighted rope and secure the casualty in a position of safety. A time limit of one (1) minute shall apply, commencing with an uncoiled and untangled rope lying on the ground at the feet of the rescuer and ending when the end of the rope has reached the casualty.
+            </p>
+
+        </div>
+
+    </div>
+
+    <button class="next-page-btn"
+    style="right:130px;"
+    onclick="backLifeSaving2()">
+        ‹
+    </button>
+
+    <button class="next-page-btn"
+    onclick="goLifeSaving4()">
+        ›
+    </button>
+
+</div>
+
+<!-- ================= LIFE SAVING PAGE 4 ================= -->
+
+<div class="requirement-page"
+id="lifeSavingReq4">
+
+    <div class="header">
+
+        <img src="images/bb.logo.png">
+
+        <div class="header-text">
+            <h1>BB COMPANY</h1>
+            <p>MANAGEMENT APP</p>
+        </div>
+
+    </div>
+
+    <div class="req-top">
+
+        <button class="req-back"
+        onclick="backLifeSaving3()">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+    </div>
+
+    <div class="req-card">
+
+        <div class="req-header">
+
+            <img src="images/Life Saving.png">
+
+            <div class="req-title">
+                Life Saving
+            </div>
+
+        </div>
+
+        <hr class="req-divider">
+
+        <div class="req-section-title">
+            Requirements
+        </div>
+
+        <div class="req-text">
+
+            <p><b>c) Cross Chest Tow:</b></p>
+
+            <p>
+            Fully clothed, enter shallow water and swim 20m to the subject.
+            Demonstrate the reverse and calm, reassure and approach the
+            subject from behind. Tow 20m by Cross Chest Tow. Assist the
+            subject to land.
+            </p>
+
+            <p><b>d) Towing with an Aid:</b></p>
+
+            <p>
+            A conscious non-swimmer is in difficulty in deep water 50m away.
+            A non-rigid, non-buoyant aid is available. Taking the aid, enter deep
+            water, swim 50m and tow the casualty 50m to end in deep water.
+            Assist the casualty to land. Time limit - 3 minutes (male),
+            3 minutes 15 seconds (female).
+            </p>
+
+            <p><b>e) Combined Rescue:</b></p>
+
+            <p>
+            Enter shallow water and swim 20m. Submerge and search underwater
+            for 5m to recover an object (4kg) from a depth of at least 1.8m.
+            During the search, demonstrate the feet-first and headfirst surface dives.
+            Exchange the object for a subject considered unconscious and not breathing;
+            tow to the nearest point of support in deep water, and demonstrate
+            mouth-to-mouth resuscitation for 3 cycles. Tow the casualty to shallow
+            water and continue E.A.R for 5m. Land the casualty and place him in
+            the recovery position.
+            </p>
+
+            <p>
+            <b>f)</b> A non-swimmer is in difficulty in deep water, 50m from the point
+            of entry. No aids are available. Enter the water with a straddle jump
+            and swim 50m to the casualty. Apply a defensive action and rescue
+            over 50m by means of the chin tow which include a demonstration
+            of the methods used to restrain a struggling casualty (a double restraint).
+            On completion of the tow, support the casualty and on the signal
+            from the Examiner, assist him to land from the deep end.
+            </p>
+
+        </div>
+
+    </div>
+
+    <button class="next-page-btn"
+    style="right:130px;"
+    onclick="backLifeSaving3()">
+        ‹
+    </button>
+
+    <button class="next-page-btn"
+    onclick="goLifeSaving5()">
+        ›
+    </button>
+
+</div>
+
+<!-- ================= LIFE SAVING PAGE 5 ================= -->
+
+<div class="requirement-page"
+id="lifeSavingReq5">
+
+    <div class="header">
+
+        <img src="images/bb.logo.png">
+
+        <div class="header-text">
+            <h1>BB COMPANY</h1>
+            <p>MANAGEMENT APP</p>
+        </div>
+
+    </div>
+
+    <div class="req-top">
+
+        <button class="req-back"
+        onclick="backLifeSaving4()">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+    </div>
+
+    <div class="req-card">
+
+        <div class="req-header">
+
+            <img src="images/Life Saving.png">
+
+            <div class="req-title">
+                Life Saving
+            </div>
+
+        </div>
+
+        <hr class="req-divider">
+
+        <div class="req-section-title">
+            Requirements
+        </div>
+
+        <div class="req-text">
+
+            <p><b>g) Underwater Swim:</b></p>
+
+            <p>
+            25m underwater swim without breaking surface.
+            </p>
+
+            <p><b>h) Releases:</b></p>
+
+            <p>
+            To demonstrate the action that might have to be taken in an
+            unexpected situation, e.g. in a crowded swimming pool.
+            The candidate will demonstrate releases from three (3)
+            types of clutches as directed by the Examiner followed
+            by towing the subject with 3 towing techniques over 25m.
+            </p>
+
+            <br><br>
+
+            <p>
+            The Life Saving Award syllabus follows the Royal Life Saving
+            Society Malaysia requirements. For more information or
+            professional assistance, kindly contact:
+            </p>
+
+        </div>
+
+    </div>
+
+    <button class="next-page-btn"
+    style="right:130px;"
+    onclick="backLifeSaving4()">
+        ‹
+    </button>
+
+</div>
+
+<!-- ================= NATURE AWARENESS PAGE 1 ================= -->
+
+<div class="requirement-page"
+id="natureReq1">
+
+    <div class="header">
+
+        <img src="images/bb.logo.png">
+
+        <div class="header-text">
+            <h1>BB COMPANY</h1>
+            <p>MANAGEMENT APP</p>
+        </div>
+
+    </div>
+
+    <div class="req-top">
+
+        <button class="req-back"
+        onclick="closeNatureRequirement()">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+    </div>
+
+    <div class="req-card">
+
+        <div class="req-header">
+
+            <img src="images/Nature Awareness.png">
+
+            <div class="req-title">
+                Nature Awareness
+            </div>
+
+        </div>
+
+        <hr class="req-divider">
+
+        <div class="req-section-title">
+            Requirements
+        </div>
+
+        <div class="req-text">
+
+            <p>
+                <b>■ Basic Level</b>
+            </p>
+
+            <p>
+                Awarded to Members who have attended a course of instruction
+                for a period of 3 months or 12 lessons/classes on the
+                following subject:
+            </p>
+
+            <ul>
+                <li>
+                    Read and understand the ordinance survey map at a suitable
+                    scale and be able to use a compass for simple direction finding.
+                </li>
+
+                <li>
+                    Know the country code.
+                </li>
+
+                <li>
+                    Undertake several visits to a local habitat and note the
+                    flora and fauna found there.
+                </li>
+
+                <li>
+                    Draw a sketch map of the habitat chosen and keep notes
+                    with the drawings of observation made during the visits.
+                </li>
+
+                <li>
+                    Make a small collection, correctly labelled and arranged,
+                    of anyone of the following: wild flowers, leaves of trees,
+                    insects, rock fossils, shells.
+                </li>
+            </ul>
+
+            <p><b>Or</b></p>
+
+            <ul>
+                <li>
+                    Show an interest and progress in bird watching or fishing.
+                </li>
+            </ul>
+
+        </div>
+
+        <button class="next-page-btn"
+        onclick="goNature2()">
+            ›
+        </button>
+
+    </div>
+
+</div>
+
+<!-- ================= NATURE AWARENESS PAGE 2 ================= -->
+
+<div class="requirement-page"
+id="natureReq2"
+style="display:none;">
+
+    <div class="header">
+
+        <img src="images/bb.logo.png">
+
+        <div class="header-text">
+            <h1>BB COMPANY</h1>
+            <p>MANAGEMENT APP</p>
+        </div>
+
+    </div>
+
+    <div class="req-top">
+
+        <button class="req-back"
+        onclick="backNature1()">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+    </div>
+
+    <div class="req-card">
+
+        <div class="req-header">
+
+            <img src="images/Nature Awareness.png">
+
+            <div class="req-title">
+                Nature Awareness
+            </div>
+
+        </div>
+
+        <hr class="req-divider">
+
+        <div class="req-section-title">
+            Requirements
+        </div>
+
+        <div class="req-text">
+
+            <p><b>■ Advanced Level</b></p>
+
+            <ul>
+                <li>
+                    Maintain visits to a local habitat, and add further specimens to the collection.
+                </li>
+
+                <li>
+                    Undertake a walk of at least 12km and show ability to observe the natural history on route.
+                </li>
+
+                <li>
+                    Have knowledge of the use of textbooks to identify specimens.
+                </li>
+
+                <li>
+                    Show ability in identifying from specimens or photographs a number of any of the following: Wild flowers, trees, fungi, insects, butterflies, mammals, birds, fish, rocks, fossils, shells.
+                </li>
+
+                <li>
+                    Understand the different soils and bedrock to be found in the various habitats and understand how a habitat builds up from bare soils.
+                </li>
+
+                <li>
+                    Understand how habitats differ in their flora and fauna and why, and what factors affect the environment.
+                </li>
+
+                <li>
+                    Undertake a simple project; e.g. bark rubbings, animal footprints, nature scrapbook, animal or plant sketching, etc.
+                </li>
+            </ul>
+
+        </div>
+
+        <button class="next-page-btn"
+        style="right:130px;"
+        onclick="backNature1()">
+            ‹
+        </button>
+
+    </div>
+
+</div>
+
+<!-- ================= PIPER REQUIREMENT ================= -->
+
+<div class="requirement-page"
+id="piperReq1"
+style="display:none;">
+
+    <div class="header">
+
+        <img src="images/bb.logo.png">
+
+        <div class="header-text">
+            <h1>BB COMPANY</h1>
+            <p>MANAGEMENT APP</p>
+        </div>
+
+    </div>
+
+    <div class="req-top">
+
+        <button class="req-back"
+        onclick="closeRequirement('piperReq1')">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+    </div>
+
+    <div class="req-card">
+
+        <div class="req-header">
+
+            <img src="images/Pipers.png">
+
+            <div class="req-title">
+                Pipers
+            </div>
+
+        </div>
+
+        <hr class="req-divider">
+
+        <div class="req-section-title">
+            Requirements
+        </div>
+
+        <div class="req-text">
+
+            <p><b>■ Basic Level</b></p>
+
+            <ul>
+                <li>
+                    Has been an active member of a BB band for at least a year playing the instrument to be tested on.
+                </li>
+            </ul>
+
+            <p><b>• Theory</b></p>
+
+            <ul>
+                <li>
+                    Understand the basic theory of music and gone through a written examination. The level should be at least at Grade 1 of the ABRSM. Members who have passed the Grade 1 examination for the ABRSM theory of music may be given an exemption.
+                </li>
+            </ul>
+
+            <p><b>• Practical</b></p>
+
+            <ul>
+                <li>
+                    Must have performed at least three (3) times to the public/non-BB audience.
+                </li>
+
+                <li>
+                    Show knowledge in the care and maintenance of the particular instrument.
+                </li>
+
+                <li>
+                    Read at sight any simple piece given by the examiner.
+                </li>
+            </ul>
+
+            <p><b>■ Advanced Level</b></p>
+
+            <ul>
+                <li>
+                    Has been an active member of a BB band for a further one year playing the same instrument in which one was tested at the Basic Level.
+                </li>
+            </ul>
+
+            <p><b>• Practical</b></p>
+
+            <ul>
+                <li>
+                    Play two pieces of music of one's own selection. One at a quick tempo and another, at a slower tempo.
+                </li>
+
+                <li>
+                    Must have performed at least another three (3) times in public in the period of time.
+                </li>
+
+                <li>
+                    Read at sight a more difficult piece given by the examiner.
+                </li>
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function nextPage(){
+
+    document.getElementById("page1")
+    .classList.remove("active");
+
+    document.getElementById("page2")
+    .classList.add("active");
+
+}
+
+function prevPage(){
+
+    document.getElementById("page2")
+    .classList.remove("active");
+
+    document.getElementById("page1")
+    .classList.add("active");
+
+}
+
+function goPage3(){
+
+    document.getElementById("page2")
+    .classList.remove("active");
+
+    document.getElementById("page3")
+    .classList.add("active");
+
+}
+
+function backPage2(){
+
+    document.getElementById("page3")
+    .classList.remove("active");
+
+    document.getElementById("page2")
+    .classList.add("active");
+
+}
+
+function goPage4(){
+
+    document.getElementById("page3")
+    .classList.remove("active");
+
+    document.getElementById("page4")
+    .classList.add("active");
+
+}
+
+function backPage3(){
+
+    document.getElementById("page4")
+    .classList.remove("active");
+
+    document.getElementById("page3")
+    .classList.add("active");
+
+}
+
+function openRequirement(id){
+
+    document.getElementById("mainPage")
+    .style.display="none";
+
+    document.getElementById(id)
+    .style.display="block";
+
+}
+
+function closeRequirement(id){
+
+    document.getElementById(id)
+    .style.display="none";
+
+    document.getElementById("mainPage")
+    .style.display="block";
+
+}
+
+function goCommunication2(){
+
+    document.getElementById("communicationReq1")
+    .style.display="none";
+
+    document.getElementById("communicationReq2")
+    .style.display="block";
+
+}
+
+function backCommunication1(){
+
+    document.getElementById("communicationReq2")
+    .style.display="none";
+
+    document.getElementById("communicationReq1")
+    .style.display="block";
+
+}
+
+function goComputer2(){
+
+    document.getElementById("computerReq1")
+    .style.display="none";
+
+    document.getElementById("computerReq2")
+    .style.display="block";
+
+}
+
+function backComputer1(){
+
+    document.getElementById("computerReq2")
+    .style.display="none";
+
+    document.getElementById("computerReq1")
+    .style.display="block";
+
+}
+
+function goFinancial2(){
+
+    document.getElementById("financialReq1")
+    .style.display="none";
+
+    document.getElementById("financialReq2")
+    .style.display="block";
+
+}
+
+function backFinancial1(){
+
+    document.getElementById("financialReq2")
+    .style.display="none";
+
+    document.getElementById("financialReq1")
+    .style.display="block";
+
+}
+
+function goInternational2(){
+
+    document.getElementById("internationalReq1")
+    .style.display="none";
+
+    document.getElementById("internationalReq2")
+    .style.display="block";
+
+}
+
+function backInternational1(){
+
+    document.getElementById("internationalReq2")
+    .style.display="none";
+
+    document.getElementById("internationalReq1")
+    .style.display="block";
+
+}
+
+function goLifeSaving2(){
+
+    document.getElementById("lifeSavingReq1")
+    .style.display = "none";
+
+    document.getElementById("lifeSavingReq2")
+    .style.display = "block";
+
+}
+
+function goLifeSaving3(){
+
+    document.getElementById("lifeSavingReq2")
+    .style.display = "none";
+
+    document.getElementById("lifeSavingReq3")
+    .style.display = "block";
+
+}
+
+function goLifeSaving4(){
+
+    document.getElementById("lifeSavingReq3")
+    .style.display = "none";
+
+    document.getElementById("lifeSavingReq4")
+    .style.display = "block";
+
+}
+
+function goLifeSaving5(){
+
+    document.getElementById("lifeSavingReq4")
+    .style.display = "none";
+
+    document.getElementById("lifeSavingReq5")
+    .style.display = "block";
+
+}
+
+function backLifeSaving1(){
+
+    document.getElementById("lifeSavingReq2")
+    .style.display = "none";
+
+    document.getElementById("lifeSavingReq1")
+    .style.display = "block";
+
+}
+
+function backLifeSaving2(){
+
+    document.getElementById("lifeSavingReq3")
+    .style.display = "none";
+
+    document.getElementById("lifeSavingReq2")
+    .style.display = "block";
+
+}
+
+function backLifeSaving3(){
+
+    document.getElementById("lifeSavingReq4")
+    .style.display = "none";
+
+    document.getElementById("lifeSavingReq3")
+    .style.display = "block";
+
+}
+
+function backLifeSaving4(){
+
+    document.getElementById("lifeSavingReq5")
+    .style.display = "none";
+
+    document.getElementById("lifeSavingReq4")
+    .style.display = "block";
+
+}
+
+function goNature2(){
+
+    document.getElementById("natureReq1")
+    .style.display = "none";
+
+    document.getElementById("natureReq2")
+    .style.display = "block";
+
+}
+
+function backNature1(){
+
+    document.getElementById("natureReq2")
+    .style.display = "none";
+
+    document.getElementById("natureReq1")
+    .style.display = "block";
+
+}
+
+function closeNatureRequirement(){
+
+    document.getElementById("natureReq1").style.display = "none";
+    document.getElementById("natureReq2").style.display = "none";
+
+    document.getElementById("mainPage").style.display = "block";
+}
+
+function openPiperRequirement(){
+
+    document.getElementById("piperReq1")
+    .style.display = "block";
+
+}
+
+function closePiperRequirement(){
+
+    document.getElementById("piperReq1")
+    .style.display = "none";
+
+}
+
+</script>
+
+</body>
+</html>

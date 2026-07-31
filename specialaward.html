@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Special Awards</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, sans-serif;
+    background:#002b88;
+}
+
+/* ================= HEADER ================= */
+
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 30px;
+    color:white;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.logo img{
+    width:80px;
+    height:80px;
+    object-fit:contain;
+}
+
+.logo h1{
+    font-size:45px;
+}
+
+.logo p{
+    font-size:22px;
+}
+
+.back-btn{
+    width:75px;
+    height:75px;
+    border:none;
+    border-radius:50%;
+    background:#f3dca3;
+    font-size:30px;
+    cursor:pointer;
+    box-shadow:0 5px 12px rgba(0,0,0,0.25);
+}
+
+/* ================= PAGE ================= */
+
+.page{
+    display:none;
+    min-height:100vh;
+}
+
+.page.active{
+    display:block;
+}
+
+/* ================= TITLES ================= */
+
+.page-title{
+    text-align:center;
+    color:white;
+    font-size:65px;
+    margin-bottom:30px;
+}
+
+/* ================= AWARD LIST ================= */
+
+.award-list{
+    width:95%;
+    margin:auto;
+    padding-bottom:80px;
+}
+
+.award-card{
+    background:white;
+    border-radius:20px;
+    padding:25px;
+    margin-bottom:25px;
+    display:flex;
+    align-items:center;
+    gap:25px;
+    position:relative;
+}
+
+.award-card img{
+    width:150px;
+    height:150px;
+    object-fit:contain;
+    border:2px dashed #ccc;
+    border-radius:15px;
+    padding:10px;
+}
+
+.award-info{
+    flex:1;
+}
+
+.award-info h2{
+    font-size:32px;
+    color:#001f70;
+    margin-bottom:15px;
+}
+
+.award-info ul{
+    padding-left:25px;
+    font-size:22px;
+    line-height:1.8;
+}
+
+.more-btn{
+    position:absolute;
+    top:20px;
+    right:20px;
+    width:60px;
+    height:60px;
+    border:none;
+    border-radius:50%;
+    background:#eee;
+    font-size:28px;
+    cursor:pointer;
+}
+
+.status-btn{
+    border:none;
+    padding:18px 28px;
+    border-radius:12px;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.not-eligible{
+    background:#ddd;
+    color:#555;
+}
+
+.approved{
+    background:#032b84;
+    color:white;
+}
+
+.progress{
+    background:#ffe6a3;
+    color:#9b6500;
+}
+
+/* ================= DETAILS ================= */
+
+.details-container{
+    width:95%;
+    margin:auto;
+    background:white;
+    border-radius:20px;
+    padding:30px;
+    margin-bottom:60px;
+}
+
+.details-top{
+    display:flex;
+    gap:30px;
+    margin-bottom:30px;
+}
+
+.details-top img{
+    width:230px;
+    height:230px;
+    object-fit:contain;
+}
+
+.details-text{
+    flex:1;
+    font-size:28px;
+    line-height:1.8;
+}
+
+.requirements{
+    background:#f7f7f7;
+    border-radius:20px;
+    padding:30px;
+}
+
+.requirements h2{
+    color:#003399;
+    margin-bottom:20px;
+    font-size:40px;
+}
+
+.requirements ul{
+    padding-left:35px;
+    line-height:2;
+    font-size:24px;
+}
+
+.requirements li{
+    margin-bottom:10px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+    font-size:20px;
+}
+
+th, td{
+    border:2px solid #000;
+    padding:15px;
+    text-align:center;
+}
+
+th{
+    background:#032b84;
+    color:white;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:768px){
+
+    .logo h1{
+        font-size:28px;
+    }
+
+    .logo p{
+        font-size:15px;
+    }
+
+    .page-title{
+        font-size:38px;
+    }
+
+    .award-card{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .award-info h2{
+        font-size:25px;
+    }
+
+    .award-info ul{
+        font-size:18px;
+    }
+
+    .details-top{
+        flex-direction:column;
+    }
+
+    .details-text{
+        font-size:20px;
+    }
+
+    .requirements ul{
+        font-size:18px;
+    }
+
+    table{
+        font-size:15px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<div class="top-bar">
+
+    <div class="logo">
+
+        <img src="images/bb.logo.png">
+
+        <div>
+            <h1>BB COMPANY</h1>
+            <p>MANAGEMENT APP</p>
+        </div>
+
+    </div>
+
+    <button class="back-btn"
+    onclick="goBack()">
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+    </button>
+
+</div>
+
+<!-- ================= SPECIAL AWARDS PAGE ================= -->
+
+<div class="page active"
+id="specialPage">
+
+    <h1 class="page-title">
+        Special Awards
+    </h1>
+
+    <div class="award-list">
+
+        <!-- NCO -->
+
+        <div class="award-card">
+
+            <img src="images/NCO Proficiency Star.png">
+
+            <div class="award-info">
+
+                <h2>1. NCO Proficiency Star</h2>
+
+                <ul>
+                    <li>BNTC: Serve in BB for 2 years</li>
+                    <li>ANTC: Minimum Lance Corporal</li>
+                    <li>Pass required test</li>
+                </ul>
+
+            </div>
+
+            <button class="status-btn not-eligible">
+                <i class="fa-solid fa-lock"></i>
+                Not Eligible
+            </button>
+
+        </div>
+
+        <!-- SCHOLASTIC -->
+
+        <div class="award-card">
+
+            <button class="more-btn"
+            onclick="showPage('scholasticPage')">
+
+                <i class="fa-solid fa-ellipsis"></i>
+
+            </button>
+
+            <img src="images/Scholastic Gold.png">
+
+            <div class="award-info">
+
+                <h2>2. Scholastic Award</h2>
+
+                <ul>
+                    <li>Bronze / Silver / Gold</li>
+                </ul>
+
+            </div>
+
+            <button class="status-btn approved">
+                <i class="fa-solid fa-check"></i>
+                Approved
+            </button>
+
+        </div>
+
+        <!-- DUKE -->
+
+        <div class="award-card">
+
+            <button class="more-btn"
+            onclick="showPage('dukePage')">
+
+                <i class="fa-solid fa-ellipsis"></i>
+
+            </button>
+
+            <img src="images/Dofe Gold.png">
+
+            <div class="award-info">
+
+                <h2>3. Duke of Edinburgh Award</h2>
+
+                <ul>
+                    <li>Bronze Level - 14 years old</li>
+                    <li>Silver Level - 15 years old</li>
+                    <li>Gold Level - 16 years old</li>
+                </ul>
+
+            </div>
+
+            <button class="status-btn not-eligible">
+                <i class="fa-solid fa-lock"></i>
+                Not Eligible
+            </button>
+
+        </div>
+
+        <!-- PRESIDENT -->
+
+        <div class="award-card">
+
+            <button class="more-btn"
+            onclick="showPage('presidentPage')">
+
+                <i class="fa-solid fa-ellipsis"></i>
+
+            </button>
+
+            <img src="images/Presidents.png">
+
+            <div class="award-info">
+
+                <h2>4. President Award</h2>
+
+                <ul>
+                    <li>Must complete required badges</li>
+                    <li>Group A, B, C, D requirements</li>
+                </ul>
+
+            </div>
+
+            <button class="status-btn not-eligible">
+                <i class="fa-solid fa-lock"></i>
+                Not Eligible
+            </button>
+
+        </div>
+
+        <!-- FOUNDER -->
+
+        <div class="award-card">
+
+            <button class="more-btn"
+            onclick="showPage('founderPage')">
+
+                <i class="fa-solid fa-ellipsis"></i>
+
+            </button>
+
+            <img src="images/Founder.png">
+
+            <div class="award-info">
+
+                <h2>5. Founder Badge</h2>
+
+            </div>
+
+            <button class="status-btn not-eligible">
+                <i class="fa-solid fa-lock"></i>
+                Not Eligible
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= SCHOLASTIC DETAILS ================= -->
+
+<div class="page"
+id="scholasticPage">
+
+    <h1 class="page-title">
+        Scholastic Awards
+    </h1>
+
+    <div class="details-container">
+
+        <div class="award-card">
+
+            <img src="images/Scholastic Bronze.png">
+
+            <div class="award-info">
+
+                <h2>Bronze Scholastic Award</h2>
+
+                <ul>
+                    <li>UPSR / Std 6: ≥ 3A + 1B</li>
+                    <li>No failing subjects</li>
+                </ul>
+
+            </div>
+
+            <button class="status-btn approved">
+                Apply Now
+            </button>
+
+        </div>
+
+        <div class="award-card">
+
+            <img src="images/Scholastic Silver.png"
+            style="filter:grayscale(100%);">
+
+            <div class="award-info">
+
+                <h2>Silver Scholastic Award</h2>
+
+                <ul>
+                    <li>Form 3: ≥ 4A + 2B</li>
+                    <li>No failing subjects</li>
+                </ul>
+
+            </div>
+
+            <button class="status-btn progress">
+                In Progress
+            </button>
+
+        </div>
+
+        <div class="award-card">
+
+            <img src="images/Scholastic Gold.png">
+
+            <div class="award-info">
+
+                <h2>Gold Scholastic Award</h2>
+
+                <ul>
+                    <li>SPM: ≥ 3A</li>
+                    <li>Others ≥ Credit (C)</li>
+                    <li>No failing subjects</li>
+                </ul>
+
+            </div>
+
+            <button class="status-btn progress">
+                In Progress
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= DUKE DETAILS ================= -->
+
+<div class="page"
+id="dukePage">
+
+    <h1 class="page-title">
+        The Duke of Edinburgh
+        <br>
+        International Youth Awards
+    </h1>
+
+    <div class="details-container">
+
+        <div class="details-top">
+
+            <img src="images/Dofe Gold.png">
+
+            <div class="details-text">
+
+                Awarded for Members in recognition of
+                the completion in the area of Physical
+                Recreation, Adventurous Journey,
+                Skills and Community Service.
+
+                <br><br>
+
+                Minimum age to start:
+
+                <ul style="padding-left:35px;margin-top:15px;">
+                    <li>Bronze Level - 14 years old</li>
+                    <li>Silver Level - 15 years old</li>
+                    <li>Gold Level - 16 years old</li>
+                </ul>
+
+            </div>
+
+        </div>
+
+        <div class="requirements">
+
+            <h2>Requirements</h2>
+
+            <div style="overflow-x:auto;">
+
+                <table>
+
+                    <tr>
+                        <th></th>
+                        <th>Physical Recreation</th>
+                        <th>Adventurous Journey</th>
+                        <th>Skills</th>
+                        <th>Community Service</th>
+                        <th>Additional Requirements</th>
+                    </tr>
+
+                    <tr>
+                        <td>Bronze</td>
+                        <td>15 hours over 3 months</td>
+                        <td>2 days 1 night 24km</td>
+                        <td>15 hours over 3 months</td>
+                        <td>15 hours over 3 months</td>
+                        <td>Additional 15 hours over another 3 months</td>
+                    </tr>
+
+                    <tr>
+                        <td>Silver</td>
+                        <td>30 hours over 6 months</td>
+                        <td>3 days 2 nights 48km</td>
+                        <td>30 hours over 6 months</td>
+                        <td>30 hours over 6 months</td>
+                        <td>n/a</td>
+                    </tr>
+
+                    <tr>
+                        <td>Gold</td>
+                        <td>60 hours over 12 months</td>
+                        <td>4 days 3 nights 80km</td>
+                        <td>60 hours over 12 months</td>
+                        <td>60 hours over 12 months</td>
+                        <td>Residential Project</td>
+                    </tr>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= PRESIDENT DETAILS ================= -->
+
+<div class="page"
+id="presidentPage">
+
+    <h1 class="page-title">
+        President’s Award
+    </h1>
+
+    <div class="details-container">
+
+        <div class="details-top">
+
+            <img src="images/Presidents.png">
+
+            <div class="details-text">
+
+                The application must be at least
+                15 years and an NCO in the Company.
+
+                <br><br>
+
+                The maximum age to apply for this
+                award is by 19 years old, based on
+                calendar age.
+
+            </div>
+
+        </div>
+
+        <div class="requirements">
+
+            <h2>Requirements</h2>
+
+            <ul style="list-style:none;padding-left:0;">
+
+                <li>✅ NCO Proficiency Star</li>
+                <li>✅ Christian Education (Advance Level)</li>
+                <li>✅ Drill (Advance Level)</li>
+                <li>✅ Recruitment (Basic Level)</li>
+                <li>✅ Three Year Service Badge</li>
+
+                <li style="margin-top:20px;">
+                    ✅ In Group A, B, C, D:
+                </li>
+
+                <li style="margin-left:30px;">
+                    • 2 Basic Level badges
+                </li>
+
+                <li style="margin-left:30px;">
+                    • 4 Advance Level badges
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= FOUNDER DETAILS ================= -->
+
+<div class="page"
+id="founderPage">
+
+    <h1 class="page-title">
+        Founder’s Award
+    </h1>
+
+    <div class="details-container">
+
+        <div class="details-top">
+
+            <img src="images/Founder.png">
+
+            <div class="details-text">
+
+                Must be a President’s Award holder.
+
+                <br><br>
+
+                The maximum age to apply for this
+                award is by 20 years old, based on
+                calendar age.
+
+            </div>
+
+        </div>
+
+        <div class="requirements">
+
+            <h2>Requirements</h2>
+
+            <ul style="list-style:none;padding-left:0;">
+
+                <li>
+                    ✅ Must continue membership in
+                    Senior Section at least two years
+                </li>
+
+                <li>
+                    ✅ 40 hours of community service
+                </li>
+
+                <li>
+                    ✅ Undertake a project as approved
+                    by the national committee
+                </li>
+
+                <li>
+                    ✅ Attends an interview by the
+                    State Commissioner with the
+                    presence of the applicant’s
+                    Captain and Chaplain
+                    (if possible)
+                </li>
+
+                <li style="margin-top:20px;">
+                    ✅ Character Assessment by:
+                </li>
+
+                <li style="margin-left:30px;">
+                    • Parent / Guardian
+                </li>
+
+                <li style="margin-left:30px;">
+                    • Form Teacher
+                </li>
+
+                <li style="margin-left:30px;">
+                    • Captain
+                </li>
+
+                <li style="margin-left:30px;">
+                    • Chaplain
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- 把你原本 SPECIAL AWARDS 页面 script 整个删掉 -->
+<!-- 然后换成下面这个完整 script 即可 -->
+
+<script>
+
+let currentPage = "specialPage";
+
+/* ================= SHOW PAGE ================= */
+
+function showPage(pageId){
+
+    document.querySelectorAll(".page")
+    .forEach(page=>{
+        page.classList.remove("active");
+    });
+
+    document.getElementById(pageId)
+    .classList.add("active");
+
+    currentPage = pageId;
+
+}
+
+/* ================= BACK ================= */
+
+function goBack(){
+
+    if(
+        currentPage === "scholasticPage" ||
+        currentPage === "dukePage" ||
+        currentPage === "presidentPage" ||
+        currentPage === "founderPage"
+    ){
+
+        showPage("specialPage");
+
+    }
+
+    else{
+
+        window.location.href =
+        "selectawardtype.html";
+
+    }
+
+}
+
+/* =====================================================
+   GET LEFT ARM DATA
+===================================================== */
+
+function getLeftAwards(){
+
+    return JSON.parse(
+        localStorage.getItem("bb_leftAwards")
+    ) || [];
+
+}
+
+/* =====================================================
+   BUTTON STYLE
+===================================================== */
+
+function setButton(button,type,text){
+
+    button.className = "status-btn";
+
+    if(type === "approved"){
+
+        button.classList.add("approved");
+
+        button.innerHTML =
+        `<i class="fa-solid fa-check"></i> ${text}`;
+
+    }
+
+    else if(type === "progress"){
+
+        button.classList.add("progress");
+
+        button.innerHTML = text;
+
+    }
+
+    else{
+
+        button.classList.add("not-eligible");
+
+        button.innerHTML =
+        `<i class="fa-solid fa-lock"></i> ${text}`;
+
+    }
+
+}
+
+/* =====================================================
+   LOAD STATUS
+===================================================== */
+
+function loadAwardStatus(){
+
+    const leftAwards =
+    getLeftAwards();
+
+    /*
+    INDEX
+
+    0 = Founder
+    1 = President
+    2 = Edinburgh
+    3 = Scholastic Gold
+    4 = Scholastic Silver
+    5 = Scholastic Bronze
+    6 = Long Year
+    7 = NCO Star
+    8 = Three Year
+    9~18 = One Year
+    */
+
+    /* ================= BASIC ================= */
+
+    const founderBadge =
+    leftAwards[0]?.selected || false;
+
+    const presidentBadge =
+    leftAwards[1]?.selected || false;
+
+    /* ================= EDINBURGH ================= */
+
+    const edinburgh =
+    JSON.parse(
+        localStorage.getItem("edinburgh")
+    ) || {
+
+        bronze:false,
+        silver:false,
+        gold:false
+
+    };
+
+    let dukeCount = 0;
+
+    if(edinburgh.bronze){
+
+        dukeCount = 1;
+
+    }
+
+    if(edinburgh.silver){
+
+        dukeCount = 2;
+
+    }
+
+    if(edinburgh.gold){
+
+        dukeCount = 3;
+
+    }
+
+    /* ================= SCHOLASTIC ================= */
+
+    const scholasticGold =
+    leftAwards[4]?.selected || false;
+
+    const scholasticSilver =
+    leftAwards[5]?.selected || false;
+
+    const scholasticBronze =
+    leftAwards[6]?.selected || false;
+
+    let scholasticCount = 0;
+
+    if(scholasticBronze) scholasticCount++;
+    if(scholasticSilver) scholasticCount++;
+    if(scholasticGold) scholasticCount++;
+
+    /* ================= SERVICE ================= */
+
+    const longYearBadge =
+    leftAwards[6]?.selected || false;
+
+    const ncoBadge =
+    leftAwards[7]?.selected || false;
+
+    const threeYearBadge =
+    leftAwards[8]?.selected || false;
+
+    /* =====================================================
+       MAIN PAGE BUTTONS
+    ===================================================== */
+
+    const mainButtons =
+    document.querySelectorAll(
+        "#specialPage .status-btn"
+    );
+
+    /* ================= NCO ================= */
+
+    if(ncoBadge){
+
+        setButton(
+            mainButtons[0],
+            "approved",
+            "Approved"
+        );
+
+    }
+
+    else{
+
+        setButton(
+            mainButtons[0],
+            "progress",
+            "In Progress"
+        );
+
+    }
+
+    /* ================= SCHOLASTIC ================= */
+
+    if(scholasticCount === 3){
+
+        setButton(
+            mainButtons[1],
+            "approved",
+            "Approved"
+        );
+
+    }
+
+    else{
+
+        setButton(
+            mainButtons[1],
+            "progress",
+            "In Progress"
+        );
+
+    }
+
+    mainButtons[1].innerHTML += `
+
+        <div style="
+            font-size:18px;
+            margin-top:8px;
+            font-weight:bold;
+        ">
+
+            ${scholasticCount}/3
+
+        </div>
+
+    `;
+
+    /* ================= EDINBURGH ================= */
+
+    if(dukeCount > 0){
+
+        setButton(
+            mainButtons[2],
+            "approved",
+            "Approved"
+        );
+
+    }
+
+    else{
+
+        setButton(
+            mainButtons[2],
+            "not",
+            "Not Eligible"
+        );
+
+    }
+
+    mainButtons[2].innerHTML += `
+
+        <div style="
+            font-size:18px;
+            margin-top:8px;
+            font-weight:bold;
+        ">
+
+            ${dukeCount}/3
+
+        </div>
+
+    `;
+
+    /* ================= PRESIDENT ================= */
+
+    if(presidentBadge){
+
+        setButton(
+            mainButtons[3],
+            "approved",
+            "Approved"
+        );
+
+    }
+
+    else if(ncoBadge){
+
+        setButton(
+            mainButtons[3],
+            "progress",
+            "In Progress"
+        );
+
+    }
+
+    else{
+
+        setButton(
+            mainButtons[3],
+            "not",
+            "Not Eligible"
+        );
+
+    }
+
+    /* ================= FOUNDER ================= */
+
+    if(founderBadge){
+
+        setButton(
+            mainButtons[4],
+            "approved",
+            "Approved"
+        );
+
+    }
+
+    else if(presidentBadge){
+
+        setButton(
+            mainButtons[4],
+            "progress",
+            "In Progress"
+        );
+
+    }
+
+    else{
+
+        setButton(
+            mainButtons[4],
+            "not",
+            "Not Eligible"
+        );
+
+    }
+
+    /* =====================================================
+       SCHOLASTIC DETAILS BUTTONS
+    ===================================================== */
+
+    const scholasticBtns =
+    document.querySelectorAll(
+        "#scholasticPage .status-btn"
+    );
+
+    /* BRONZE */
+
+    if(scholasticBronze){
+
+        setButton(
+            scholasticBtns[0],
+            "approved",
+            "Approved"
+        );
+
+    }
+
+    else{
+
+        scholasticBtns[0].className =
+        "status-btn approved";
+
+        scholasticBtns[0].innerHTML =
+        "Apply Now";
+
+    }
+
+    /* SILVER */
+
+    if(scholasticSilver){
+
+        setButton(
+            scholasticBtns[1],
+            "approved",
+            "Approved"
+        );
+
+    }
+
+    else{
+
+        setButton(
+            scholasticBtns[1],
+            "progress",
+            "In Progress"
+        );
+
+    }
+
+    /* GOLD */
+
+    if(scholasticGold){
+
+        setButton(
+            scholasticBtns[2],
+            "approved",
+            "Approved"
+        );
+
+    }
+
+    else{
+
+        setButton(
+            scholasticBtns[2],
+            "progress",
+            "In Progress"
+        );
+
+    }
+
+}
+
+/* =====================================================
+   INIT
+===================================================== */
+
+loadAwardStatus();
+
+</script>
+
+</body>
+</html>

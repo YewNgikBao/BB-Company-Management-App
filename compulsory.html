@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Compulsory Award</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#00379a;
+    color:white;
+}
+
+/* ================= HEADER ================= */
+
+.header{
+    background:#002c7a;
+    padding:14px 20px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:15px;
+    border-bottom:1px solid rgba(255,255,255,0.15);
+}
+
+.header img{
+    width:70px;
+}
+
+.header-text h1{
+    margin:0;
+    font-size:28px;
+    font-weight:bold;
+}
+
+.header-text p{
+    margin:0;
+    font-size:14px;
+    color:#ddd;
+}
+
+/* ================= PAGE ================= */
+
+.page{
+    position:relative;
+    padding:20px;
+}
+
+/* ================= BACK BUTTON ================= */
+
+.back-btn{
+    position:absolute;
+    left:20px;
+    top:20px;
+    width:60px;
+    height:60px;
+    border:none;
+    border-radius:50%;
+    background:#f5e5b0;
+    color:#002c7a;
+    font-size:28px;
+    cursor:pointer;
+    box-shadow:0 4px 10px rgba(0,0,0,0.35);
+}
+
+/* ================= TITLE ================= */
+
+.title{
+    text-align:center;
+    font-size:34px;
+    font-weight:bold;
+    margin-top:15px;
+    margin-bottom:35px;
+}
+
+/* ================= MAIN PAGE ================= */
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:25px;
+}
+
+.card{
+    background:#f5f3ef;
+    border-radius:20px;
+    padding:20px;
+    text-align:center;
+    box-shadow:0 6px 12px rgba(0,0,0,0.35);
+}
+
+.card img{
+    width:140px;
+    height:140px;
+    object-fit:contain;
+}
+
+.card h2{
+    color:#002c7a;
+    margin:12px 0;
+    font-size:22px;
+}
+
+.line{
+    height:2px;
+    background:#d7b25d;
+    margin:15px 0;
+}
+
+.view-btn{
+    width:100%;
+    border:none;
+    background:#5d9cff;
+    color:white;
+    border-radius:8px;
+    padding:16px;
+    font-size:18px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+}
+
+/* ================= DETAIL PAGE ================= */
+
+.detail-page{
+    display:none;
+}
+
+.detail-box{
+    background:white;
+    border-radius:25px;
+    padding:30px;
+    color:black;
+}
+
+.detail-top{
+    display:flex;
+    align-items:flex-start;
+    gap:25px;
+}
+
+.detail-top img{
+    width:160px;
+    object-fit:contain;
+}
+
+.detail-title{
+    color:#002c7a;
+    font-size:34px;
+    margin-top:10px;
+    font-weight:bold;
+}
+
+.detail-desc{
+    font-size:20px;
+    line-height:1.6;
+    margin-top:15px;
+}
+
+.requirements-title{
+    color:#002c7a;
+    font-size:30px;
+    font-weight:bold;
+    margin:30px 0 20px;
+}
+
+.section{
+    background:#f5f5f5;
+    border-radius:18px;
+    padding:24px;
+    margin-bottom:25px;
+    border:1px solid #e0e0e0;
+}
+
+.section h3{
+    margin-top:0;
+    font-size:28px;
+}
+
+.section ul{
+    margin-top:18px;
+    padding-left:30px;
+}
+
+.section li{
+    font-size:22px;
+    line-height:1.7;
+    margin-bottom:14px;
+}
+
+.back-detail{
+    margin-bottom:25px;
+    width:55px;
+    height:55px;
+    border:none;
+    border-radius:50%;
+    background:#f5e5b0;
+    color:#002c7a;
+    font-size:26px;
+    cursor:pointer;
+}
+
+hr{
+    margin:30px 0;
+}
+
+.option-title{
+    font-size:24px;
+    font-weight:bold;
+    margin-top:25px;
+}
+
+.sub-text{
+    font-size:22px;
+    line-height:1.7;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<div class="header">
+
+<img src="images/bb.logo.png">
+
+<div class="header-text">
+<h1>BB COMPANY</h1>
+<p>MANAGEMENT APP</p>
+</div>
+
+</div>
+
+<!-- ================= MAIN PAGE ================= -->
+
+<div id="mainPage" class="page">
+
+<button class="back-btn"
+onclick="window.location.href='proficiency.html'">
+
+<i class="fa-solid fa-arrow-left"></i>
+
+</button>
+
+<div class="title">
+1. Compulsory Award
+</div>
+
+<div class="grid">
+
+<!-- TARGET -->
+
+<div class="card">
+
+<img src="images/Target.png">
+
+<div class="line"></div>
+
+<h2>Target Badge</h2>
+
+<button class="view-btn"
+onclick="showPage('targetPage')">
+
+<i class="fa-regular fa-file-lines"></i>
+View Requirement
+
+</button>
+
+</div>
+
+<!-- CHRISTIAN -->
+
+<div class="card">
+
+<img src="images/Christian Education.png">
+
+<div class="line"></div>
+
+<h2>Christian Education</h2>
+
+<button class="view-btn"
+onclick="showPage('christianPage')">
+
+<i class="fa-regular fa-file-lines"></i>
+View Requirement
+
+</button>
+
+</div>
+
+<!-- DRILL -->
+
+<div class="card">
+
+<img src="images/Drill.png">
+
+<div class="line"></div>
+
+<h2>Drill</h2>
+
+<button class="view-btn"
+onclick="showPage('drillPage')">
+
+<i class="fa-regular fa-file-lines"></i>
+View Requirement
+
+</button>
+
+</div>
+
+<!-- RECRUITMENT -->
+
+<div class="card">
+
+<img src="images/Recruitment.png">
+
+<div class="line"></div>
+
+<h2>Recruitment</h2>
+
+<button class="view-btn"
+onclick="showPage('recruitmentPage')">
+
+<i class="fa-regular fa-file-lines"></i>
+View Requirement
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= TARGET PAGE ================= -->
+
+<div id="targetPage" class="page detail-page">
+
+<button class="back-detail"
+onclick="backMain()">
+
+<i class="fa-solid fa-arrow-left"></i>
+
+</button>
+
+<div class="detail-box">
+
+<div class="detail-top">
+
+<img src="images/Target.png">
+
+<div>
+
+<div class="detail-title">
+Target Badge
+</div>
+
+<div class="detail-desc">
+The first proficiency award a Member will attain
+before undertaking any other awards.
+</div>
+
+</div>
+
+</div>
+
+<hr>
+
+<div class="requirements-title">
+Requirements
+</div>
+
+<div class="section">
+
+<h3>1. Christian Education</h3>
+
+<ul>
+
+<li>The Books of the Bible</li>
+
+<li>The Lord’s Prayer</li>
+
+<li>BB Prayer and Table Grace</li>
+
+<li>
+BB Hymns – BB Vesper and
+Underneath the Banner / Anchor Song
+</li>
+
+</ul>
+
+</div>
+
+<div class="section">
+
+<h3>2. Character Education</h3>
+
+<ul>
+
+<li>
+10 character lessons
+(refer to BBMS Resource Centre for syllabus)
+</li>
+
+<li>
+BB Hymns – Anchor Song
+</li>
+
+</ul>
+
+</div>
+
+<div class="section">
+
+<h3>3. Drill</h3>
+
+<ul>
+
+<li>Recruits Drill</li>
+
+<li>Paying Compliments</li>
+
+</ul>
+
+</div>
+
+<div class="section">
+
+<h3>4. BB Knowledge</h3>
+
+<ul>
+
+<li>BB Object, Motto & Logo</li>
+
+<li>
+BB History –
+International and National
+</li>
+
+<li>
+Company Organisation and Ranks
+</li>
+
+<li>
+History and Tradition of a Member Company
+</li>
+
+<li>
+Uniform –
+Wearing and Cleaning
+</li>
+
+<li>
+Introduction to Awards Scheme
+</li>
+
+<li>
+Overview of BB International –
+BB Asia
+</li>
+
+<li>
+BB Songs –
+The Anchor Song,
+Will Your Anchor Hold and
+Mighty Band of Brothers
+</li>
+
+<li>
+Recognition of Common Bugle Calls –
+Warning for Parade,
+Fall-In,
+Reveille,
+Retreat,
+Last Post and
+General Salute
+</li>
+
+</ul>
+
+</div>
+
+<div class="section">
+
+<h3>5. Citizenship</h3>
+
+<ul>
+
+<li>
+National Flag and the
+National Coat of Arms
+</li>
+
+<li>National Anthem</li>
+
+<li>Knowledge of Neighbourhood</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= CHRISTIAN PAGE ================= -->
+
+<div id="christianPage" class="page detail-page">
+
+<button class="back-detail"
+onclick="backMain()">
+
+<i class="fa-solid fa-arrow-left"></i>
+
+</button>
+
+<div class="detail-box">
+
+<div class="detail-top">
+
+<img src="images/Christian Education.png">
+
+<div class="detail-title">
+Christian Education Award
+</div>
+
+</div>
+
+<hr>
+
+<div class="requirements-title">
+Requirements
+</div>
+
+<div class="section">
+
+<h3>■ Basic Level</h3>
+
+<ul>
+
+<li>
+Show a general understanding of
+a particular passage of the scripture
+and the application of the Christian faith
+in everyday life in the area of:
+</li>
+
+<li>
+Spiritual formation:
+Prayer,
+devotion,
+quiet time,
+Sunday worship and etc.
+</li>
+
+<li>
+Personal relationship:
+e.g. with family,
+friends,
+adults,
+leaders and etc.
+</li>
+
+<li>
+Be actively involved in one ministry
+within a church for a period of not less
+than 6 months.
+</li>
+
+</ul>
+
+</div>
+
+<div class="section">
+
+<h3>■ Advanced Level</h3>
+
+<ul>
+
+<li>
+Show a general understanding of
+a particular passage of the scripture
+and the application of the Christian faith
+in everyday life in the area of:
+</li>
+
+<li>
+Evangelism –
+Sharing gospel personally or in groups
+</li>
+
+<li>
+Community relationship –
+e.g. local government,
+social services,
+international relations,
+etc.
+</li>
+
+<li>
+Be actively involved in one ministry
+at the Sponsoring Body
+for a period of not less than 6 months.
+</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= DRILL PAGE ================= -->
+
+<div id="drillPage" class="page detail-page">
+
+<button class="back-detail"
+onclick="backMain()">
+
+<i class="fa-solid fa-arrow-left"></i>
+
+</button>
+
+<div class="detail-box">
+
+<div class="detail-top">
+
+<img src="images/Drill.png">
+
+<div class="detail-title">
+Drill Award
+</div>
+
+</div>
+
+<hr>
+
+<div class="requirements-title">
+Requirements
+</div>
+
+<div class="section">
+
+<h3>■ Basic Level</h3>
+
+<ul>
+
+<li>
+Passed a practical examination
+based on the latest BBM Drill Manual
+based on the following:
+</li>
+
+<li>
+Personal Drill –
+Be able to perform Basic Drill movements.
+This would include static drill,
+marching and movement on the march.
+</li>
+
+<li>
+Uniform –
+Members must be able to maintain
+a high standard of wearing uniform
+for a period of 3 months.
+</li>
+
+<li>
+Squad Drill –
+Members undertaking this award
+should be able to perform well
+as a Member of a squad.
+</li>
+
+<li>
+Commanding –
+Be able to give commands for all drill
+movements to a Squad of not less
+than 12 members.
+</li>
+
+<li>
+Passed a written examination based on:
+Definitions,
+Drill Theory,
+Words of Command,
+Paying Compliments and
+Elementary Squad Drill.
+</li>
+
+</ul>
+
+</div>
+
+<div class="section">
+
+<h3>■ Advanced Level</h3>
+
+<ul>
+
+<li>
+Must pass a written and practical test
+based on the following:
+</li>
+
+<li>
+Drill Movement for Colour Party
+and Guard of Honour.
+</li>
+
+<li>
+Practical ability in teaching,
+instructing and commanding recruits
+on Basic Drill movements and
+Company members on Squad Drill.
+</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= RECRUITMENT PAGE ================= -->
+
+<div id="recruitmentPage" class="page detail-page">
+
+<button class="back-detail"
+onclick="backMain()">
+
+<i class="fa-solid fa-arrow-left"></i>
+
+</button>
+
+<div class="detail-box">
+
+<div class="detail-top">
+
+<img src="images/Recruitment.png">
+
+<div class="detail-title">
+Recruitment
+</div>
+
+</div>
+
+<hr>
+
+<div class="requirements-title">
+Requirements
+</div>
+
+<div class="section">
+
+<h3>■ Basic Level</h3>
+
+<div class="sub-text">
+Members applying for this award can do one of the following:
+</div>
+
+<div class="option-title">
+- Option 1
+</div>
+
+<ul>
+
+<li>
+Recruit a new Member,
+who have not been in the Company
+or have been enrolled in any
+BB Company before.
+</li>
+
+<li>
+The recruit must be regular in attendance
+in the Company for one (1) academic year.
+</li>
+
+</ul>
+
+<div class="option-title">
+- Option 2
+</div>
+
+<ul>
+
+<li>
+Play an active role in a Recruitment Committee.
+The recruitment can be carried either in the
+church, school or community.
+</li>
+
+<li>
+The Member must hold at least
+an important position in the
+Recruitment Committee.
+</li>
+
+<li>
+Be able to give a talk during
+one of the recruiting sessions.
+</li>
+
+<li>
+Assist in setting up an exhibition
+to be viewed by prospective recruits.
+</li>
+
+</ul>
+
+</div>
+
+<div class="section">
+
+<h3>■ Advanced Level</h3>
+
+<div class="sub-text">
+Members applying for this award should do one of the following:
+</div>
+
+<div class="option-title">
+- Option 1
+</div>
+
+<ul>
+
+<li>
+Recruit another new recruit
+who has not been in the Company
+or have been enrolled in any
+BB Company before.
+</li>
+
+<li>
+The recruit must be regular in his or her
+attendance in the Company
+for one (1) academic year.
+</li>
+
+</ul>
+
+<div class="option-title">
+- Option 2
+</div>
+
+<ul>
+
+<li>
+Be involved in the Recruitment Committee
+for a further period of one (1) year
+in which he/she must hold
+a very important position.
+</li>
+
+<li>
+Be able to conduct talks during
+the recruiting sessions as well as
+preparing for the recruiting session.
+e.g. putting up slides,
+posters and exhibitions.
+</li>
+
+<li>
+Be able to organize recruiting programs
+for at least 3 months for recruits
+who have just joined the Company.
+This would include instructing
+in a Target Award class.
+</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function showPage(pageId){
+
+document.getElementById("mainPage").style.display="none";
+
+document.getElementById("targetPage").style.display="none";
+document.getElementById("christianPage").style.display="none";
+document.getElementById("drillPage").style.display="none";
+document.getElementById("recruitmentPage").style.display="none";
+
+document.getElementById(pageId).style.display="block";
+
+window.scrollTo(0,0);
+
+}
+
+function backMain(){
+
+document.getElementById("mainPage").style.display="block";
+
+document.getElementById("targetPage").style.display="none";
+document.getElementById("christianPage").style.display="none";
+document.getElementById("drillPage").style.display="none";
+document.getElementById("recruitmentPage").style.display="none";
+
+window.scrollTo(0,0);
+
+}
+
+</script>
+
+</body>
+</html>

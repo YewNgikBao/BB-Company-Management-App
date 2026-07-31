@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Check In</title>
+
+<style>
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f4f1fb;
+  padding:20px;
+}
+
+.card{
+  background:white;
+  padding:30px;
+  border-radius:20px;
+  max-width:500px;
+  margin:auto;
+  text-align:center;
+  box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
+
+.back-btn{
+  background:#666;
+  color:white;
+  border:none;
+  padding:10px 15px;
+  border-radius:10px;
+  cursor:pointer;
+  margin-bottom:20px;
+  float:left;
+}
+
+h1{
+  margin-top:10px;
+}
+
+.info{
+  text-align:left;
+  margin:15px 0;
+}
+
+.info p{
+  margin:8px 0;
+}
+
+input{
+  width:90%;
+  padding:15px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  font-size:16px;
+  margin-top:15px;
+}
+
+.confirm-btn{
+  background:#0066ff;
+  color:white;
+  border:none;
+  padding:15px 30px;
+  border-radius:10px;
+  font-size:18px;
+  cursor:pointer;
+  margin-top:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <button
+  class="back-btn"
+  onclick="window.location.href='attendance.html'">
+    ← Back
+  </button>
+
+  <div style="clear:both;"></div>
+
+  <h1 id="meetingTitle"></h1>
+
+  <div class="info">
+
+    <p id="eventDate"></p>
+
+    <p id="eventTime"></p>
+
+    <p id="eventVenue"></p>
+
+    <p id="eventCheckin"></p>
+
+  </div>
+
+  <input
+  id="username"
+  type="text"
+  placeholder="ENTER YOUR NAME">
+
+  <br><br>
+
+<select id="squad" style="
+width:90%;
+padding:15px;
+border-radius:10px;
+border:1px solid #ccc;
+font-size:16px;
+">
+
+<option value="">SELECT SQUAD</option>
+
+<option value="Squad 1">Squad 1</option>
+
+<option value="Squad 2">Squad 2</option>
+
+<option value="Squad 3">Squad 3</option>
+
+<option value="Squad 4">Squad 4</option>
+
+<option value="Squad 5">Squad 5</option>
+
+<option value="Squad 6">Squad 6</option>
+
+<option value="Squad 7">Squad 7</option>
+
+</select>
+
+  <br>
+
+<button
+class="confirm-btn"
+onclick="alert('Button Clicked'); submitCheckIn();">
+
+Confirm Check In
+
+</button>
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getFirestore,
+  collection,
+  addDoc
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+// ================= FIREBASE =================
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyAHmIUT6Wbh_lVrMoirhY9Z18xc57fSFZ8",
+
+authDomain: "yb1-ae18e.firebaseapp.com",
+
+projectId: "yb1-ae18e",
+
+storageBucket: "yb1-ae18e.firebasestorage.app",
+
+messagingSenderId: "278406966206",
+
+appId: "1:278406966206:web:3dbf470d1a0c63a8dbe7ef"
+
+};
+
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+
+
+// ================= GET EVENT =================
+
+const eventData = JSON.parse(
+localStorage.getItem("selectedEvent")
+);
+
+
+console.log("Selected Event:",eventData);
+
+
+// 如果没有活动资料
+if(!eventData){
+
+alert("No event selected.");
+
+window.location.href="attendance.html";
+
+}
+
+
+
+// ================= DISPLAY =================
+
+
+document.getElementById("meetingTitle").innerText =
+eventData.title || "Event";
+
+
+document.getElementById("eventDate").innerText =
+"Date : " + (eventData.date || "-");
+
+
+document.getElementById("eventTime").innerText =
+"Time : " + (eventData.time || "-");
+
+
+document.getElementById("eventVenue").innerText =
+"Venue : " + (eventData.venue || "-");
+
+
+document.getElementById("eventCheckin").innerText =
+"Check In : " + (eventData.checkin || "-");
+
+
+
+
+// ================= NAME UPPERCASE =================
+
+
+const usernameInput =
+document.getElementById("username");
+
+
+usernameInput.addEventListener(
+"input",
+()=>{
+
+usernameInput.value =
+usernameInput.value.toUpperCase();
+
+});
+
+
+
+
+
+// ================= DISTANCE FUNCTION =================
+
+
+function getDistance(
+lat1,
+lng1,
+lat2,
+lng2
+){
+
+const R = 6371000;
+
+
+const dLat =
+(lat2-lat1)*Math.PI/180;
+
+
+const dLng =
+(lng2-lng1)*Math.PI/180;
+
+
+const a =
+Math.sin(dLat/2) *
+Math.sin(dLat/2)
+
++
+
+Math.cos(lat1*Math.PI/180) *
+Math.cos(lat2*Math.PI/180) *
+
+Math.sin(dLng/2) *
+Math.sin(dLng/2);
+
+
+
+const c =
+2*Math.atan2(
+Math.sqrt(a),
+Math.sqrt(1-a)
+);
+
+
+return R*c;
+
+}
+
+
+
+
+// ================= CHECK IN =================
+
+
+window.submitCheckIn = async function(){
+
+
+alert("Submit Check In");
+
+
+const username =
+document.getElementById("username")
+.value
+.trim();
+
+const squad =
+document.getElementById("squad")
+.value;
+
+
+if(!username){
+
+alert("Please enter your name.");
+
+return;
+
+}
+
+if(!squad){
+
+alert("Please select your squad.");
+
+return;
+
+}
+
+
+const now = new Date();
+
+
+
+try{
+
+
+// ================= FIREBASE SAVE =================
+
+
+await addDoc(
+
+collection(db,"attendance"),
+
+{
+
+name: username,
+
+squad: squad,
+
+event: eventData.title,
+
+date: now.toLocaleDateString(),
+
+time: now.toLocaleTimeString(),
+
+}
+
+);
+
+
+
+
+
+// ================= GOOGLE SHEET =================
+
+
+const formData = new FormData();
+
+formData.append("name", username);
+formData.append("squad", squad);
+formData.append("event", eventData.title);
+formData.append("date", now.toLocaleDateString());
+formData.append("time", now.toLocaleTimeString());
+
+fetch(
+
+"https://script.google.com/macros/s/AKfycbzIQuj5hJZAhS9gDT7QLJ3AuZMpw4q3tXvKocJilHD8P9NmHdmJe6e3xxgzoNrVV6p5/exec",
+
+{
+
+method:"POST",
+
+body:formData
+
+}
+
+)
+.catch(error=>{
+
+console.log(
+"Google Sheet Error:",
+error
+);
+
+});
+
+
+
+alert("Check In Success!");
+
+setTimeout(() => {
+    window.location.href = "attendance.html";
+}, 500);
+
+}catch(error){
+
+
+console.log(error);
+
+
+alert(
+"Check In Error: "
++
+error
+);
+
+
+}
+
+
+};
+
+
+</script>
+
+</body>
+</html>

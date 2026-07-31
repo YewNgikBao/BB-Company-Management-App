@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Profile Page</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+body{
+  margin:0;
+  font-family:Arial;
+  background:#c6cde1b3;
+  min-height:100vh;
+  padding-bottom:100px;
+}
+
+/* HEADER */
+
+.header{
+  background:rgba(0,0,50,0.7);
+  color:white;
+  padding:15px;
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+.header img{
+  width:70px;
+}
+
+.header-text h1{
+  margin:0;
+  font-size:32px;
+}
+
+.header-text p{
+  margin:0;
+  font-size:16px;
+}
+
+.profile-section{
+  display:flex;
+  gap:15px;
+  align-items:center;
+  margin:20px;
+  padding:20px;
+  background:#3c4d78;
+  border-radius:20px;
+  backdrop-filter:blur(8px);
+}
+
+.profile-info h1{
+  margin:0;
+  font-size:24px;
+  color:rgb(255, 255, 255);
+}
+
+.profile-info h2{
+  margin:5px 0;
+  font-weight:normal;
+  color:rgb(255, 255, 255);
+}
+
+.profile-info p{
+  margin:0;
+  color:rgb(255, 255, 255);
+}
+
+.avatar{
+  width:110px;
+  height:110px;
+  border-radius:50%;
+  background:#ccc;
+  overflow:hidden;
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.profile-info h1{
+  margin:0;
+  font-size:24px;
+}
+
+.profile-info h2{
+  margin:5px 0;
+  font-weight:normal;
+}
+
+.profile-info p{
+  margin:0;
+}
+
+/* BUTTONS */
+
+.action-buttons{
+  display:flex;
+  gap:15px;
+  margin:20px;
+}
+
+.action-buttons button{
+  flex:1;
+  border:none;
+  border-radius:15px;
+  padding:15px;
+  background:#3c4d78;
+  color:white;
+  font-size:18px;
+  cursor:pointer;
+}
+
+/* CARD */
+
+.card{
+  background:white;
+  margin:20px;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.card-title{
+  font-size:28px;
+  font-weight:bold;
+  padding:20px;
+}
+
+.row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:20px;
+  border-top:1px solid #ddd;
+  cursor:pointer;
+}
+
+.row-left{
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+.row i{
+  font-size:28px;
+}
+
+/* LOGOUT */
+
+.logout{
+  text-align:center;
+  margin:40px 0 120px;
+}
+
+.logout button{
+  border:3px solid red;
+  color:red;
+  background:white;
+  border-radius:15px;
+  padding:15px 40px;
+  font-size:28px;
+  cursor:pointer;
+}
+
+/* BOTTOM NAV */
+
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  background:white;
+  display:flex;
+  justify-content:space-around;
+  padding:10px 0;
+  box-shadow:0 -2px 10px rgba(0,0,0,0.2);
+}
+
+.nav-item{
+  text-align:center;
+  cursor:pointer;
+  color:#777;
+}
+
+.nav-item.active{
+  color:#08244d;
+  font-weight:bold;
+}
+
+.nav-item i{
+  font-size:26px;
+}
+
+/* MODAL */
+
+.modal{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.5);
+  display:none;
+  justify-content:center;
+  align-items:center;
+}
+
+.modal-content{
+  background:white;
+  width:80%;
+  max-width:400px;
+  border-radius:20px;
+  padding:25px;
+}
+
+.modal-content h1{
+  text-align:center;
+}
+
+.modal-content input,
+.modal-content select{
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border-radius:10px;
+  border:1px solid #999;
+  font-size:18px;
+}
+
+.save-btn{
+  width:100%;
+  padding:15px;
+  border:none;
+  border-radius:15px;
+  background:#4d8df7;
+  color:white;
+  font-size:22px;
+  margin-top:15px;
+  cursor:pointer;
+}
+
+.cancel-btn{
+  width:100%;
+  padding:12px;
+  border:none;
+  background:none;
+  font-size:22px;
+  margin-top:10px;
+  cursor:pointer;
+}
+
+.photo-option{
+  background:#d9ecff;
+  padding:20px;
+  border-radius:15px;
+  margin-top:15px;
+  cursor:pointer;
+  font-size:28px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+
+    <img src="images/bb.logo.png">
+
+    <div class="header-text">
+        <h1>BB COMPANY</h1>
+        <p>MANAGEMENT APP</p>
+    </div>
+
+</div>
+
+  <div class="profile-section">
+
+    <div class="avatar">
+      <img id="profileImage"
+      src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
+    </div>
+
+    <div class="profile-info">
+
+      <h1 id="displayName"></h1>
+
+      <h2 id="displayRank">
+      Staff Sergeant
+      </h2>
+
+      <p id="displayCompany">
+      No Company
+      </p>
+
+    </div>
+
+  </div>
+
+  <div class="action-buttons">
+
+    <button onclick="openPhotoModal()">
+      <i class="fa-solid fa-camera"></i>
+      Set Photo
+    </button>
+
+    <button onclick="openEditModal()">
+      <i class="fa-solid fa-pen"></i>
+      Edit Info
+    </button>
+
+  </div>
+
+</div>
+
+<!-- PERSONAL INFO -->
+
+<div class="card">
+
+  <div class="card-title">
+    Personal Information
+  </div>
+
+  <div class="row"
+  onclick="openBirthdayModal()">
+
+  <div class="row-left">
+
+    <i class="fa-solid fa-cake-candles"></i>
+
+    <div id="birthdayText">
+      Birthday<br>
+      Not Set
+    </div>
+
+  </div>
+
+  <i class="fa-solid fa-chevron-right"></i>
+
+  </div>
+
+  <div class="row">
+
+    <div class="row-left">
+      <i class="fa-solid fa-mobile-screen"></i>
+
+      <div id="displayPhone"></div>
+    </div>
+
+  </div>
+
+  <div class="row">
+
+    <div class="row-left">
+      <i class="fa-solid fa-venus-mars"></i>
+
+      <div id="displayGender">
+      Gender: Male
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- SETTINGS -->
+
+<div class="card">
+
+  <div class="card-title">
+    Setting & Security
+  </div>
+
+  <div class="row"
+  onclick="changePassword()">
+
+    <div class="row-left">
+      <i class="fa-solid fa-key"></i>
+
+      <div>Change Password</div>
+    </div>
+
+    <i class="fa-solid fa-chevron-right"></i>
+
+  </div>
+
+  <div class="row"
+  onclick="helpFeedback()">
+
+    <div class="row-left">
+      <i class="fa-regular fa-circle-question"></i>
+
+      <div>Help & Feedback</div>
+    </div>
+
+    <i class="fa-solid fa-chevron-right"></i>
+
+  </div>
+
+</div>
+
+<!-- LOGOUT -->
+
+<div class="logout">
+
+  <button onclick="logout()">
+    Log out
+  </button>
+
+</div>
+
+<!-- BOTTOM NAV -->
+
+<div class="bottom-nav">
+
+  <div class="nav-item"
+  onclick="window.location.href='dashboard.html'">
+
+    <i class="fa-solid fa-house"></i>
+
+    <div>Home</div>
+
+  </div>
+
+  <div class="nav-item"
+  onclick="window.location.href='attendance.html'">
+
+    <i class="fa-regular fa-calendar"></i>
+
+    <div>Attendance</div>
+
+  </div>
+
+  <div class="nav-item"
+  onclick="window.location.href='chat.html'">
+
+    <i class="fa-regular fa-comments"></i>
+
+    <div>Chat</div>
+
+  </div>
+
+  <div class="nav-item"
+  onclick="window.location.href='achievements.html'">
+
+    <i class="fa-solid fa-trophy"></i>
+
+    <div>Achievements</div>
+
+  </div>
+
+  <div class="nav-item active">
+
+    <i class="fa-solid fa-user"></i>
+
+    <div>Profile</div>
+
+  </div>
+
+</div>
+
+<!-- EDIT MODAL -->
+
+<div class="modal"
+id="editModal">
+
+  <div class="modal-content">
+
+    <h1>Edit Information</h1>
+
+    <input type="text"
+    id="editName"
+    placeholder="Name">
+
+    <select id="editRank">
+
+      <option>
+      Officer
+      </option>
+
+      <option>
+      Helper
+      </option>
+
+      <option>
+      Staff Sergeant  
+      </option>
+
+      <option>
+      Sergeant
+      </option>
+
+      <option>
+      Corporal
+      </option>
+
+      <option>
+      Lance Corporal
+      </option>
+
+      <option>
+      Private
+      </option>
+
+    </select>
+
+    <input type="text"
+    id="editCompany"
+    placeholder="Company">
+
+    <select id="editGender">
+    
+      <option>
+      Male
+      </option>
+
+      <option>
+      Female
+      </option>
+
+    </select>
+
+    <button class="save-btn"
+    onclick="saveProfile()">
+      Save Changes
+    </button>
+
+    <button class="cancel-btn"
+    onclick="closeEditModal()">
+      Cancel
+    </button>
+
+  </div>
+
+</div>
+
+<!-- PHOTO MODAL -->
+<div class="modal"
+id="photoModal">
+
+  <div class="modal-content">
+
+    <h1>Set Photo</h1>
+
+    <div class="photo-option"
+    onclick="takePhoto()">
+
+      <i class="fa-solid fa-camera"></i>
+      Take a Photo
+
+    </div>
+
+    <div class="photo-option"
+    onclick="choosePhoto()">
+
+      <i class="fa-regular fa-image"></i>
+      Choose from Gallery
+
+    </div>
+
+    <button class="cancel-btn"
+    onclick="closePhotoModal()">
+      Cancel
+    </button>
+
+    <input type="file"
+    id="fileInput"
+    accept="image/*"
+    style="display:none">
+
+  </div>
+
+</div>
+
+<!-- BIRTHDAY MODAL -->
+
+<div class="modal"
+id="birthdayModal">
+
+  <div class="modal-content">
+
+    <h1>Select Birthday</h1>
+
+    <input type="date"
+    id="birthdayInput">
+
+    <button class="save-btn"
+    onclick="saveBirthday()">
+      Save
+    </button>
+
+    <button class="cancel-btn"
+    onclick="closeBirthdayModal()">
+      Cancel
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- CHANGE PASSWORD MODAL -->
+
+<div class="modal"
+id="passwordModal">
+
+  <div class="modal-content">
+
+    <h1>Change Password</h1>
+
+    <input type="password"
+    id="currentPassword"
+    placeholder="Current Password">
+
+    <input type="password"
+    id="newPassword"
+    placeholder="New Password">
+
+    <p>
+    Password Requirements:
+    <br>
+    • minimum 8 characters
+    <br>
+    • one number
+    <br>
+    • one special character
+    </p>
+
+    <button class="save-btn"
+    onclick="savePassword()">
+      Confirm
+    </button>
+
+    <button class="cancel-btn"
+    onclick="closePasswordModal()">
+      Cancel
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- HELP MODAL -->
+
+<div class="modal"
+id="helpModal">
+
+  <div class="modal-content">
+
+    <h1>Help & Feedback</h1>
+
+    <textarea
+    id="feedbackText"
+    placeholder="Your feedback or questions..."
+    style="
+    width:100%;
+    height:150px;
+    padding:10px;
+    border-radius:10px;
+    font-size:18px;
+    "></textarea>
+
+    <button class="save-btn"
+    onclick="submitFeedback()">
+      Submit
+    </button>
+
+    <button class="cancel-btn"
+    onclick="closeHelpModal()">
+      Cancel
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- LOGOUT MODAL -->
+
+<div class="modal"
+id="logoutModal">
+
+  <div class="modal-content">
+
+    <h1>Log Out?</h1>
+
+    <button class="save-btn"
+    onclick="confirmLogout()">
+      Confirm
+    </button>
+
+    <button class="cancel-btn"
+    onclick="closeLogoutModal()">
+      Cancel
+    </button>
+
+  </div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+    getFirestore,
+    doc,
+    getDoc,
+    updateDoc
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+    getAuth,
+    onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+
+    apiKey: "AIzaSyAHmlUT6WBh_lVrMOirhY9Z18xc57fSFZ8",
+
+    authDomain: "yb1-ae18e.firebaseapp.com",
+
+    projectId: "yb1-ae18e",
+
+    storageBucket: "yb1-ae18e.firebasestorage.app",
+
+    messagingSenderId: "278406966206",
+
+    appId: "1:278406966206:web:3dbf470d1a0c63a8dbe7ef",
+
+    measurementId: "G-YZQGS7NTME"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+const auth = getAuth(app);
+
+let currentUser = "";
+
+onAuthStateChanged(auth, async(user)=>{
+
+    if(!user) return;
+
+    currentUser = user.uid;
+
+});
+
+// DISPLAY DATA
+document.getElementById("displayName")
+.innerText =
+localStorage.getItem("name")
+|| "No Name";
+
+document.getElementById("displayCompany")
+.innerText =
+localStorage.getItem("company")
+|| "No Company";
+
+document.getElementById("displayPhone")
+.innerText =
+localStorage.getItem("phone")
+|| "No Phone";
+
+document.getElementById("displayRank")
+.innerText =
+localStorage.getItem("rank")
+|| "Staff Sergeant";
+
+document.getElementById("displayGender")
+.innerText =
+"Gender: " +
+(
+  localStorage.getItem("gender")
+  || "Male"
+);
+
+
+// LOAD SAVED PHOTO
+const savedPhoto =
+localStorage.getItem("profilePhoto");
+
+if(savedPhoto){
+
+  document.getElementById("profileImage")
+  .src = savedPhoto;
+}
+
+
+// EDIT MODAL
+window.openEditModal = function(){
+
+  document.getElementById("editModal")
+  .style.display = "flex";
+
+  document.getElementById("editName")
+  .value =
+  localStorage.getItem("name")
+  || "";
+
+  document.getElementById("editCompany")
+  .value =
+  localStorage.getItem("company")
+  || "";
+
+  document.getElementById("editRank")
+  .value =
+  localStorage.getItem("rank")
+  || "Staff Sergeant";
+
+  document.getElementById("editGender")
+  .value =
+  localStorage.getItem("gender")
+  || "Male";
+}
+
+window.closeEditModal = function(){
+
+  document.getElementById("editModal")
+  .style.display = "none";
+}
+
+
+// SAVE PROFILE
+window.saveProfile = async function(){
+
+  const newName =
+  document.getElementById("editName")
+  .value;
+
+  const newCompany =
+  document.getElementById("editCompany")
+  .value;
+
+  const newRank =
+  document.getElementById("editRank")
+  .value;
+
+  const newGender =
+  document.getElementById("editGender")
+  .value;
+
+  // SAVE TO LOCAL STORAGE
+  localStorage.setItem(
+    "name",
+    newName
+  );
+
+  localStorage.setItem(
+    "company",
+    newCompany
+  );
+
+  localStorage.setItem(
+    "rank",
+    newRank
+  );
+
+  localStorage.setItem(
+    "gender",
+    newGender
+  );
+
+  // UPDATE PROFILE PAGE
+  document.getElementById(
+    "displayName"
+  ).innerText = newName;
+
+  document.getElementById(
+    "displayCompany"
+  ).innerText = newCompany;
+
+  document.getElementById(
+    "displayRank"
+  ).innerText = newRank;
+
+  document.getElementById(
+  "displayGender"
+  ).innerText =
+  "Gender: " + newGender;
+
+  try{
+
+    await updateDoc(
+        doc(db,"users",currentUser),
+        {
+            name:newName,
+            company:newCompany,
+            rank:newRank,
+            gender:newGender
+        }
+    );
+
+    console.log("Profile saved to Firebase");
+
+}
+catch(error){
+
+    console.log(error);
+
+}
+
+  alert("Profile Updated!");
+
+  closeEditModal();
+}
+
+
+// PHOTO MODAL
+window.openPhotoModal = function(){
+
+    document.getElementById("photoModal")
+    .style.display="flex";
+
+}
+
+window.closePhotoModal = function(){
+
+    document.getElementById("photoModal")
+    .style.display="none";
+
+}
+
+window.takePhoto = function(){
+
+    document.getElementById("fileInput").click();
+
+}
+
+window.choosePhoto = function(){
+
+    document.getElementById("fileInput").click();
+
+}
+
+
+// IMAGE UPLOAD
+document.getElementById("fileInput")
+.addEventListener("change", function(){
+
+  const file = this.files[0];
+
+  if(file){
+
+    const reader =
+    new FileReader();
+
+    reader.onload = async function(e){
+
+        const photo = e.target.result;
+
+        localStorage.setItem(
+            "profilePhoto",
+            photo
+        );
+
+        await updateDoc(
+            doc(db, "users", auth.currentUser.uid),
+            {
+                photo: e.target.result
+            }
+        );
+
+        document.getElementById("profileImage").src = photo;
+
+        console.log("currentUser =", currentUser);
+
+        try{
+
+            await updateDoc(
+                doc(db,"users",currentUser),
+                {
+                    photo: photo
+                }
+            );
+
+            console.log("Photo saved to Firestore");
+
+        }catch(error){
+
+            console.log(error);
+
+        }
+
+        closePhotoModal();
+
+    };
+
+    reader.readAsDataURL(file);
+  }
+});
+
+
+// CLICK OUTSIDE TO CLOSE
+window.onclick = function(event){
+
+  const editModal =
+  document.getElementById("editModal");
+
+  const photoModal =
+  document.getElementById("photoModal");
+
+  const birthdayModal =
+  document.getElementById("birthdayModal");
+
+  const passwordModal =
+  document.getElementById("passwordModal");
+
+  const helpModal =
+  document.getElementById("helpModal");
+
+  const logoutModal =
+  document.getElementById("logoutModal");
+
+  // EDIT
+  if(event.target == editModal){
+
+    closeEditModal();
+  }
+
+  // PHOTO
+  if(event.target == photoModal){
+
+    closePhotoModal();
+  }
+
+  // BIRTHDAY
+  if(event.target == birthdayModal){
+
+    closeBirthdayModal();
+  }
+
+  // PASSWORD
+  if(event.target == passwordModal){
+
+    closePasswordModal();
+  }
+
+  // HELP
+  if(event.target == helpModal){
+
+    closeHelpModal();
+  }
+
+  // LOGOUT
+  if(event.target == logoutModal){
+
+    closeLogoutModal();
+  }
+}
+
+
+// =========================
+// BIRTHDAY
+// =========================
+
+const savedBirthday =
+localStorage.getItem("birthday");
+
+if(savedBirthday){
+
+  document.getElementById(
+    "birthdayText"
+  ).innerHTML =
+  "Birthday<br>" + savedBirthday;
+}
+
+window.openBirthdayModal = function(){
+
+  document.getElementById(
+    "birthdayModal"
+  ).style.display = "flex";
+}
+
+window.closeBirthdayModal = function(){
+
+  document.getElementById(
+    "birthdayModal"
+  ).style.display = "none";
+}
+
+window.saveBirthday = function(){
+
+  const birthday =
+  document.getElementById(
+    "birthdayInput"
+  ).value;
+
+  localStorage.setItem(
+    "birthday",
+    birthday
+  );
+
+  document.getElementById(
+    "birthdayText"
+  ).innerHTML =
+  "Birthday<br>" + birthday;
+
+  closeBirthdayModal();
+}
+
+
+// =========================
+// CHANGE PASSWORD
+// =========================
+
+window.changePassword = function(){
+
+  document.getElementById(
+    "passwordModal"
+  ).style.display = "flex";
+}
+
+window.closePasswordModal = function(){
+
+  document.getElementById(
+    "passwordModal"
+  ).style.display = "none";
+}
+
+window.savePassword = function(){
+
+  const current =
+  document.getElementById(
+    "currentPassword"
+  ).value;
+
+  const newPass =
+  document.getElementById(
+    "newPassword"
+  ).value;
+
+  const savedPass =
+  localStorage.getItem(
+    "password"
+  );
+
+  if(current !== savedPass){
+
+    alert("Current password incorrect");
+    return;
+  }
+
+  const regex =
+  /^(?=.*[0-9])(?=.*[!@#$%^&*])/;
+
+  if(
+    newPass.length < 8 ||
+    !regex.test(newPass)
+  ){
+
+    alert(
+      "Password must contain number & special character"
+    );
+
+    return;
+  }
+
+  localStorage.setItem(
+    "password",
+    newPass
+  );
+
+  alert("Password Changed!");
+
+  closePasswordModal();
+}
+
+
+// =========================
+// HELP & FEEDBACK
+// =========================
+
+window.helpFeedback = function(){
+
+  document.getElementById(
+    "helpModal"
+  ).style.display = "flex";
+}
+
+window.closeHelpModal = function(){
+
+  document.getElementById(
+    "helpModal"
+  ).style.display = "none";
+}
+
+window.submitFeedback = function(){
+
+    const feedback =
+    document.getElementById("feedbackText").value.trim();
+
+    if(feedback === ""){
+
+        alert("Please enter feedback");
+        return;
+    }
+
+    document.getElementById("formName").value =
+        localStorage.getItem("name") || "Unknown";
+
+    document.getElementById("formFeedback").value =
+        feedback;
+
+    document.getElementById("feedbackForm").submit();
+
+    alert("Feedback Submitted!");
+
+    document.getElementById("feedbackText").value = "";
+
+    closeHelpModal();
+
+}
+
+// =========================
+// LOGOUT
+// =========================
+
+window.logout = function(){
+
+  document.getElementById(
+    "logoutModal"
+  ).style.display = "flex";
+}
+
+window.closeLogoutModal = function(){
+
+  document.getElementById(
+    "logoutModal"
+  ).style.display = "none";
+}
+
+window.confirmLogout = function(){
+
+  window.location.href =
+  "index.html";
+}
+
+
+// NAVIGATION
+function goHome(){
+
+  window.location.href =
+  "dashboard.html";
+}
+
+function openAttendance(){
+
+  alert("Open Attendance");
+}
+
+function openChat(){
+
+  alert("Open Chat");
+}
+
+function openAchievements(){
+
+  alert("Open Achievements");
+}
+
+</script>
+
+<iframe name="hiddenFrame" style="display:none;"></iframe>
+
+<form
+    id="feedbackForm"
+    action="https://script.google.com/macros/s/AKfycbxCfWS5sgaJiWcYyW09SWEnGLZRfKkN6WTZU2UxiZ3m7BQwsi5Zr_OjPMo_5UCIB34/exec"
+    method="POST"
+    target="hiddenFrame"
+    style="display:none;">
+
+    <input type="text" name="name" id="formName">
+    <input type="text" name="feedback" id="formFeedback">
+
+</form>
+
+</body>
+</html>
