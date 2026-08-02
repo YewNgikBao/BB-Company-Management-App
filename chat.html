@@ -20,8 +20,6 @@
             font-family:Arial,sans-serif;
             background:#e9e4ff;
             padding-bottom:90px;
-
-            visibility:hidden;
         }
 
         /* HEADER */
@@ -1152,30 +1150,27 @@ async function checkPhoneUser(){
             friends = [];
 
             // 读取自己的好友
-            const contactsSnapshot = await getDocs(
-                collection(db, "friends", currentUser, "contacts")
-            );
-
-            for (const contact of contactsSnapshot.docs) {
+            await Promise.all(
+            contactsSnapshot.docs.map(async(contact)=>{
 
                 const friendUid = contact.id;
 
                 const userDoc = await getDoc(
-                    doc(db, "users", friendUid)
+                    doc(db,"users",friendUid)
                 );
 
-                if (userDoc.exists()) {
+
+                if(userDoc.exists()){
 
                     friends.push({
-                        uid: friendUid,
+                        uid:friendUid,
                         ...userDoc.data()
                     });
 
                 }
 
-            }
-
-            renderChats();
+            })
+            );
 
         }
 
@@ -1215,20 +1210,12 @@ async function checkPhoneUser(){
 
                     openChat("friend", index);
 
-                    document.body.style.visibility = "visible";
-
                 }else{
-
-                    document.body.style.visibility = "visible";
 
                 }
 
                 localStorage.removeItem("searchUser");
                 localStorage.removeItem("searchChat");
-
-            }else{
-
-                document.body.style.visibility = "visible";
 
             }
 
@@ -1273,9 +1260,6 @@ async function checkPhoneUser(){
                 }
 
             });
-
-
-            renderChats();
 
         }
 
@@ -1439,9 +1423,6 @@ unreadCount[friend.name] > 0
             
 
             }
-
-            document.getElementById("searchInput")
-                .addEventListener("input", renderChats);
 
             function switchTab(tab, event) {
 
@@ -2895,9 +2876,11 @@ window.openSearch = openSearch;
 
     document
     .getElementById("messageText")
-    .addEventListener("keypress",(e)=>{
+    .addEventListener("keydown",(e)=>{
 
-        if(e.key==="Enter"){
+        if(e.key === "Enter"){
+
+            e.preventDefault();
 
             sendMessage();
 
