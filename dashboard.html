@@ -585,9 +585,18 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
   getFirestore,
   collection,
-  getDocs
+  getDocs,
+  doc,
+  getDoc
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+import {
+  getAuth,
+  onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 /* FIREBASE CONFIG */
 const firebaseConfig = {
@@ -602,6 +611,7 @@ const firebaseConfig = {
 /* INIT FIREBASE */
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
 /* =========================
    UPCOMING EVENTS (FIXED)
@@ -656,23 +666,56 @@ async function loadUpcomingEvents() {
    PROFILE
 ========================= */
 
-const dashboardPhoto = localStorage.getItem("profilePhoto");
+onAuthStateChanged(auth, async(user)=>{
 
-if (dashboardPhoto) {
-  document.getElementById("dashboardProfileImage").src = dashboardPhoto;
-}
+  if(!user){
+    return;
+  }
 
-const dashboardName = localStorage.getItem("name");
 
-if (dashboardName) {
-  document.getElementById("dashboardName").innerText = dashboardName;
-}
+  const userRef =
+  doc(db,"users",user.uid);
 
-const dashboardCompany = localStorage.getItem("company");
 
-if (dashboardCompany) {
-  document.getElementById("dashboardCompany").innerText = dashboardCompany;
-}
+  const userSnap =
+  await getDoc(userRef);
+
+
+  if(userSnap.exists()){
+
+
+    const data =
+    userSnap.data();
+
+
+
+    document.getElementById(
+      "dashboardName"
+    ).innerText =
+    data.name || "No Name";
+
+
+
+    document.getElementById(
+      "dashboardCompany"
+    ).innerText =
+    data.company || "No Company";
+
+
+
+    if(data.photo){
+
+      document.getElementById(
+        "dashboardProfileImage"
+      ).src =
+      data.photo;
+
+    }
+
+
+  }
+
+});
 
 /* =========================
    NOTIFICATIONS SYSTEM

@@ -178,7 +178,8 @@ import {
 
 getAuth,
 createUserWithEmailAndPassword,
-signInWithEmailAndPassword
+signInWithEmailAndPassword,
+signOut
 
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -344,6 +345,48 @@ console.log(error);
 
 // LOGIN BUTTON
 loginSubmit.onclick = async () => {
+
+console.log("CLICK LOGIN");
+
+
+const email =
+loginPhone.value + "@bb.com";
+
+try{
+
+// 先清除旧账号
+await signOut(auth);
+
+
+const email =
+loginPhone.value + "@bb.com";
+
+
+await signInWithEmailAndPassword(
+auth,
+email,
+loginPassword.value
+);
+
+console.log("LOGIN UID:", auth.currentUser.uid);
+console.log("LOGIN EMAIL:", auth.currentUser.email);
+
+alert("Login Success!");
+
+
+window.location.href =
+"dashboard.html";
+
+
+}
+catch(error){
+
+loginError.innerText =
+"Wrong phone or password";
+
+}
+
+};
 
 const email =
 loginPhone.value + "@bb.com";

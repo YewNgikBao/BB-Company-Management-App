@@ -517,6 +517,10 @@ id="editModal">
     id="editCompany"
     placeholder="Company">
 
+    <input type="text"
+    id="editPhone"
+    placeholder="Phone Number">
+
     <select id="editGender">
     
       <option>
@@ -723,7 +727,11 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
     getAuth,
-    onAuthStateChanged
+    onAuthStateChanged,
+    signOut,
+    EmailAuthProvider,
+    reauthenticateWithCredential,
+    updatePassword
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
@@ -759,37 +767,88 @@ onAuthStateChanged(auth, async(user)=>{
 
     currentUser = user.uid;
 
+
+    // LOAD USER PROFILE FROM FIREBASE
+
+    const userRef = doc(
+        db,
+        "users",
+        user.uid
+    );
+
+
+    const userSnap = await getDoc(userRef);
+
+
+    if(userSnap.exists()){
+
+        const data = userSnap.data();
+
+
+        document.getElementById("displayName").innerText =
+        data.name || "No Name";
+
+
+        document.getElementById("displayCompany").innerText =
+        data.company || "No Company";
+
+
+        document.getElementById("displayRank").innerText =
+        data.rank || "Staff Sergeant";
+
+
+        document.getElementById("displayGender").innerText =
+        "Gender: " + (data.gender || "Male");
+
+        if(data.phone){
+
+            document.getElementById(
+                "displayPhone"
+            ).innerText =
+            data.phone;
+
+        }
+        else{
+
+            document.getElementById(
+                "displayPhone"
+            ).innerText =
+            "No Phone";
+
+        }
+
+        if(data.birthday){
+
+            document.getElementById(
+                "birthdayText"
+            ).innerHTML =
+            "Birthday<br>" + data.birthday;
+
+        }
+
+
+        if(data.photo){
+
+            document.getElementById("profileImage").src =
+            data.photo;
+
+        }
+
+
+        // OPTIONAL:
+        // 保存到localStorage备用
+
+        localStorage.setItem("name", data.name || "");
+
+        localStorage.setItem("company", data.company || "");
+
+        localStorage.setItem("rank", data.rank || "");
+
+        localStorage.setItem("gender", data.gender || "");
+
+    }
+
 });
-
-// DISPLAY DATA
-document.getElementById("displayName")
-.innerText =
-localStorage.getItem("name")
-|| "No Name";
-
-document.getElementById("displayCompany")
-.innerText =
-localStorage.getItem("company")
-|| "No Company";
-
-document.getElementById("displayPhone")
-.innerText =
-localStorage.getItem("phone")
-|| "No Phone";
-
-document.getElementById("displayRank")
-.innerText =
-localStorage.getItem("rank")
-|| "Staff Sergeant";
-
-document.getElementById("displayGender")
-.innerText =
-"Gender: " +
-(
-  localStorage.getItem("gender")
-  || "Male"
-);
-
 
 // LOAD SAVED PHOTO
 const savedPhoto =
@@ -827,6 +886,11 @@ window.openEditModal = function(){
   .value =
   localStorage.getItem("gender")
   || "Male";
+
+  document.getElementById("editPhone")
+  .value =
+  localStorage.getItem("phone")
+  || "";
 }
 
 window.closeEditModal = function(){
@@ -853,6 +917,10 @@ window.saveProfile = async function(){
 
   const newGender =
   document.getElementById("editGender")
+  .value;
+
+  const newPhone =
+  document.getElementById("editPhone")
   .value;
 
   // SAVE TO LOCAL STORAGE
@@ -894,16 +962,22 @@ window.saveProfile = async function(){
   ).innerText =
   "Gender: " + newGender;
 
+  document.getElementById(
+  "displayPhone"
+  ).innerText =
+  newPhone;
+
   try{
 
     await updateDoc(
-        doc(db,"users",currentUser),
-        {
-            name:newName,
-            company:newCompany,
-            rank:newRank,
-            gender:newGender
-        }
+    doc(db,"users",currentUser),
+    {
+        name:newName,
+        company:newCompany,
+        rank:newRank,
+        gender:newGender,
+        phone:newPhone
+    }
     );
 
     console.log("Profile saved to Firebase");
@@ -1094,24 +1168,33 @@ window.closeBirthdayModal = function(){
   ).style.display = "none";
 }
 
-window.saveBirthday = function(){
+window.saveBirthday = async function(){
 
   const birthday =
   document.getElementById(
     "birthdayInput"
   ).value;
 
-  localStorage.setItem(
-    "birthday",
-    birthday
+
+  await updateDoc(
+      doc(db,"users",currentUser),
+      {
+          birthday:birthday
+      }
   );
+
 
   document.getElementById(
     "birthdayText"
   ).innerHTML =
   "Birthday<br>" + birthday;
 
+
+  alert("Birthday Updated!");
+
+
   closeBirthdayModal();
+
 }
 
 
@@ -1133,52 +1216,108 @@ window.closePasswordModal = function(){
   ).style.display = "none";
 }
 
-window.savePassword = function(){
+window.savePassword = async function(){
 
-  const current =
-  document.getElementById(
-    "currentPassword"
-  ).value;
+    const currentPassword =
+    document.getElementById(
+        "currentPassword"
+    ).value;
 
-  const newPass =
-  document.getElementById(
-    "newPassword"
-  ).value;
 
-  const savedPass =
-  localStorage.getItem(
-    "password"
-  );
+    const newPassword =
+    document.getElementById(
+        "newPassword"
+    ).value;
 
-  if(current !== savedPass){
 
-    alert("Current password incorrect");
-    return;
-  }
+    const user = auth.currentUser;
 
-  const regex =
-  /^(?=.*[0-9])(?=.*[!@#$%^&*])/;
 
-  if(
-    newPass.length < 8 ||
-    !regex.test(newPass)
-  ){
+    if(!user){
 
-    alert(
-      "Password must contain number & special character"
-    );
+        alert("User not logged in");
+        return;
 
-    return;
-  }
+    }
 
-  localStorage.setItem(
-    "password",
-    newPass
-  );
 
-  alert("Password Changed!");
+    const regex =
+    /^(?=.*[0-9])(?=.*[!@#$%^&*])/;
 
-  closePasswordModal();
+
+    if(
+        newPassword.length < 8 ||
+        !regex.test(newPassword)
+    ){
+
+        alert(
+        "Password must contain number & special character"
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+
+        // Verify old password
+
+        const credential =
+        EmailAuthProvider.credential(
+            user.email,
+            currentPassword
+        );
+
+
+        await reauthenticateWithCredential(
+            user,
+            credential
+        );
+
+
+        // Change Firebase password
+
+        await updatePassword(
+            user,
+            newPassword
+        );
+
+
+        alert(
+        "Password Changed Successfully!"
+        );
+
+
+        closePasswordModal();
+
+
+    }
+    catch(error){
+
+
+        console.log(error);
+
+
+        if(error.code === 
+        "auth/invalid-credential"){
+
+            alert(
+            "Current password incorrect"
+            );
+
+        }
+        else{
+
+            alert(
+            error.message
+            );
+
+        }
+
+    }
+
 }
 
 
@@ -1245,10 +1384,23 @@ window.closeLogoutModal = function(){
   ).style.display = "none";
 }
 
-window.confirmLogout = function(){
+window.confirmLogout = async function(){
 
-  window.location.href =
-  "index.html";
+    try{
+
+        await signOut(auth);
+
+        alert("Logged out successfully");
+
+        window.location.href = "index.html";
+
+    }
+    catch(error){
+
+        console.log(error);
+
+    }
+
 }
 
 
