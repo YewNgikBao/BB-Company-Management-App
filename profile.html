@@ -759,13 +759,20 @@ const db = getFirestore(app);
 
 const auth = getAuth(app);
 
+window.testAuth = auth;
+
 let currentUser = "";
+let profileData = {};
 
 onAuthStateChanged(auth, async(user)=>{
 
     if(!user) return;
 
     currentUser = user.uid;
+
+    window.myUID = currentUser;
+
+    console.log("LOGIN UID =", currentUser);
 
 
     // LOAD USER PROFILE FROM FIREBASE
@@ -784,6 +791,7 @@ onAuthStateChanged(auth, async(user)=>{
 
         const data = userSnap.data();
 
+        profileData = data;
 
         document.getElementById("displayName").innerText =
         data.name || "No Name";
@@ -834,64 +842,33 @@ onAuthStateChanged(auth, async(user)=>{
 
         }
 
-
-        // OPTIONAL:
-        // 保存到localStorage备用
-
-        localStorage.setItem("name", data.name || "");
-
-        localStorage.setItem("company", data.company || "");
-
-        localStorage.setItem("rank", data.rank || "");
-
-        localStorage.setItem("gender", data.gender || "");
-
-    }
-
-});
-
-// LOAD SAVED PHOTO
-const savedPhoto =
-localStorage.getItem("profilePhoto");
-
-if(savedPhoto){
-
-  document.getElementById("profileImage")
-  .src = savedPhoto;
-}
-
-
-// EDIT MODAL
 window.openEditModal = function(){
 
   document.getElementById("editModal")
   .style.display = "flex";
 
-  document.getElementById("editName")
-  .value =
-  localStorage.getItem("name")
-  || "";
 
-  document.getElementById("editCompany")
-  .value =
-  localStorage.getItem("company")
-  || "";
+  document.getElementById("editName").value =
+  profileData.name || "";
 
-  document.getElementById("editRank")
-  .value =
-  localStorage.getItem("rank")
-  || "Staff Sergeant";
 
-  document.getElementById("editGender")
-  .value =
-  localStorage.getItem("gender")
-  || "Male";
+  document.getElementById("editCompany").value =
+  profileData.company || "";
 
-  document.getElementById("editPhone")
-  .value =
-  localStorage.getItem("phone")
-  || "";
-}
+
+  document.getElementById("editRank").value =
+  profileData.rank || "Staff Sergeant";
+
+
+  document.getElementById("editGender").value =
+  profileData.gender || "Male";
+
+
+  document.getElementById("editPhone").value =
+  profileData.phone || "";
+
+}       
+
 
 window.closeEditModal = function(){
 
@@ -1024,59 +1001,58 @@ window.choosePhoto = function(){
 
 
 // IMAGE UPLOAD
+
 document.getElementById("fileInput")
 .addEventListener("change", function(){
 
   const file = this.files[0];
 
+
   if(file){
 
-    const reader =
-    new FileReader();
+    const reader = new FileReader();
+
 
     reader.onload = async function(e){
 
-        const photo = e.target.result;
+      const photo = e.target.result;
 
-        localStorage.setItem(
-            "profilePhoto",
-            photo
-        );
+
+      try{
 
         await updateDoc(
-            doc(db, "users", auth.currentUser.uid),
-            {
-                photo: e.target.result
-            }
+          doc(db,"users",currentUser),
+          {
+            photo: photo
+          }
         );
 
-        document.getElementById("profileImage").src = photo;
 
-        console.log("currentUser =", currentUser);
+        document.getElementById("profileImage")
+        .src = photo;
 
-        try{
 
-            await updateDoc(
-                doc(db,"users",currentUser),
-                {
-                    photo: photo
-                }
-            );
+        console.log("Photo saved to Firebase");
 
-            console.log("Photo saved to Firestore");
-
-        }catch(error){
-
-            console.log(error);
-
-        }
 
         closePhotoModal();
 
+
+      }
+      catch(error){
+
+        console.log(error);
+
+      }
+
+
     };
 
+
     reader.readAsDataURL(file);
+
   }
+
 });
 
 

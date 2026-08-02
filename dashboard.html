@@ -668,6 +668,8 @@ async function loadUpcomingEvents() {
 
 onAuthStateChanged(auth, async(user)=>{
 
+  console.log("UID:", user.uid);
+
   if(!user){
     return;
   }
@@ -687,7 +689,7 @@ onAuthStateChanged(auth, async(user)=>{
     const data =
     userSnap.data();
 
-
+    console.log(data);
 
     document.getElementById(
       "dashboardName"
