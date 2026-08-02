@@ -600,12 +600,21 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 /* FIREBASE CONFIG */
 const firebaseConfig = {
-  apiKey: "AIzaSyAHmIUT6Wbh_lVrMoirhY9Z18xc57fSFZ8",
-  authDomain: "yb1-ae18e.firebaseapp.com",
-  projectId: "yb1-ae18e",
-  storageBucket: "yb1-ae18e.firebasestorage.app",
-  messagingSenderId: "278406966206",
-  appId: "1:278406966206:web:3dbf470d1a0c63a8dbe7ef"
+
+    apiKey: "AIzaSyAHmlUT6WBh_lVrMOirhY9Z18xc57fSFZ8",
+
+    authDomain: "yb1-ae18e.firebaseapp.com",
+
+    projectId: "yb1-ae18e",
+
+    storageBucket: "yb1-ae18e.firebasestorage.app",
+
+    messagingSenderId: "278406966206",
+
+    appId: "1:278406966206:web:3dbf470d1a0c63a8dbe7ef",
+
+    measurementId: "G-YZQGS7NTME"
+
 };
 
 /* INIT FIREBASE */
@@ -668,11 +677,14 @@ async function loadUpcomingEvents() {
 
 onAuthStateChanged(auth, async(user)=>{
 
-  console.log("UID:", user.uid);
-
   if(!user){
+    console.log("No user login");
     return;
   }
+
+  console.log("UID:", user.uid);
+
+  alert("Dashboard UID: " + user.uid);
 
 
   const userRef =
@@ -685,11 +697,9 @@ onAuthStateChanged(auth, async(user)=>{
 
   if(userSnap.exists()){
 
-
     const data =
     userSnap.data();
 
-    console.log(data);
 
     document.getElementById(
       "dashboardName"
@@ -697,12 +707,10 @@ onAuthStateChanged(auth, async(user)=>{
     data.name || "No Name";
 
 
-
     document.getElementById(
       "dashboardCompany"
     ).innerText =
     data.company || "No Company";
-
 
 
     if(data.photo){
@@ -713,7 +721,6 @@ onAuthStateChanged(auth, async(user)=>{
       data.photo;
 
     }
-
 
   }
 
