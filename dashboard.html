@@ -677,6 +677,8 @@ async function loadUpcomingEvents() {
 
 onAuthStateChanged(auth, async(user)=>{
 
+  console.log("USER OBJECT:", user);
+
   if(!user){
     console.log("No user login");
     return;
