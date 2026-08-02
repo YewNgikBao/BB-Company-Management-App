@@ -1113,15 +1113,25 @@ window.onclick = function(event){
 // BIRTHDAY
 // =========================
 
-const savedBirthday =
-localStorage.getItem("birthday");
+const user = auth.currentUser;
 
-if(savedBirthday){
+if(user){
 
-  document.getElementById(
-    "birthdayText"
-  ).innerHTML =
-  "Birthday<br>" + savedBirthday;
+  const docRef = doc(db,"users",user.uid);
+
+  const docSnap = await getDoc(docRef);
+
+  if(docSnap.exists()){
+
+    const birthday =
+    docSnap.data().birthday;
+
+    document.getElementById(
+      "birthdayText"
+    ).innerHTML =
+    "Birthday<br>" + birthday;
+
+  }
 }
 
 window.openBirthdayModal = function(){
@@ -1315,13 +1325,14 @@ window.submitFeedback = function(){
     document.getElementById("feedbackText").value.trim();
 
     if(feedback === ""){
-
         alert("Please enter feedback");
         return;
     }
 
+    const user = auth.currentUser;
+
     document.getElementById("formName").value =
-        localStorage.getItem("name") || "Unknown";
+        user ? user.displayName : "Unknown";
 
     document.getElementById("formFeedback").value =
         feedback;
@@ -1333,7 +1344,6 @@ window.submitFeedback = function(){
     document.getElementById("feedbackText").value = "";
 
     closeHelpModal();
-
 }
 
 // =========================

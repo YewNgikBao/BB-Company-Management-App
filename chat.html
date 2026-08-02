@@ -7,6 +7,8 @@
 
     <title>BB Company Chat</title>
 
+    <link rel="icon" href="data:,">
+
     <script
     src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"
     type="module">
@@ -1149,28 +1151,39 @@ async function checkPhoneUser(){
 
             friends = [];
 
-            // 读取自己的好友
-            await Promise.all(
-            contactsSnapshot.docs.map(async(contact)=>{
+            const contactsSnapshot = await getDocs(
+                collection(
+                    db,
+                    "friends",
+                    currentUser,
+                    "contacts"
+                )
+            );
+
+
+            for (const contact of contactsSnapshot.docs) {
 
                 const friendUid = contact.id;
 
+
                 const userDoc = await getDoc(
-                    doc(db,"users",friendUid)
+                    doc(db, "users", friendUid)
                 );
 
 
-                if(userDoc.exists()){
+                if (userDoc.exists()) {
 
                     friends.push({
-                        uid:friendUid,
+                        uid: friendUid,
                         ...userDoc.data()
                     });
 
                 }
 
-            })
-            );
+            }
+
+
+            renderChats();
 
         }
 
