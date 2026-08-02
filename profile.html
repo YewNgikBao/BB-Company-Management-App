@@ -283,6 +283,13 @@ body{
 
 </div>
 
+  <div id="uidTest" style="
+  color:red;
+  font-size:14px;
+  margin:10px;">
+  UID loading...
+  </div>
+
   <div class="profile-section">
 
     <div class="avatar">
@@ -772,6 +779,9 @@ onAuthStateChanged(auth, async(user)=>{
 
     window.myUID = currentUser;
 
+    document.getElementById("uidTest").innerText =
+    "UID: " + currentUser;
+
     console.log("LOGIN UID =", currentUser);
 
 
@@ -904,26 +914,6 @@ window.saveProfile = async function(){
   document.getElementById("editPhone")
   .value;
 
-  // SAVE TO LOCAL STORAGE
-  localStorage.setItem(
-    "name",
-    newName
-  );
-
-  localStorage.setItem(
-    "company",
-    newCompany
-  );
-
-  localStorage.setItem(
-    "rank",
-    newRank
-  );
-
-  localStorage.setItem(
-    "gender",
-    newGender
-  );
 
   // UPDATE PROFILE PAGE
   document.getElementById(
