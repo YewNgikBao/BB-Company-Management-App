@@ -372,7 +372,7 @@ body{
 
     <div>
 
-      <h2>Good Morning!</h2>
+      <h2 id="greetingText">Good Morning!</h2>
 
       <h1 id="dashboardName">
         No Name
@@ -629,6 +629,42 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
+
+/* =========================
+   TIME GREETING
+========================= */
+
+function updateGreeting(){
+
+  const hour = new Date().getHours();
+
+  let greeting = "";
+
+  if(hour < 12){
+
+    greeting = "Good Morning!";
+
+  }
+  else if(hour < 18){
+
+    greeting = "Good Afternoon!";
+
+  }
+  else{
+
+    greeting = "Good Evening!";
+
+  }
+
+
+  document.getElementById(
+    "greetingText"
+  ).innerText = greeting;
+
+}
+
+
+updateGreeting();
 
 /* =========================
    UPCOMING EVENTS (FIXED)

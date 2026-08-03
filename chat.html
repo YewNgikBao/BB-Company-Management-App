@@ -1046,11 +1046,19 @@
 
             friends.forEach(friend=>{
 
-                if(friend.name){
 
-                    watchChat(friend.name);
+                const uid1 = currentUser;
+                const uid2 = friend.uid;
 
-                }
+
+                const chatId =
+                uid1 < uid2
+                ? uid1 + "_" + uid2
+                : uid2 + "_" + uid1;
+
+
+                watchChat(chatId);
+
 
             });
 
@@ -1413,7 +1421,15 @@ ${friend.phone}
 </div>
 
 <div class="chat-last">
-${lastMessages[friend.name] || "No messages"}
+${lastMessages[
+(
+currentUser < friend.uid
+?
+currentUser+"_"+friend.uid
+:
+friend.uid+"_"+currentUser
+)
+] || "No messages"}
 </div>
 
 </div>

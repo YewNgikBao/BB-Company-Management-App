@@ -898,6 +898,58 @@ renderPreview();
 
 function toggleB(i){
 
+/* ================= REQUIREMENTS ================= */
+
+// Expedition needs First Aid
+if(i===15){
+
+    if(
+        !rightAwards[18].b &&
+        !rightAwards[18].a
+    ){
+
+        alert("Need First Aid first");
+        return;
+
+    }
+
+}
+
+
+// Life Saving needs First Aid + Swimming
+if(i===22){
+
+    if(
+        (!rightAwards[18].b &&
+         !rightAwards[18].a)
+        ||
+        (!rightAwards[32].b &&
+         !rightAwards[32].a)
+    ){
+
+        alert("Need First Aid and Swimming first");
+        return;
+
+    }
+
+}
+
+
+// Water Adventure needs Swimming
+if(i===33){
+
+    if(
+        !rightAwards[32].b &&
+        !rightAwards[32].a
+    ){
+
+        alert("Need Swimming first");
+        return;
+
+    }
+
+}
+
 /* ================= MAIN BADGE ================= */
 /* 第一粒 */
 
@@ -955,6 +1007,58 @@ renderRight();
 }
 
 function toggleA(i){
+
+/* ================= REQUIREMENTS ================= */
+
+// Expedition needs First Aid
+if(i===15){
+
+    if(
+        !rightAwards[18].b &&
+        !rightAwards[18].a
+    ){
+
+        alert("Need First Aid first");
+        return;
+
+    }
+
+}
+
+
+// Life Saving needs First Aid + Swimming
+if(i===22){
+
+    if(
+        (!rightAwards[18].b &&
+         !rightAwards[18].a)
+        ||
+        (!rightAwards[32].b &&
+         !rightAwards[32].a)
+    ){
+
+        alert("Need First Aid and Swimming first");
+        return;
+
+    }
+
+}
+
+
+// Water Adventure needs Swimming
+if(i===33){
+
+    if(
+        !rightAwards[32].b &&
+        !rightAwards[32].a
+    ){
+
+        alert("Need Swimming first");
+        return;
+
+    }
+
+}
 
 /* A 一定需要 B */
 
@@ -1138,21 +1242,68 @@ if(i===0){
 }
 
 /* ================= PRESIDENT ================= */
-/* President = index 1 */
-/* Need NCO Star (9) + Three Year (10) */
+/* Need:
+   - NCO Proficiency Star
+   - Three Year Service
+   - Christian Education (Advance)
+   - Drill (Advance)
+   - Recruitment (Basic)
+   - At least 2 Basic awards
+   - At least 4 Advance awards
+*/
 
 else if(i===1){
 
+    // NCO Star + Three Year
     if(
-        !leftAwards[9].selected ||
-        !leftAwards[10].selected
+        !leftAwards[8].selected ||
+        !leftAwards[9].selected
     ){
-        alert("Need NCO Star and Three Year first");
+        alert("Need NCO Proficiency Star and Three Year Service first");
         return;
     }
 
-    leftAwards[1].selected =
-    !leftAwards[1].selected;
+    // Christian Education (Advance)
+    if(!rightAwards[6].a){
+        alert("Need Christian Education (Advance)");
+        return;
+    }
+
+    // Drill (Advance)
+    if(!rightAwards[12].a){
+        alert("Need Drill (Advance)");
+        return;
+    }
+
+    // Recruitment (Basic)
+    if(!rightAwards[27].b){
+        alert("Need Recruitment (Basic)");
+        return;
+    }
+
+    // Count Basic & Advance awards (不包括 Target Badge)
+    let basicCount = 0;
+    let advanceCount = 0;
+
+    for(let i = 1; i < rightAwards.length; i++){
+
+        if(rightAwards[i].b) basicCount++;
+
+        if(rightAwards[i].a) advanceCount++;
+
+    }
+
+    if(basicCount < 2){
+        alert("Need at least 2 Basic Awards.");
+        return;
+    }
+
+    if(advanceCount < 4){
+        alert("Need at least 4 Advance Awards.");
+        return;
+    }
+
+    leftAwards[1].selected = !leftAwards[1].selected;
 
 }
 
