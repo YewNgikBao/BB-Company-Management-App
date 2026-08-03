@@ -997,7 +997,7 @@
 
         function loadLastMessages() {
 
-            function watchChat(chatName){
+            function watchChat(chatName, displayName){
 
     if(!chatName){
 
@@ -1021,8 +1021,7 @@
         if (!snapshot.empty) { 
             const msg = 
             snapshot.docs[0].data(); 
-            lastMessages[chatName] = 
-            msg.text; 
+            lastMessages[displayName] = msg.text;
         } else { 
             lastMessages[chatName] = 
             "No messages"; 
@@ -1057,7 +1056,7 @@
                 : uid2 + "_" + uid1;
 
 
-                watchChat(chatId);
+                watchChat(chatId, friend.name);
 
 
             });
