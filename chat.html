@@ -335,6 +335,7 @@
 
         .message-input{
             display:flex;
+            flex-wrap:wrap;
             align-items:center;
 
             position:absolute;
@@ -427,13 +428,14 @@
         }
 
         #replyBox{
-            width: 100%;
-            background: #f2f2f2;
-            border-left: 4px solid #081f63;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            box-sizing: border-box;
+            width:100%;
+            flex-basis:100%;
+            background:#f2f2f2;
+            border-left:4px solid #081f63;
+            padding:10px;
+            margin-bottom:10px;
+            border-radius:8px;
+            box-sizing:border-box;
         }
 
         .reply-header{
@@ -569,6 +571,13 @@
 
     background:#ffe082 !important;
 
+}
+
+.sender-name{
+    font-size:12px;
+    font-weight:bold;
+    color:#1f4f85;
+    margin-bottom:4px;
 }
 
     </style>
@@ -995,6 +1004,33 @@
 
         let currentSearchIndex = 0;
 
+        function normalizeMalaysiaPhone(phone){
+
+    phone = phone.trim().replace(/\s+/g,"");
+
+    if(phone.startsWith("+")){
+        phone = phone.substring(1);
+    }
+
+    if(phone.startsWith("0")){
+        phone = "6" + phone;
+    }
+
+    if(!phone.startsWith("60")){
+        return null;
+    }
+
+    if(!/^\d+$/.test(phone)){
+        return null;
+    }
+
+    if(phone.length < 11 || phone.length > 12){
+        return null;
+    }
+
+    return phone;
+}
+
         function loadLastMessages() {
 
             function watchChat(chatName, displayName){
@@ -1018,29 +1054,63 @@
 
     onSnapshot(q,(snapshot)=>{
 
-        if (!snapshot.empty) { 
-            const msg = 
-            snapshot.docs[0].data(); 
-            lastMessages[displayName] = msg.text;
-        } else { 
-            lastMessages[chatName] = 
-            "No messages"; 
-        } 
-        
-        renderChats();
+    if (!snapshot.empty) { 
 
-    });
+        let latest = null;
+
+
+        snapshot.docs.forEach(docSnap=>{
+
+            const msg = docSnap.data();
+
+
+            // 跳过自己删除的讯息
+            if(
+                msg.hiddenFor?.includes(currentUser)
+            ){
+                return;
+            }
+
+
+            latest = msg;
+
+        });
+
+
+        if(latest){
+
+            lastMessages[displayName] =
+            latest.text;
+
+        }else{
+
+            lastMessages[displayName] =
+            "No messages";
+
+        }
+
+
+    } else { 
+
+        lastMessages[displayName] =
+        "No messages";
+
+    } 
+
+
+    renderChats();
+
+});
 
 }
 
             groups.forEach(group=>{
 
-                if(group.name){
+                watchChat(
+                    group.name,
+                    group.name
+                );
 
-                    watchChat(group.name);
-
-                }
-            
             });
 
             friends.forEach(friend=>{
@@ -1072,10 +1142,22 @@
 
 async function checkPhoneUser(){
 
-    const phone =
-    document.getElementById("friendPhone")
-    .value
-    .trim();
+const phone =
+normalizeMalaysiaPhone(
+document.getElementById("friendPhone").value
+);
+
+if(!phone){
+
+    document.getElementById("friendResult").innerHTML =
+    `<p style="color:red">
+    Invalid Malaysia phone number
+    </p>`;
+
+    searchedUser = null;
+
+    return;
+}
 
 
     const result =
@@ -1538,7 +1620,18 @@ ${friend.name}
 
             async function addFriend() {
 
-                const phone = document.getElementById("friendPhone").value.trim();
+                const phone =
+                normalizeMalaysiaPhone(
+                document.getElementById("friendPhone").value
+                );
+
+                if(!phone){
+
+                    alert("Please enter a valid Malaysia phone number.");
+
+                    return;
+
+                }
 
                 if (phone === "") {
                     alert("Please enter phone number.");
@@ -1736,7 +1829,7 @@ ${friend.name}
                     groups[index].name === "Saved Messages"
                 ) {
 
-                    currentChat = "SavedMessages";
+                    currentChat = "SavedMessages_" + currentUser;
 
                     document.getElementById(
                         "chatRoomTitle"
@@ -2010,6 +2103,13 @@ ${friend.name}
                        >
 
                        <div class="msg-text">
+
+                       ${
+                           currentGroup &&
+                           msg.senderUid !== currentUser
+                           ? `<div class="sender-name">${msg.sender}</div>`
+                           : ""
+                       }
 
                        ${msg.reply ? `
                            <div class="reply-message">
@@ -2695,6 +2795,11 @@ window.openSearch = openSearch;
                 localStorage.setItem(
                    "privateUser",
                     JSON.stringify(currentFriend)
+                );
+
+                localStorage.setItem(
+                   "currentChat",
+                    currentChat
                 );
 
                 window.location.href="contactinfo.html";

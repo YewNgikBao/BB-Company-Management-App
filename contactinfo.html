@@ -380,7 +380,18 @@ window.deleteChat = async function(){
 
     if(!confirm("Delete chat for yourself?")) return;
 
-    const chatName=user.name;
+
+    const chatName =
+    localStorage.getItem("currentChat");
+
+
+    if(!chatName){
+
+        alert("Chat not found");
+
+        return;
+
+    }
 
     const snapshot=await getDocs(
 

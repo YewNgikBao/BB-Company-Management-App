@@ -504,6 +504,26 @@ body{
 
         <div class="menu-text">
 
+            <div
+                class="menu-item"
+                onclick="deleteGroupChat()">
+
+                <i class="fa-solid fa-trash"></i>
+
+                <div class="menu-text">
+
+                    <div class="title">
+                        Delete Chat
+                    </div>
+
+                    <div class="subtitle">
+                        Delete chat history for yourself only
+                    </div>
+
+                </div>
+
+            </div>
+
             <div class="title">
                 Leave Group
             </div>
@@ -551,6 +571,7 @@ import {
     updateDoc,
     deleteDoc,
     arrayRemove,
+    arrayUnion,
     collection,
     getDocs
 }
@@ -911,6 +932,52 @@ function addMember(){
 
 }
 
+async function deleteGroupChat(){
+
+    if(!confirm(
+        "Delete this group chat for yourself only?"
+    ))
+    return;
+
+
+    const chatName = group.name;
+
+
+    const snapshot = await getDocs(
+
+        collection(
+            db,
+            "chats",
+            chatName,
+            "messages"
+        )
+
+    );
+
+
+    for(const message of snapshot.docs){
+
+        await updateDoc(
+
+            message.ref,
+
+            {
+                hiddenFor:
+                arrayUnion(currentUser)
+            }
+
+        );
+
+    }
+
+
+    alert("Group chat deleted for you");
+
+
+    window.location="chat.html";
+
+}
+
 async function leaveGroup(){
 
     if(!confirm("Leave this group?"))
@@ -973,6 +1040,9 @@ leaveGroup;
 
 window.dissolveGroup =
 dissolveGroup;
+
+window.deleteGroupChat =
+deleteGroupChat;
 
 window.changePhoto = changePhoto;
 

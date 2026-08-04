@@ -227,6 +227,39 @@ getAuth(app);
 const db =
 getFirestore(app);
 
+// Normalize Malaysia phone number
+function normalizeMalaysiaPhone(phone) {
+
+  phone = phone.trim().replace(/\s+/g, "");
+
+  // 去掉 +
+  if (phone.startsWith("+")) {
+    phone = phone.substring(1);
+  }
+
+  // 0123456789 → 60123456789
+  if (phone.startsWith("0")) {
+    phone = "6" + phone;
+  }
+
+  // 必须以60开头
+  if (!phone.startsWith("60")) {
+    return null;
+  }
+
+  // 必须只有数字
+  if (!/^\d+$/.test(phone)) {
+    return null;
+  }
+
+  // 长度限制（Malaysia 手机号码）
+  if (phone.length < 11 || phone.length > 12) {
+    return null;
+  }
+
+  return phone;
+}
+
 // TOGGLE
 const loginBtn =
 document.getElementById("loginBtn");
@@ -293,8 +326,17 @@ document.getElementById("loginError");
 // REGISTER BUTTON
 registerSubmit.onclick = async () => {
 
+const normalizedPhone =
+normalizeMalaysiaPhone(phone.value);
+
+if (!normalizedPhone) {
+  regError.innerText =
+  "Please enter a valid Malaysia phone number.";
+  return;
+}
+
 const email =
-phone.value + "@bb.com";
+normalizedPhone + "@bb.com";
 
 try{
 
@@ -314,7 +356,7 @@ doc(db,"users",user.uid),
 
 {
 name:name.value,
-phone:phone.value,
+phone: normalizedPhone,
 uid:user.uid,
 createdAt:serverTimestamp()
 }
@@ -328,7 +370,7 @@ name.value
 
 localStorage.setItem(
 "phone",
-phone.value
+normalizedPhone
 );
 
 alert("Register Success!");
@@ -355,18 +397,22 @@ loginSubmit.onclick = async () => {
 console.log("CLICK LOGIN");
 
 
+const normalizedPhone =
+normalizeMalaysiaPhone(loginPhone.value);
+
+if (!normalizedPhone) {
+    loginError.innerText =
+    "Please enter a valid Malaysia phone number.";
+    return;
+}
+
 const email =
-loginPhone.value + "@bb.com";
+normalizedPhone + "@bb.com";
 
 try{
 
 // 先清除旧账号
 await signOut(auth);
-
-
-const email =
-loginPhone.value + "@bb.com";
-
 
 await signInWithEmailAndPassword(
 auth,
@@ -391,35 +437,6 @@ loginError.innerText =
 "Wrong phone or password";
 
 }
-
-};
-
-const email =
-loginPhone.value + "@bb.com";
-
-try{
-
-await signInWithEmailAndPassword(
-auth,
-email,
-loginPassword.value
-);
-
-alert("Login Success!");
-
-window.location.href =
-"dashboard.html";
-
-localStorage.setItem(
-"phone",
-loginPhone.value
-);
-
-}
-catch(error){
-
-loginError.innerText =
-"Wrong phone or password";
 
 };
 
