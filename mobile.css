@@ -1,0 +1,169 @@
+/* =========================
+   GLOBAL MOBILE RESPONSIVE
+   BB COMPANY MANAGEMENT APP
+========================= */
+
+*{
+    box-sizing:border-box;
+}
+
+html,
+body{
+    width:100%;
+    max-width:100%;
+    margin:0;
+    overflow-x:hidden;
+}
+
+img{
+    max-width:100%;
+    height:auto;
+}
+
+/* Prevent long text from breaking layout */
+
+*{
+    overflow-wrap:break-word;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+input,
+select,
+textarea,
+button{
+    max-width:100%;
+    box-sizing:border-box;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal{
+    box-sizing:border-box;
+    padding:15px;
+    overflow-y:auto;
+}
+
+.modal-content{
+    width:100%;
+    max-width:400px;
+    max-height:90vh;
+    overflow-y:auto;
+    box-sizing:border-box;
+}
+
+.modal-content input,
+.modal-content select,
+.modal-content textarea{
+    width:100%;
+    max-width:100%;
+    box-sizing:border-box;
+}
+
+/* =========================
+   MOBILE SCREEN
+========================= */
+
+@media (max-width:600px){
+
+    body{
+        width:100%;
+        min-width:0;
+    }
+
+    .header{
+        width:100%;
+        max-width:100%;
+    }
+
+    .header-text{
+        min-width:0;
+    }
+
+    .header-text h1{
+        font-size:clamp(22px, 7vw, 32px);
+    }
+
+    /* Cards */
+
+    .card{
+        max-width:calc(100% - 40px);
+    }
+
+    /* Profile */
+
+    .profile-section{
+        max-width:calc(100% - 40px);
+    }
+
+    /* Buttons */
+
+    .action-buttons{
+        max-width:calc(100% - 40px);
+    }
+
+    /* Bottom navigation */
+
+    .bottom-nav{
+        width:100%;
+        left:0;
+        right:0;
+        box-sizing:border-box;
+    }
+
+    .nav-item{
+        min-width:0;
+        flex:1;
+    }
+
+    .nav-item i{
+        font-size:24px;
+    }
+
+    /* Logout */
+
+    .logout button{
+        max-width:90%;
+    }
+
+    /* Crop photo */
+
+    #cropArea{
+        width:min(300px,80vw);
+        height:min(300px,80vw);
+    }
+
+}
+
+
+/* =========================
+   VERY SMALL PHONES
+========================= */
+
+@media (max-width:360px){
+
+    .header img{
+        width:55px;
+    }
+
+    .header-text h1{
+        font-size:21px;
+    }
+
+    .header-text p{
+        font-size:10px;
+    }
+
+    .nav-item i{
+        font-size:21px;
+    }
+
+    .nav-item div{
+        font-size:11px;
+    }
+
+}

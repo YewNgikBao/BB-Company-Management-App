@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <title>BB Company App</title>
 
+<link rel="stylesheet" href="mobile.css">
+
 <link rel="icon" type="image/png" href="images/BBapplogo.png">
 
 <link rel="apple-touch-icon" href="images/BBapplogo.png">
@@ -105,6 +107,37 @@ button.submit{
   color: red;
   font-size: 12px;
 }
+
+.forgot-btn {
+  background: none;
+  border: none;
+  color: white;
+  margin-top: 15px;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 13px;
+}
+
+.human-check {
+  margin: 15px 0;
+  padding: 12px;
+  background: white;
+  color: #222;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.human-check input {
+  width: auto;
+  margin-right: 8px;
+}
+
+.error {
+  color: #ff6b6b;
+  font-size: 13px;
+  margin: 8px 0;
+}
+
 </style>
 </head>
 
@@ -129,48 +162,119 @@ button.submit{
     </div>
 
     <!-- REGISTER -->
-    <div id="registerForm">
+<div id="registerForm">
 
-      <input type="text"
-      id="name"
-      placeholder="Enter your full name">
+  <input
+    type="text"
+    id="name"
+    placeholder="Enter your full name"
+  >
 
-      <input type="text"
-      id="phone"
-      placeholder="Enter mobile (60+)">
+  <input
+    type="email"
+    id="email"
+    placeholder="Enter your email"
+  >
 
-      <input type="password"
-      id="regPassword"
-      placeholder="Create password">
+  <input
+    type="text"
+    id="phone"
+    placeholder="Enter mobile (60+) "
+  >
 
-      <div id="regError" class="error"></div>
+  <input
+    type="password"
+    id="regPassword"
+    placeholder="Create password"
+  >
 
-      <button class="submit"
-      id="registerSubmit">
-      Register
-      </button>
+  <input
+    type="password"
+    id="confirmPassword"
+    placeholder="Confirm password"
+  >
 
-    </div>
+  <button
+    class="submit"
+    id="registerSubmit"
+  >
+    Register
+  </button>
+
+  <div
+    id="regError"
+    class="error">
+  </div>
+
+</div>
 
     <!-- LOGIN -->
-    <div id="loginForm" style="display:none;">
 
-      <input type="text"
-      id="loginPhone"
-      placeholder="Enter mobile (60+)">
+<div id="loginForm" style="display:none;">
 
-      <input type="password"
-      id="loginPassword"
-      placeholder="Enter password">
+  <input
+    type="text"
+    id="loginAccount"
+    placeholder="Enter email or mobile"
+  >
 
-      <div id="loginError" class="error"></div>
+  <input
+    type="password"
+    id="loginPassword"
+    placeholder="Enter password"
+  >
 
-      <button class="submit"
-      id="loginSubmit">
-      Log in
-      </button>
+  <div
+    id="loginError"
+    class="error">
+  </div>
 
-    </div>
+  <button
+    class="submit"
+    id="loginSubmit"
+    type="button">
+    Log in
+  </button>
+
+  <button
+    type="button"
+    id="forgotPasswordBtn"
+    class="forgot-btn">
+    Forgot Password?
+  </button>
+
+</div>
+    <!-- FORGOT PASSWORD -->
+
+<div id="forgotPasswordForm" style="display:none;">
+
+  <h3>Forgot Password?</h3>
+
+  <input
+    type="email"
+    id="resetEmail"
+    placeholder="Enter your email"
+  >
+
+  <button
+    class="submit"
+    id="resetPasswordBtn"
+    type="button">
+    Send Reset Email
+  </button>
+
+  <div
+    id="resetError"
+    class="error">
+  </div>
+
+  <button
+    type="button"
+    id="backToLoginBtn">
+    Back to Login
+  </button>
+
+</div>
 
   </div>
 </div>
@@ -181,58 +285,71 @@ import { initializeApp }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
-
-getAuth,
-createUserWithEmailAndPassword,
-signInWithEmailAndPassword,
-signOut
-
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  sendPasswordResetEmail
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
-
-getFirestore,
-doc,
-setDoc,
-serverTimestamp
-
+  getFirestore,
+  doc,
+  setDoc,
+  getDocs,
+  collection,
+  query,
+  where,
+  limit,
+  serverTimestamp
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+
+// =====================================================
+// FIREBASE CONFIG
+// =====================================================
+
 const firebaseConfig = {
 
-apiKey: "AIzaSyAHmlUT6WBh_lVrMOirhY9Z18xc57fSFZ8",
+  apiKey: "AIzaSyAHmlUT6WBh_lVrMOirhY9Z18xc57fSFZ8",
 
-authDomain: "yb1-ae18e.firebaseapp.com",
+  authDomain: "yb1-ae18e.firebaseapp.com",
 
-projectId: "yb1-ae18e",
+  projectId: "yb1-ae18e",
 
-storageBucket: "yb1-ae18e.firebasestorage.app",
+  storageBucket: "yb1-ae18e.firebasestorage.app",
 
-messagingSenderId: "278406966206",
+  messagingSenderId: "278406966206",
 
-appId: "1:278406966206:web:3dbf470d1a0c63a8dbe7ef",
+  appId: "1:278406966206:web:3db470d1a0c63a8dbe7ef",
 
-measurementId: "G-YZQGS7NTME"
+  measurementId: "G-YZQGS7NTME"
 
 };
 
-const app =
-initializeApp(firebaseConfig);
 
-const auth =
-getAuth(app);
+const app = initializeApp(firebaseConfig);
 
-const db =
-getFirestore(app);
+const auth = getAuth(app);
 
-// Normalize Malaysia phone number
+const db = getFirestore(app);
+
+
+// =====================================================
+// NORMALIZE MALAYSIA PHONE NUMBER
+// =====================================================
+
 function normalizeMalaysiaPhone(phone) {
 
   phone = phone.trim().replace(/\s+/g, "");
 
-  // 去掉 +
+  if (!phone) {
+    return null;
+  }
+
+  // Remove +
   if (phone.startsWith("+")) {
     phone = phone.substring(1);
   }
@@ -242,17 +359,17 @@ function normalizeMalaysiaPhone(phone) {
     phone = "6" + phone;
   }
 
-  // 必须以60开头
+  // Must start with 60
   if (!phone.startsWith("60")) {
     return null;
   }
 
-  // 必须只有数字
+  // Numbers only
   if (!/^\d+$/.test(phone)) {
     return null;
   }
 
-  // 长度限制（Malaysia 手机号码）
+  // Malaysia mobile number length
   if (phone.length < 11 || phone.length > 12) {
     return null;
   }
@@ -260,187 +377,917 @@ function normalizeMalaysiaPhone(phone) {
   return phone;
 }
 
-// TOGGLE
+
+// =====================================================
+// GET ELEMENTS
+// =====================================================
+
 const loginBtn =
-document.getElementById("loginBtn");
+  document.getElementById("loginBtn");
 
 const registerBtn =
-document.getElementById("registerBtn");
+  document.getElementById("registerBtn");
 
 const loginForm =
-document.getElementById("loginForm");
+  document.getElementById("loginForm");
 
 const registerForm =
-document.getElementById("registerForm");
+  document.getElementById("registerForm");
+
+const forgotPasswordForm =
+  document.getElementById("forgotPasswordForm");
+
+// =====================================================
+// TOGGLE LOGIN / REGISTER
+// =====================================================
 
 loginBtn.onclick = () => {
 
   loginForm.style.display = "block";
+
   registerForm.style.display = "none";
 
+  forgotPasswordForm.style.display = "none";
+
   loginBtn.classList.add("active");
+
   registerBtn.classList.remove("active");
+
 };
+
 
 registerBtn.onclick = () => {
 
   loginForm.style.display = "none";
+
   registerForm.style.display = "block";
 
+  forgotPasswordForm.style.display = "none";
+
   registerBtn.classList.add("active");
+
   loginBtn.classList.remove("active");
+
 };
 
 
-// REGISTER VALIDATION
-const name =
-document.getElementById("name");
+// =====================================================
+// REGISTER ELEMENTS
+// =====================================================
 
-const phone =
-document.getElementById("phone");
+const nameInput =
+  document.getElementById("name");
+
+const phoneInput =
+  document.getElementById("phone");
+
+const emailInput =
+  document.getElementById("email");
 
 const regPassword =
-document.getElementById("regPassword");
+  document.getElementById("regPassword");
 
 const registerSubmit =
-document.getElementById("registerSubmit");
+  document.getElementById("registerSubmit");
 
 const regError =
-document.getElementById("regError");
+  document.getElementById("regError");
 
 
-// LOGIN VALIDATION
-const loginPhone =
-document.getElementById("loginPhone");
+// =====================================================
+// LOGIN ELEMENTS
+// =====================================================
+
+const loginAccount =
+  document.getElementById("loginAccount");
 
 const loginPassword =
-document.getElementById("loginPassword");
+  document.getElementById("loginPassword");
 
 const loginSubmit =
-document.getElementById("loginSubmit");
+  document.getElementById("loginSubmit");
 
 const loginError =
-document.getElementById("loginError");
+  document.getElementById("loginError");
 
 
-// REGISTER BUTTON
+// =====================================================
+// REGISTER
+// =====================================================
+
 registerSubmit.onclick = async () => {
 
-const normalizedPhone =
-normalizeMalaysiaPhone(phone.value);
+  regError.innerText = "";
 
-if (!normalizedPhone) {
-  regError.innerText =
-  "Please enter a valid Malaysia phone number.";
-  return;
-}
+  const fullName =
+    nameInput.value.trim();
 
-const email =
-normalizedPhone + "@bb.com";
+  let rawPhone =
+    phoneInput
+      ? phoneInput.value.trim()
+      : "";
 
-try{
+  const email =
+    emailInput
+      ? emailInput.value.trim().toLowerCase()
+      : "";
 
-const userCredential =
-await createUserWithEmailAndPassword(
-auth,
-email,
-regPassword.value
-);
+  const password =
+    regPassword.value;
 
-const user =
-userCredential.user;
 
-await setDoc(
+  // ===================================================
+  // CHECK NAME
+  // ===================================================
 
-doc(db,"users",user.uid),
+  if (!fullName) {
 
-{
-name:name.value,
-phone: normalizedPhone,
-uid:user.uid,
-createdAt:serverTimestamp()
-}
+    regError.innerText =
+      "Please enter your full name.";
 
-);
+    return;
+  }
 
-localStorage.setItem(
-"name",
-name.value
-);
 
-localStorage.setItem(
-"phone",
-normalizedPhone
-);
+  // ===================================================
+  // EMAIL REQUIRED
+  // ===================================================
 
-alert("Register Success!");
+  if (!email) {
 
-window.location.href =
-"dashboard.html";
+    regError.innerText =
+      "Please enter your email address.";
 
-}
-catch(error){
+    return;
+  }
 
-regError.innerText =
-error.message;
 
-console.log(error);
+  // ===================================================
+  // EMAIL FORMAT
+  // ===================================================
 
-}
+  if (
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  ) {
+
+    regError.innerText =
+      "Please enter a valid email address.";
+
+    return;
+  }
+
+
+  // ===================================================
+  // PHONE
+  // ===================================================
+
+  let normalizedPhone = "-";
+
+  if (rawPhone && rawPhone !== "-") {
+
+    normalizedPhone =
+      normalizeMalaysiaPhone(rawPhone);
+
+    if (!normalizedPhone) {
+
+      regError.innerText =
+        "Please enter a valid Malaysia phone number.";
+
+      return;
+    }
+  }
+
+
+  // ===================================================
+  // PASSWORD
+  // ===================================================
+
+  if (password.length < 6) {
+
+    regError.innerText =
+      "Password must be at least 6 characters.";
+
+    return;
+  }
+
+
+  try {
+
+    // =================================================
+    // CHECK PHONE DUPLICATE
+    // =================================================
+
+    if (normalizedPhone !== "-") {
+
+      const phoneQuery = query(
+
+        collection(db, "users"),
+
+        where(
+          "phone",
+          "==",
+          normalizedPhone
+        ),
+
+        limit(1)
+
+      );
+
+      const phoneSnapshot =
+        await getDocs(phoneQuery);
+
+
+      if (!phoneSnapshot.empty) {
+
+        regError.innerText =
+          "This phone number is already registered.";
+
+        return;
+      }
+    }
+
+
+    // =================================================
+    // CHECK EMAIL DUPLICATE
+    // =================================================
+
+    const emailQuery = query(
+
+      collection(db, "users"),
+
+      where(
+        "email",
+        "==",
+        email
+      ),
+
+      limit(1)
+
+    );
+
+    const emailSnapshot =
+      await getDocs(emailQuery);
+
+
+    if (!emailSnapshot.empty) {
+
+      regError.innerText =
+        "This email is already registered.";
+
+      return;
+    }
+
+
+    // =================================================
+    // CREATE FIREBASE AUTH ACCOUNT
+    // =================================================
+
+    const userCredential =
+      await createUserWithEmailAndPassword(
+
+        auth,
+
+        email,
+
+        password
+
+      );
+
+
+    const user =
+      userCredential.user;
+
+
+    // =================================================
+    // SAVE USER INFORMATION
+    // =================================================
+
+    await setDoc(
+
+      doc(db, "users", user.uid),
+
+      {
+
+        uid: user.uid,
+
+        name: fullName,
+
+        phone: normalizedPhone,
+
+        email: email,
+
+        createdAt: serverTimestamp()
+
+      }
+
+    );
+
+
+    // =================================================
+    // LOCAL STORAGE
+    // =================================================
+
+    localStorage.setItem(
+      "name",
+      fullName
+    );
+
+    localStorage.setItem(
+      "phone",
+      normalizedPhone
+    );
+
+    localStorage.setItem(
+      "email",
+      email
+    );
+
+    localStorage.setItem(
+      "uid",
+      user.uid
+    );
+
+
+    alert("Register Success!");
+
+
+    window.location.href =
+      "dashboard.html";
+
+  }
+
+
+  catch(error) {
+
+    console.log(error);
+
+
+    if (
+      error.code ===
+      "auth/email-already-in-use"
+    ) {
+
+      regError.innerText =
+        "This email is already registered.";
+
+    }
+
+    else if (
+      error.code ===
+      "auth/weak-password"
+    ) {
+
+      regError.innerText =
+        "Password must be at least 6 characters.";
+
+    }
+
+    else {
+
+      regError.innerText =
+        error.message;
+
+    }
+
+  }
+
+};
+
+// =====================================================
+// LOGIN
+// =====================================================
+
+loginSubmit.onclick = async () => {
+
+  loginError.innerText = "";
+
+  const accountValue =
+    loginAccount.value.trim();
+
+  const password =
+    loginPassword.value;
+
+
+  // ===================================================
+  // CHECK ACCOUNT
+  // ===================================================
+
+  if (!accountValue) {
+
+    loginError.innerText =
+      "Please enter your email or phone number.";
+
+    return;
+  }
+
+
+  // ===================================================
+  // CHECK PASSWORD
+  // ===================================================
+
+  if (!password) {
+
+    loginError.innerText =
+      "Please enter your password.";
+
+    return;
+  }
+
+
+  try {
+
+    let authEmail = "";
+    let userData = null;
+
+
+    // =================================================
+    // LOGIN WITH EMAIL
+    // =================================================
+
+    if (accountValue.includes("@")) {
+
+      authEmail =
+        accountValue.toLowerCase();
+
+
+      // Find user in Firestore
+      const emailQuery = query(
+
+        collection(db, "users"),
+
+        where(
+          "email",
+          "==",
+          authEmail
+        ),
+
+        limit(1)
+
+      );
+
+
+      const emailSnapshot =
+        await getDocs(emailQuery);
+
+
+      if (!emailSnapshot.empty) {
+
+        userData =
+          emailSnapshot.docs[0].data();
+
+      }
+
+    }
+
+
+    // =================================================
+    // LOGIN WITH PHONE
+    // =================================================
+
+    else {
+
+      const normalizedPhone =
+        normalizeMalaysiaPhone(accountValue);
+
+
+      if (!normalizedPhone) {
+
+        loginError.innerText =
+          "Please enter a valid email or Malaysia phone number.";
+
+        return;
+      }
+
+
+      // Find phone in Firestore
+      const phoneQuery = query(
+
+        collection(db, "users"),
+
+        where(
+          "phone",
+          "==",
+          normalizedPhone
+        ),
+
+        limit(1)
+
+      );
+
+
+      const phoneSnapshot =
+        await getDocs(phoneQuery);
+
+
+      if (phoneSnapshot.empty) {
+
+        loginError.innerText =
+          "No account was found with this phone number.";
+
+        return;
+      }
+
+
+      userData =
+        phoneSnapshot.docs[0].data();
+
+
+      // =================================================
+      // OLD ACCOUNT
+      // Firebase Email = phone@bb.com
+      // =================================================
+
+      if (
+        !userData.email ||
+        userData.email === "-"
+      ) {
+
+        authEmail =
+          normalizedPhone + "@bb.com";
+
+      }
+
+      else {
+
+        // =================================================
+        // NEW ACCOUNT
+        // =================================================
+
+        authEmail =
+          userData.email.toLowerCase();
+
+      }
+
+    }
+
+
+    // =================================================
+    // FIREBASE LOGIN
+    // =================================================
+
+    await signInWithEmailAndPassword(
+
+      auth,
+
+      authEmail,
+
+      password
+
+    );
+
+
+    // =================================================
+    // GET CURRENT USER
+    // =================================================
+
+    const currentUser =
+      auth.currentUser;
+
+
+    if (!currentUser) {
+
+      loginError.innerText =
+        "Login failed. Please try again.";
+
+      return;
+    }
+
+
+    // =================================================
+    // SAVE USER DATA
+    // =================================================
+
+    localStorage.setItem(
+      "uid",
+      currentUser.uid
+    );
+
+
+    localStorage.setItem(
+      "email",
+      currentUser.email || "-"
+    );
+
+
+    if (userData) {
+
+      localStorage.setItem(
+        "name",
+        userData.name || ""
+      );
+
+      localStorage.setItem(
+        "phone",
+        userData.phone || "-"
+      );
+
+    }
+
+
+    // =================================================
+    // LOGIN SUCCESS
+    // =================================================
+
+    console.log(
+      "LOGIN UID:",
+      currentUser.uid
+    );
+
+    console.log(
+      "LOGIN EMAIL:",
+      currentUser.email
+    );
+
+
+    alert("Login Success!");
+
+
+    window.location.href =
+      "dashboard.html";
+
+  }
+
+
+  // ===================================================
+  // LOGIN ERROR
+  // ===================================================
+
+  catch(error) {
+
+    console.error(
+      "LOGIN ERROR:",
+      error.code,
+      error.message
+    );
+
+
+    if (
+
+      error.code ===
+      "auth/invalid-credential"
+
+      ||
+
+      error.code ===
+      "auth/wrong-password"
+
+      ||
+
+      error.code ===
+      "auth/user-not-found"
+
+    ) {
+
+      loginError.innerText =
+        "Wrong email/phone or password.";
+
+    }
+
+
+    else if (
+
+      error.code ===
+      "auth/invalid-email"
+
+    ) {
+
+      loginError.innerText =
+        "Invalid email address.";
+
+    }
+
+
+    else if (
+
+      error.code ===
+      "auth/too-many-requests"
+
+    ) {
+
+      loginError.innerText =
+        "Too many login attempts. Please try again later.";
+
+    }
+
+
+    else {
+
+      loginError.innerText =
+        error.message;
+
+    }
+
+  }
+
+};
+
+// =====================================================
+// FORGOT PASSWORD
+// =====================================================
+
+const forgotPasswordBtn =
+document.getElementById("forgotPasswordBtn");
+
+const backToLoginBtn =
+document.getElementById("backToLoginBtn");
+
+const resetEmail =
+document.getElementById("resetEmail");
+
+const resetPasswordBtn =
+document.getElementById("resetPasswordBtn");
+
+const resetError =
+document.getElementById("resetError");
+
+// =====================================================
+// OPEN FORGOT PASSWORD
+// =====================================================
+
+forgotPasswordBtn.onclick = () => {
+
+  loginForm.style.display = "none";
+
+  registerForm.style.display = "none";
+
+  forgotPasswordForm.style.display = "block";
+
+  resetError.innerText = "";
 
 };
 
 
-// LOGIN BUTTON
-loginSubmit.onclick = async () => {
+// =====================================================
+// BACK TO LOGIN
+// =====================================================
 
-console.log("CLICK LOGIN");
+backToLoginBtn.onclick = () => {
+
+  forgotPasswordForm.style.display = "none";
+
+  registerForm.style.display = "none";
+
+  loginForm.style.display = "block";
+
+  resetError.innerText = "";
+
+};
 
 
-const normalizedPhone =
-normalizeMalaysiaPhone(loginPhone.value);
+// =====================================================
+// SEND PASSWORD RESET EMAIL
+// =====================================================
 
-if (!normalizedPhone) {
-    loginError.innerText =
-    "Please enter a valid Malaysia phone number.";
+resetPasswordBtn.onclick = async () => {
+
+  resetError.innerText = "";
+
+
+  const email =
+    resetEmail.value
+      .trim()
+      .toLowerCase();
+
+
+  // ===================================================
+  // CHECK EMAIL
+  // ===================================================
+
+  if (!email) {
+
+    resetError.innerText =
+      "Please enter your email address.";
+
     return;
-}
-
-const email =
-normalizedPhone + "@bb.com";
-
-try{
-
-// 先清除旧账号
-await signOut(auth);
-
-await signInWithEmailAndPassword(
-auth,
-email,
-loginPassword.value
-);
-
-console.log("LOGIN UID:", auth.currentUser.uid);
-console.log("LOGIN EMAIL:", auth.currentUser.email);
-
-alert("Login Success!");
+  }
 
 
-window.location.href =
-"dashboard.html";
+  // ===================================================
+  // CHECK EMAIL FORMAT
+  // ===================================================
+
+  if (
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  ) {
+
+    resetError.innerText =
+      "Please enter a valid email address.";
+
+    return;
+  }
 
 
-}
-catch(error){
+  try {
 
-loginError.innerText =
-"Wrong phone or password";
+    // =================================================
+    // CHECK FIRESTORE ACCOUNT
+    // =================================================
 
-}
+    const emailQuery = query(
+
+      collection(db, "users"),
+
+      where(
+        "email",
+        "==",
+        email
+      ),
+
+      limit(1)
+
+    );
+
+
+    const snapshot =
+      await getDocs(emailQuery);
+
+
+    if (snapshot.empty) {
+
+      resetError.innerText =
+        "No account was found with this email address.";
+
+      return;
+    }
+
+
+    // =================================================
+    // SEND FIREBASE RESET EMAIL
+    // =================================================
+
+    await sendPasswordResetEmail(
+
+      auth,
+
+      email
+
+    );
+
+
+    // =================================================
+    // SUCCESS
+    // =================================================
+
+    resetError.innerText =
+      "Password reset email has been sent. Please check your email.";
+
+
+    resetEmail.value = "";
+
+
+  }
+
+
+  catch(error) {
+
+    console.log(error);
+
+
+    if (
+      error.code ===
+      "auth/user-not-found"
+    ) {
+
+      resetError.innerText =
+        "No account was found with this email address.";
+
+    }
+
+    else if (
+      error.code ===
+      "auth/invalid-email"
+    ) {
+
+      resetError.innerText =
+        "Please enter a valid email address.";
+
+    }
+
+    else if (
+      error.code ===
+      "auth/too-many-requests"
+    ) {
+
+      resetError.innerText =
+        "Too many requests. Please try again later.";
+
+    }
+
+    else {
+
+      resetError.innerText =
+        error.message;
+
+    }
+
+  }
 
 };
 
 </script>
+
+
+
 
 </body>
 </html>

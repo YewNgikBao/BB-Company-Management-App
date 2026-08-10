@@ -7,6 +7,8 @@ content="width=device-width, initial-scale=1.0">
 
 <title>BB Knowledge</title>
 
+<link rel="stylesheet" href="mobile.css">
+
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -73,19 +75,29 @@ body{
   text-shadow:0 2px 5px rgba(0,0,0,0.5);
 }
 
-/* CARD */
+/* ================= CARD ================= */
 
 .card{
   background:white;
   border-radius:25px;
+
   margin:25px;
   padding:25px;
+
   display:flex;
   align-items:center;
-  gap:30px;
+
+  gap:25px;
+
+  width:auto;
+  box-sizing:border-box;
+
   cursor:pointer;
   transition:0.3s;
+
   box-shadow:0 5px 15px rgba(0,0,0,0.3);
+
+  overflow:hidden;
 }
 
 .card:hover{
@@ -93,22 +105,39 @@ body{
 }
 
 .card img{
-  width:140px;
-  height:140px;
+  width:100px;
+  height:100px;
+
   object-fit:contain;
+
+  flex:0 0 100px;
+}
+
+.card-text{
+  flex:1;
+  min-width:0;
 }
 
 .card-text h2{
   margin:0;
-  font-size:55px;
+
+  font-size:32px;
+
   color:#111;
+
+  word-break:break-word;
 }
 
 .card-text p{
   margin-top:10px;
-  font-size:28px;
+
+  font-size:18px;
+
   color:#333;
+
   line-height:1.4;
+
+  word-break:break-word;
 }
 
 /* BOTTOM NAV */
@@ -141,6 +170,38 @@ body{
 
 .active{
   color:#c79b1b;
+}
+
+@media (max-width:600px){
+
+  .title{
+    font-size:38px;
+    margin-top:30px;
+    margin-bottom:25px;
+  }
+
+  .card{
+    margin:15px;
+    padding:18px;
+
+    gap:15px;
+  }
+
+  .card img{
+    width:75px;
+    height:75px;
+
+    flex:0 0 75px;
+  }
+
+  .card-text h2{
+    font-size:24px;
+  }
+
+  .card-text p{
+    font-size:15px;
+  }
+
 }
 
 </style>

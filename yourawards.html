@@ -7,6 +7,8 @@ content="width=device-width, initial-scale=1.0">
 
 <title>Your Awards</title>
 
+<link rel="stylesheet" href="mobile.css">
+
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -326,28 +328,47 @@ body{
 
 .black-right{
     width:420px;
-    height:620px;
+    min-height:620px;
+    height:auto;
+
     background:black;
     border-radius:0 0 55px 55px;
-    position:relative;
-    overflow:hidden;
+
+    box-sizing:border-box;
+    padding:20px;
+
+    display:flex;
+    flex-direction:column;
+
+    margin-left:auto;
+    margin-right:auto;
 }
 
 .preview-right{
-    display:grid;
-    grid-template-columns:repeat(5,1fr);
+    width:100%;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
     gap:10px;
-    padding:25px;
+
+    box-sizing:border-box;
 }
 
 .preview-badge{
     width:58px;
     height:58px;
+
     border-radius:50%;
+
     display:flex;
     justify-content:center;
     align-items:center;
+
     background:transparent;
+
+    flex:0 0 58px;
 }
 
 .preview-red{
@@ -363,17 +384,23 @@ body{
 /* ================= RANK PREVIEW ================= */
 
 .rank-preview{
-    position:absolute;
-    bottom:20px;
-    left:0;
+    position:static;
+
     width:100%;
+
+    margin-top:20px;
+
+    box-sizing:border-box;
 }
 
 .rank-strip{
     width:100%;
     height:30px;
+
     background:white;
+
     margin-top:10px;
+
     clip-path:polygon(
         0 0,
         50% 45%,
@@ -426,7 +453,7 @@ body{
     align-items:center;
     flex-wrap:nowrap;
     margin-top:18px;
-    overflow:hidden;
+    overflow:visible;
     box-sizing:border-box;
 }
 
@@ -440,6 +467,12 @@ body{
 .preview-left img{
     width:62px;
     height:62px;
+}
+
+.preview-arm{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
 }
 
 
@@ -458,6 +491,206 @@ body{
     font-size:28px;
     cursor:pointer;
     z-index:999;
+}
+
+/* ================= MOBILE RESPONSIVE ================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* Main box */
+.main-box {
+    width: calc(100% - 30px);
+    max-width: 100%;
+    margin: 15px auto;
+}
+
+/* Preview */
+.preview-page {
+    width: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.preview-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+/* Right arm */
+.black-right {
+    width: min(420px, 100%);
+    max-width: 100%;
+    height: auto;
+    min-height: 500px;
+}
+
+/* Left arm */
+.black-left {
+    width: min(420px, 100%);
+    max-width: 100%;
+    min-height: 520px;
+}
+
+/* Left preview */
+.preview-left {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Bottom badges */
+.preview-left-bottom {
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+    flex-wrap: nowrap;
+}
+
+/* Right badges */
+.preview-right {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+
+    .header {
+        padding: 10px;
+    }
+
+    .logo {
+        width: 55px;
+        height: 55px;
+    }
+
+    .header-text h1 {
+        font-size: 24px;
+    }
+
+    .header-text p {
+        font-size: 14px;
+    }
+
+    .tab {
+        font-size: 16px;
+        padding: 18px 5px;
+    }
+
+    .content {
+        padding: 12px;
+    }
+
+    /* Right award selection */
+    .right-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px 5px;
+    }
+
+    .award img {
+        width: 55px;
+        height: 55px;
+    }
+
+    /* Left award selection */
+    .left-middle,
+    .left-middle2,
+    .left-scholastic {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        width: 100%;
+    }
+
+    .left-bottom {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+        width: 100%;
+    }
+
+    /* Ranking */
+    .rank-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    /* Preview */
+    .preview-title {
+        font-size: 24px;
+    }
+
+    .preview-container {
+        gap: 25px;
+    }
+
+    .black-right {
+        width: 100%;
+        max-width: 380px;
+        min-height: 500px;
+    }
+
+    .black-left {
+        width: 100%;
+        max-width: 380px;
+        min-height: 500px;
+    }
+
+    .preview-right {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 5px;
+        padding: 20px 10px;
+    }
+
+    .preview-badge {
+        width: 55px;
+        height: 55px;
+    }
+
+    .preview-right img {
+        width: 45px;
+        height: 45px;
+    }
+
+    .preview-left img {
+        width: 55px;
+        height: 55px;
+    }
+
+    .preview-left-middle,
+    .preview-left-middle2,
+    .preview-left-scholastic {
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .preview-left-bottom {
+        overflow: visible;
+        justify-content: center;
+        gap: 3px !important;
+    }
+
+    .preview-left-bottom img {
+        width: 30px !important;
+        height: 30px !important;
+    }
+
+    .back-btn {
+        width: 50px;
+        height: 50px;
+        top: 75px;
+        right: 10px;
+        font-size: 22px;
+    }
 }
 
 </style>
@@ -625,13 +858,12 @@ Your Awards
 
 <!-- RIGHT -->
 
-<div>
+<div class="preview-arm">
+    <h2 style="text-align:center;color:#0b1d63;">
+        Right Arm
+    </h2>
 
-<h2 style="text-align:center;color:#0b1d63;">
-Right Arm
-</h2>
-
-<div class="black-right">
+    <div class="black-right">
 
 <div class="preview-right"
 id="previewRight"></div>
@@ -645,11 +877,12 @@ id="rankPreview"></div>
 
 <!-- LEFT -->
 
-<div>
+<div class="preview-arm">
+    <h2 style="text-align:center;color:#0b1d63;">
+        Left Arm
+    </h2>
 
-<h2 style="text-align:center;color:#0b1d63;">
-Left Arm
-</h2>
+    <div class="black-left">
 
 <div class="black-left">
 
@@ -1451,31 +1684,102 @@ renderPreview();
 
 function renderPreview(){
 
-/* RIGHT */
+/* ================= RIGHT ARM PREVIEW ================= */
 
-const right=
-document.getElementById("previewRight");
+const right =
+    document.getElementById("previewRight");
 
-right.innerHTML="";
+right.innerHTML = "";
 
-rightAwards.forEach(a=>{
 
-if(a.b || a.a){
+/*
+    每一排固定 5 粒
 
-right.innerHTML+=`
+    🏅 🏅 🏅 🏅 🏅
+          ↑
+        中间
 
-<div class="preview-badge
-${a.a ? 'preview-red':''}">
+    🏅 🏅 🏅 🏅 🏅
+          ↑
+        中间
+*/
 
-<img src="${a.img}">
 
-</div>
+let selectedRight = [];
 
-`;
+rightAwards.forEach(a => {
 
-}
+    if(a.b || a.a){
+
+        selectedRight.push(a);
+
+    }
 
 });
+
+
+/* 每一排固定 5 粒 */
+
+for(
+    let i = 0;
+    i < selectedRight.length;
+    i += 5
+){
+
+    const row =
+        document.createElement("div");
+
+    row.style.display = "flex";
+
+    row.style.justifyContent = "center";
+
+    row.style.alignItems = "center";
+
+    row.style.gap = "10px";
+
+    row.style.width = "100%";
+
+
+    /* 这一排最多 5 粒 */
+
+    const rowAwards =
+        selectedRight.slice(i, i + 5);
+
+
+    rowAwards.forEach(a => {
+
+        const badge =
+            document.createElement("div");
+
+        badge.className =
+            "preview-badge";
+
+
+        if(a.a){
+
+            badge.classList.add(
+                "preview-red"
+            );
+
+        }
+
+
+        const img =
+            document.createElement("img");
+
+        img.src = a.img;
+
+
+        badge.appendChild(img);
+
+        row.appendChild(badge);
+
+    });
+
+
+    right.appendChild(row);
+
+}
 
 /* RANK */
 
