@@ -181,90 +181,142 @@ Contact Info
 
 <div class="profile">
 
-<img
-id="userPhoto"
-class="avatar"
-src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
+    <img
+        id="userPhoto"
+        class="avatar"
+        src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
 
-<div
-id="userName"
-class="name">
+    <div
+        id="userName"
+        class="name">
+        User
+    </div>
 
-User
-
-</div>
-
-<div
-id="userPhone"
-class="phone">
-
-+60
-
-</div>
+    <div
+        id="userPhone"
+        class="phone">
+        +60
+    </div>
 
 </div>
 
 <div class="menu">
 
-<div
-class="item"
-onclick="searchChat()">
+    <div class="item">
+        <span>
+            📱 Phone Number
+        </span>
 
-<span>
+        <span id="profilePhone">
+            -
+        </span>
+    </div>
 
-🔍 Search Chat
+    <div class="item">
+        <span>
+            📧 Email
+        </span>
 
-</span>
+        <span id="profileEmail">
+            -
+        </span>
+    </div>
 
-<i class="fa fa-chevron-right"></i>
+    <div class="item">
+        <span>
+            🎂 Birthday
+        </span>
+
+        <span id="profileBirthday">
+            -
+        </span>
+    </div>
+
+    <div class="item">
+        <span>
+            ⚧ Gender
+        </span>
+
+        <span id="profileGender">
+            -
+        </span>
+    </div>
+
+    <div class="item">
+        <span>
+            🎖 Rank
+        </span>
+
+        <span id="profileRank">
+            -
+        </span>
+    </div>
+
+    <div
+        class="item"
+        onclick="searchChat()">
+
+        <span>
+            🔍 Search Chat
+        </span>
+
+        <i class="fa fa-chevron-right"></i>
+
+    </div>
+
+    <div class="item">
+
+        <span>
+            🔕 Mute Notifications
+        </span>
+
+        <input
+            id="muteSwitch"
+            type="checkbox"
+            class="switch"
+            onchange="toggleMute()">
+
+    </div>
+
+    <div
+        class="item"
+        onclick="blockUser()">
+
+        <span>
+            🚫 Block User
+        </span>
+
+        <i class="fa fa-chevron-right"></i>
+
+    </div>
+
+    <div
+        class="item delete"
+        onclick="deleteChat()">
+
+        <span>
+            🗑 Delete Chat
+        </span>
+
+        <i class="fa fa-chevron-right"></i>
+
+    </div>
+
+    <div
+        class="item"
+        style="color:#c2185b;"
+        onclick="removeFriend()">
+
+        <span>
+            👥 Remove Friend
+        </span>
+
+        <i class="fa fa-chevron-right"></i>
+
+    </div>
 
 </div>
 
-<div class="item">
-
-<span>
-
-🔕 Mute Notifications
-
-</span>
-
-<input
-id="muteSwitch"
-type="checkbox"
-class="switch"
-onchange="toggleMute()">
-
-</div>
-
-<div
-class="item"
-onclick="blockUser()">
-
-<span>
-
-🚫 Block User
-
-</span>
-
-<i class="fa fa-chevron-right"></i>
-
-</div>
-
-<div
-class="item delete"
-onclick="deleteChat()">
-
-<span>
-
-🗑 Delete Chat
-
-</span>
-
-<i class="fa fa-chevron-right"></i>
-
-</div>
-
-</div>
 
 <script type="module">
 
@@ -280,7 +332,8 @@ arrayUnion,
 setDoc,
 getDoc,
 getDocs,
-collection
+collection,
+deleteDoc
 
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -327,15 +380,33 @@ if(!user){
 
 if(user){
 
-document.getElementById("userName").innerText=user.name;
+    document.getElementById("userName").innerText =
+        user.name || "Unknown";
 
-document.getElementById("userPhone").innerText=user.phone;
+    document.getElementById("userPhone").innerText =
+        user.phone || "-";
 
-if(user.photo){
+    document.getElementById("profilePhone").innerText =
+        user.phone || "-";
 
-document.getElementById("userPhoto").src=user.photo;
+    document.getElementById("profileEmail").innerText =
+        user.email || "-";
 
-}
+    document.getElementById("profileBirthday").innerText =
+        user.birthday || "-";
+
+    document.getElementById("profileGender").innerText =
+        user.gender || "-";
+
+    document.getElementById("profileRank").innerText =
+        user.rank || "-";
+
+    if(user.photo){
+
+        document.getElementById("userPhoto").src =
+            user.photo;
+
+    }
 
 }
 
@@ -430,6 +501,68 @@ window.deleteChat = async function(){
     alert("Chat deleted");
 
     history.back();
+
+}
+
+window.removeFriend = async function(){
+
+    if(!user || !user.uid){
+        alert("Friend information not found.");
+        return;
+    }
+
+    if(!confirm(
+        "Remove " +
+        (user.name || "this user") +
+        " from your friends?"
+    )){
+        return;
+    }
+
+    const me = auth.currentUser;
+
+    if(!me){
+        alert("You are not logged in.");
+        return;
+    }
+
+    try{
+
+        // 删除自己的好友关系
+        await deleteDoc(
+            doc(
+                db,
+                "friends",
+                me.uid,
+                "contacts",
+                user.uid
+            )
+        );
+
+        // 同时删除对方的好友关系
+        await deleteDoc(
+            doc(
+                db,
+                "friends",
+                user.uid,
+                "contacts",
+                me.uid
+            )
+        );
+
+        alert("Friend removed.");
+
+        history.back();
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(
+            "Failed to remove friend."
+        );
+
+    }
 
 }
 

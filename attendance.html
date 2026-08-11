@@ -184,11 +184,8 @@ import {
   getFirestore,
   collection,
   getDocs,
-  onSnapshot,
-  addDoc,
-  serverTimestamp
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  onSnapshot
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // FIREBASE CONFIG
 const firebaseConfig = {
@@ -411,28 +408,80 @@ async function loadEvents(){
   `;
 });
 
+// =========================================
+// GOOGLE SHEETS WEB APP
+// =========================================
+
+const SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbxdU2EUTr8UR2gWyJepG68XsgJbgejPnQJl27uth1WGhSCQKrPbuaUwdHVhtR2INfZ20g/exec";
+
+
+// =========================================
+// CHECK IN
+// =========================================
+
 window.checkIn = async function(id){
 
-  const eventData = window[`event_${id}`];
+  const eventData =
+    window[`event_${id}`];
 
   if(!eventData){
-    alert("Event information not found.");
+
+    alert(
+      "Event information not found."
+    );
+
     return;
   }
 
-  // =========================================
-  // TIAN EN METHODIST CHURCH LOCATION
-  // =========================================
-
-  const churchLatitude = 2.28796;
-  const churchLongitude = 111.82779;
-
-  // Allow 100 meters from the church
-  const allowedRadius = 100;
-
 
   // =========================================
-  // CHECK GEOLOCATION SUPPORT
+  // GET USER INFORMATION
+  // =========================================
+
+  const uid =
+    localStorage.getItem("uid") || "-";
+
+  const name =
+    localStorage.getItem("name") || "-";
+
+  const squad =
+    localStorage.getItem("squad") || "-";
+
+
+  if(
+    name === "-" ||
+    name.trim() === ""
+  ){
+
+    alert(
+      "Your name could not be found.\n\n" +
+      "Please login again."
+    );
+
+    return;
+  }
+
+
+  // =========================================
+  // TIAN EN METHODIST CHURCH
+  // =========================================
+
+  const churchLatitude =
+    2.28796;
+
+  const churchLongitude =
+    111.82779;
+
+
+  // Allow 100 meters
+
+  const allowedRadius =
+    100;
+
+
+  // =========================================
+  // CHECK GEOLOCATION
   // =========================================
 
   if(!navigator.geolocation){
@@ -479,27 +528,40 @@ window.checkIn = async function(id){
           const R = 6371000;
 
           const dLat =
-            (lat2 - lat1) * Math.PI / 180;
+            (lat2 - lat1) *
+            Math.PI / 180;
 
           const dLon =
-            (lon2 - lon1) * Math.PI / 180;
+            (lon2 - lon1) *
+            Math.PI / 180;
+
 
           const a =
             Math.sin(dLat / 2) *
             Math.sin(dLat / 2) +
 
-            Math.cos(lat1 * Math.PI / 180) *
-            Math.cos(lat2 * Math.PI / 180) *
+            Math.cos(
+              lat1 * Math.PI / 180
+            ) *
+
+            Math.cos(
+              lat2 * Math.PI / 180
+            ) *
+
             Math.sin(dLon / 2) *
             Math.sin(dLon / 2);
 
+
           const c =
-            2 * Math.atan2(
+            2 *
+            Math.atan2(
               Math.sqrt(a),
               Math.sqrt(1 - a)
             );
 
+
           return R * c;
+
         }
 
 
@@ -513,20 +575,24 @@ window.checkIn = async function(id){
 
 
         console.log(
-          "Current Location:",
-          latitude,
+          "Latitude:",
+          latitude
+        );
+
+        console.log(
+          "Longitude:",
           longitude
         );
 
         console.log(
-          "Distance from church:",
-          distance,
+          "Accuracy:",
+          accuracy,
           "meters"
         );
 
         console.log(
-          "GPS Accuracy:",
-          accuracy,
+          "Distance:",
+          distance,
           "meters"
         );
 
@@ -535,16 +601,27 @@ window.checkIn = async function(id){
         // CHECK LOCATION
         // =====================================
 
-        if(distance > allowedRadius){
+        if(
+          distance >
+          allowedRadius
+        ){
 
           alert(
+
             "You are not at Tian En Methodist Church.\n\n" +
+
             "Check-in is only available within " +
+
             allowedRadius +
+
             " meters of the church.\n\n" +
+
             "Your distance: " +
+
             Math.round(distance) +
+
             " meters"
+
           );
 
           return;
@@ -552,102 +629,141 @@ window.checkIn = async function(id){
 
 
         // =====================================
-        // GET USER INFORMATION
+        // PREPARE DATA FOR GOOGLE SHEET
         // =====================================
 
-        const uid =
-          localStorage.getItem("uid") || "-";
-
-        const name =
-          localStorage.getItem("name") || "-";
-
-        const email =
-          localStorage.getItem("email") || "-";
-
-        const phone =
-          localStorage.getItem("phone") || "-";
+        const formData =
+          new URLSearchParams();
 
 
-        // =====================================
-        // SAVE EVENT
-        // =====================================
+        formData.append(
+          "name",
+          name
+        );
 
-        localStorage.setItem(
-          "selectedEvent",
-          JSON.stringify(eventData)
+
+        formData.append(
+          "squad",
+          squad
+        );
+
+
+        formData.append(
+          "event",
+          eventData.title || "-"
+        );
+
+
+        formData.append(
+          "latitude",
+          latitude
+        );
+
+
+        formData.append(
+          "longitude",
+          longitude
+        );
+
+
+        formData.append(
+          "distance",
+          Math.round(distance)
         );
 
 
         // =====================================
-        // SAVE CHECK-IN
+        // SEND TO GOOGLE SHEETS
         // =====================================
 
-        await addDoc(
-          collection(db, "attendance"),
-          {
+        const response =
+          await fetch(
+            SCRIPT_URL,
+            {
+              method: "POST",
 
-            uid: uid,
+              body: formData
+            }
+          );
 
-            name: name,
 
-            email: email,
+        const result =
+          await response.text();
 
-            phone: phone,
 
-            eventId: id,
-
-            eventTitle:
-              eventData.title || "-",
-
-            eventDate:
-              eventData.date || "-",
-
-            eventTime:
-              eventData.time || "-",
-
-            venue:
-              eventData.venue || "-",
-
-            latitude:
-              latitude,
-
-            longitude:
-              longitude,
-
-            accuracy:
-              accuracy,
-
-            distanceFromVenue:
-              distance,
-
-            checkInTime:
-              serverTimestamp(),
-
-            status:
-              "Checked In"
-
-          }
+        console.log(
+          "Google Sheet response:",
+          result
         );
+
+
+        // =====================================
+        // ALREADY CHECKED IN
+        // =====================================
+
+        if(
+          result.trim() ===
+          "Already Checked In"
+        ){
+
+          alert(
+
+            "You have already checked in today.\n\n" +
+
+            "Name: " +
+            name
+
+          );
+
+          return;
+        }
 
 
         // =====================================
         // SUCCESS
         // =====================================
 
+        if(
+          result.trim() ===
+          "Success"
+        ){
+
+          localStorage.setItem(
+            "selectedEvent",
+            JSON.stringify(eventData)
+          );
+
+
+          alert(
+
+            "Check-in successful!\n\n" +
+
+            "Name: " +
+            name +
+
+            "\n\nLocation verified."
+
+          );
+
+
+          window.location.href =
+            "checkin.html";
+
+          return;
+        }
+
+
+        // =====================================
+        // OTHER RESPONSE
+        // =====================================
+
         alert(
-          "Check-in successful!\n\n" +
-          "Location verified."
+          "Check-in response:\n\n" +
+          result
         );
 
-
-        // =====================================
-        // GO TO CHECK-IN PAGE
-        // =====================================
-
-        window.location.href =
-          "checkin.html";
-
       }
+
 
       catch(error){
 
@@ -656,8 +772,15 @@ window.checkIn = async function(id){
           error
         );
 
+
         alert(
-          "Unable to save your check-in. Please try again."
+
+          "Unable to submit your check-in.\n\n" +
+
+          "Please check your internet connection " +
+
+          "and try again."
+
         );
 
       }
@@ -678,38 +801,62 @@ window.checkIn = async function(id){
       );
 
 
-      if(error.code === 1){
+      if(
+        error.code === 1
+      ){
 
         alert(
-          "Location permission is required to check in.\n\n" +
-          "Please allow location access and try again."
+
+          "Location permission is required " +
+          "to check in.\n\n" +
+
+          "Please allow location access " +
+          "and try again."
+
         );
 
       }
 
-      else if(error.code === 2){
+
+      else if(
+        error.code === 2
+      ){
 
         alert(
+
           "Your location could not be detected.\n\n" +
-          "Please turn on GPS/location services and try again."
+
+          "Please turn on GPS/location services " +
+          "and try again."
+
         );
 
       }
 
-      else if(error.code === 3){
+
+      else if(
+        error.code === 3
+      ){
 
         alert(
+
           "Location request timed out.\n\n" +
+
           "Please try again."
+
         );
 
       }
+
 
       else{
 
         alert(
+
           "Unable to get your location.\n\n" +
+
           "Please try again."
+
         );
 
       }
@@ -723,7 +870,9 @@ window.checkIn = async function(id){
 
     {
       enableHighAccuracy: true,
+
       timeout: 10000,
+
       maximumAge: 0
     }
 

@@ -306,7 +306,7 @@
             flex:1;
             overflow-y:auto;
             padding:16px;
-            padding-bottom:90px;
+            padding-bottom:20px;
             box-sizing:border-box;
         }
 
@@ -582,6 +582,90 @@
     margin-bottom:4px;
 }
 
+.friends-entry{
+    background:white;
+    margin:12px;
+    padding:14px;
+    border-radius:18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    cursor:pointer;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.friends-entry-left{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.friends-icon{
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    background:#081f63;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+}
+
+.friends-title{
+    font-size:19px;
+    font-weight:bold;
+}
+
+.friends-count{
+    margin-top:4px;
+    color:#777;
+    font-size:14px;
+}
+
+.friends-list{
+    padding:12px;
+}
+
+.friend-card{
+    background:white;
+    padding:14px;
+    border-radius:18px;
+    margin-bottom:12px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    cursor:pointer;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.friend-card-left{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.friend-card .avatar{
+    width:55px;
+    height:55px;
+}
+
+.friend-info-name{
+    font-size:18px;
+    font-weight:bold;
+}
+
+.friend-info-phone{
+    margin-top:5px;
+    color:#777;
+    font-size:14px;
+}
+
+.friend-arrow{
+    color:#081f63;
+    font-size:18px;
+}
+
     </style>
 </head>
 
@@ -612,6 +696,7 @@
         </button>
 
     </div>
+
 
     <div class="chat-list" id="chatList"></div>
 
@@ -960,7 +1045,9 @@
         const auth =
             getAuth(app); 
         
-        let blockedUsers = {};    
+        let blockedUsers = {};   
+        
+        let hiddenChats = {};
         
         import {
             onAuthStateChanged
@@ -1032,6 +1119,32 @@
 
     return phone;
 }
+
+async function hideChatForMe(chatId){
+
+    if(!confirm("Hide this chat from All?")){
+        return;
+    }
+
+    await setDoc(
+        doc(
+            db,
+            "users",
+            currentUser,
+            "hiddenChats",
+            chatId
+        ),
+        {
+            hiddenAt: serverTimestamp()
+        }
+    );
+
+    hiddenChats[chatId] = true;
+
+    renderChats();
+}
+
+window.hideChatForMe = hideChatForMe;
 
         function loadLastMessages() {
 
@@ -1140,7 +1253,6 @@
         let groups = [];
 
         let searchedUser = null;
-
 
 async function checkPhoneUser(){
 
@@ -1284,6 +1396,27 @@ if(!phone){
 
         }
 
+        async function loadHiddenChats(){
+
+            hiddenChats = {};
+
+            const snapshot = await getDocs(
+                collection(
+                    db,
+                    "users",
+                    currentUser,
+                    "hiddenChats"
+                )
+            );
+
+            snapshot.forEach(docSnap => {
+
+                hiddenChats[docSnap.id] = true;
+
+            });
+
+        }
+
         onAuthStateChanged (auth, async(user)=>{
 
             console.log("AUTH USER:", user);
@@ -1307,6 +1440,8 @@ if(!phone){
             await loadUsers();
 
             await loadGroups();
+
+            await loadHiddenChats();
 
             loadLastMessages();
 
@@ -1375,172 +1510,279 @@ if(!phone){
 
         function renderChats() {
 
-            const list =
-                document.getElementById("chatList");
+    const list = document.getElementById("chatList");
 
-            const search =
-                document.getElementById("searchInput")
-                    .value.toLowerCase();
+    const search =
+        document.getElementById("searchInput")
+        .value
+        .toLowerCase();
 
-            list.innerHTML = "";
+    list.innerHTML = "";
 
-            if (currentTab === "all" ||
-                currentTab === "groups") {
+    /* =========================
+       GROUPS
+    ========================= */
 
-                groups.forEach((group, index) => {
+    if (currentTab === "all" || currentTab === "groups") {
 
-                    if (
-                        (group.name || "")
-                        .toLowerCase()
-                        .includes(search)
-                    ) {
+        groups.forEach((group, index) => {
 
-                        list.innerHTML += `
+            const chatId =
+                group.name === "Saved Messages"
+                ? "SavedMessages_" + currentUser
+                : group.name;
 
-<div class="chat-item"
-onclick="openChat('group',${index})">
-
-<div class="chat-left">
-
-${
-group.name === "Saved Messages"
-?
-`
-<div class="avatar saved-avatar">
-    <i class="fa-solid fa-bookmark"></i>
-</div>
-`
-:
-`
-<img
-class="avatar"
-src="${group.photo || "images/group-default.png"}">
-`
-}
-
-<div>
-
-<div class="chat-name">
-${group.name}
-</div>
-
-<div class="chat-msg">
-${
-group.name === "Saved Messages"
-?
-"Only you"
-:
-`👥 ${group.members ? group.members.length : 0} members`
-}
-</div>
-
-<div class="chat-last">
-${lastMessages[group.name] || "No messages"}
-</div>
-
-</div>
-
-</div>
-
-${
-group.name !== "Saved Messages" &&
-unreadCount[group.name] > 0
-?
-`<div class="unread">${unreadCount[group.name]}</div>`
-:
-""
-}
-
-</div>`;
-
-
-                    }
-
-                });
-
+            // 只有 All 隐藏
+            if (
+                currentTab === "all" &&
+                hiddenChats[chatId]
+            ) {
+                return;
             }
 
-            if (currentTab === "all" ||
-                currentTab === "members") {
+            if (
+                !(group.name || "")
+                .toLowerCase()
+                .includes(search)
+            ) {
+                return;
+            }
 
-                friends.forEach((friend, index) => {
+            const lastMessage =
+                group.name === "Saved Messages"
+                ? "No messages"
+                : (lastMessages[group.name] || "No messages");
 
-                    if (
-                        friend.name &&
-                        friend.name.toLowerCase().includes(search)
-                    ) {
+            const avatar =
+                group.name === "Saved Messages"
+                ?
+                `
+                <div class="avatar saved-avatar">
+                    <i class="fa-solid fa-bookmark"></i>
+                </div>
+                `
+                :
+                `
+                <img
+                    class="avatar"
+                    src="${group.photo || "images/group-default.png"}"
+                >
+                `;
 
-                        list.innerHTML += `
+            list.innerHTML += `
 
-<div class="chat-item"
-onclick="openChat('friend',${index})">
+            <div class="chat-item">
 
-<div class="chat-left">
+                <div
+                    class="chat-left"
+                    onclick="openChat('group', ${index})"
+                    style="flex:1;"
+                >
 
-${
-friend.photo
-?
-`
-<img
-class="avatar"
-src="${friend.photo}">
-`
-:
-`
-<div class="avatar saved-avatar">
-    ${friend.name ? friend.name.charAt(0) : "?"}
-</div>
-`
-}
+                    ${avatar}
 
-<div>
+                    <div>
 
-<div class="chat-name">
-${friend.name}
-</div>
+                        <div class="chat-name">
+                            ${group.name}
+                        </div>
 
-<div class="chat-msg">
-${friend.phone}
-</div>
+                        <div class="chat-msg">
 
-<div class="chat-last">
-${lastMessages[
-(
-currentUser < friend.uid
-?
-currentUser+"_"+friend.uid
-:
-friend.uid+"_"+currentUser
-)
-] || "No messages"}
-</div>
+                            ${
+                                group.name === "Saved Messages"
+                                ?
+                                "Only you"
+                                :
+                                `👥 ${group.members ? group.members.length : 0} members`
+                            }
 
-</div>
+                        </div>
 
-</div>
+                        <div class="chat-last">
+                            ${lastMessage}
+                        </div>
 
-${
-unreadCount[friend.name] > 0
-?
-`<div class="unread">${unreadCount[friend.name]}</div>`
-:
-""
-}
+                    </div>
 
-</div>
+                </div>
 
-`;
-
-                    }
-
-                });
-
+                ${
+                    currentTab === "all"
+                    ?
+                    `
+                    <button
+                        onclick="
+                            event.stopPropagation();
+                            hideChatForMe('${chatId}');
+                        "
+                        style="
+                            border:none;
+                            background:none;
+                            color:#999;
+                            font-size:18px;
+                            cursor:pointer;
+                            padding:10px;
+                        "
+                    >
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                    `
+                    :
+                    ""
                 }
-                
 
-            
+                ${
+                    group.name !== "Saved Messages" &&
+                    unreadCount[group.name] > 0
+                    ?
+                    `
+                    <div class="unread">
+                        ${unreadCount[group.name]}
+                    </div>
+                    `
+                    :
+                    ""
+                }
 
+            </div>
+
+            `;
+
+        });
+
+    }
+
+
+    /* =========================
+       MEMBERS
+    ========================= */
+
+    if (currentTab === "all" || currentTab === "members") {
+
+        friends.forEach((friend, index) => {
+
+            const chatId =
+                currentUser < friend.uid
+                ?
+                currentUser + "_" + friend.uid
+                :
+                friend.uid + "_" + currentUser;
+
+            // 只有 All 隐藏
+            if (
+                currentTab === "all" &&
+                hiddenChats[chatId]
+            ) {
+                return;
             }
+
+            if (
+                !friend.name ||
+                !friend.name.toLowerCase().includes(search)
+            ) {
+                return;
+            }
+
+            const avatar =
+                friend.photo
+                ?
+                `
+                <img
+                    class="avatar"
+                    src="${friend.photo}"
+                >
+                `
+                :
+                `
+                <div class="avatar saved-avatar">
+                    ${
+                        friend.name
+                        ? friend.name.charAt(0).toUpperCase()
+                        : "?"
+                    }
+                </div>
+                `;
+
+            const lastMessage =
+                lastMessages[chatId] || "No messages";
+
+            list.innerHTML += `
+
+            <div class="chat-item">
+
+                <div
+                    class="chat-left"
+                    onclick="openChat('friend', ${index})"
+                    style="flex:1;"
+                >
+
+                    ${avatar}
+
+                    <div>
+
+                        <div class="chat-name">
+                            ${friend.name}
+                        </div>
+
+                        <div class="chat-msg">
+                            ${friend.phone || "-"}
+                        </div>
+
+                        <div class="chat-last">
+                            ${lastMessage}
+                        </div>
+
+                    </div>
+
+                </div>
+
+                ${
+                    currentTab === "all"
+                    ?
+                    `
+                    <button
+                        onclick="
+                            event.stopPropagation();
+                            hideChatForMe('${chatId}');
+                        "
+                        style="
+                            border:none;
+                            background:none;
+                            color:#999;
+                            font-size:18px;
+                            cursor:pointer;
+                            padding:10px;
+                        "
+                    >
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                    `
+                    :
+                    ""
+                }
+
+                ${
+                    unreadCount[chatId] > 0
+                    ?
+                    `
+                    <div class="unread">
+                        ${unreadCount[chatId]}
+                    </div>
+                    `
+                    :
+                    ""
+                }
+
+            </div>
+
+            `;
+
+        });
+
+    }
+
+}
 
             function switchTab(tab, event) {
 
@@ -1826,6 +2068,8 @@ ${friend.name}
                 document.getElementById("chatRoom")
                     .style.display = "flex";
 
+                    adjustMessagesPadding();
+
                 if (
                     type === "group" &&
                     groups[index].name === "Saved Messages"
@@ -1841,6 +2085,8 @@ ${friend.name}
 
                     return;
                 }
+
+                window.addEventListener("resize", adjustMessagesPadding);
 
                 if(type === "friend"){
 
@@ -1874,6 +2120,7 @@ ${friend.name}
                         groups[index].name;
 
                 }
+
 
                 const btn = document.getElementById("chatMenuBtn");
 
@@ -2323,7 +2570,19 @@ ${friend.name}
 
             }
 
-window.openSearch = openSearch;
+                window.openSearch = openSearch;
+
+            function adjustMessagesPadding(){
+
+                const messages = document.getElementById("messages");
+                const inputBox = document.querySelector(".message-input");
+
+                if(!messages || !inputBox) return;
+
+                const height = inputBox.offsetHeight;
+
+                messages.style.paddingBottom = (height + 20) + "px";
+            }
 
             async function sendMessage() {
 
@@ -2539,6 +2798,8 @@ window.openSearch = openSearch;
 
                 document.getElementById("replyBox").style.display = "block";
 
+                adjustMessagesPadding();
+            
                 closeMessageMenu();
 
                 document.getElementById("messageText").focus();
@@ -2549,6 +2810,8 @@ window.openSearch = openSearch;
                 replyData = null;
 
                 document.getElementById("replyBox").style.display = "none";
+
+                adjustMessagesPadding();
             }
 
             function startPress(id, text, sender){
