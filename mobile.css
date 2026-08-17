@@ -167,3 +167,186 @@ button{
     }
 
 }
+
+/* =========================
+   APP UPDATE
+========================= */
+
+#updatePopup{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,0.55);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:99999;
+
+    padding:20px;
+
+    box-sizing:border-box;
+
+}
+
+
+.update-box{
+
+    width:100%;
+
+    max-width:380px;
+
+    background:white;
+
+    border-radius:25px;
+
+    padding:30px;
+
+    text-align:center;
+
+    box-sizing:border-box;
+
+    box-shadow:
+        0 15px 40px
+        rgba(0,0,0,0.3);
+
+    animation:
+        updatePopupIn
+        0.25s ease;
+
+}
+
+
+.update-icon{
+
+    width:70px;
+
+    height:70px;
+
+    margin:0 auto 15px;
+
+    border-radius:50%;
+
+    background:#3c4d78;
+
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:32px;
+
+}
+
+
+.update-box h2{
+
+    margin:10px 0;
+
+    font-size:25px;
+
+    color:#1d2945;
+
+}
+
+
+.update-box p{
+
+    color:#666;
+
+    font-size:16px;
+
+    line-height:1.5;
+
+}
+
+
+.update-version{
+
+    font-weight:bold;
+
+    color:#3c4d78 !important;
+
+}
+
+
+#updateNowBtn{
+
+    width:100%;
+
+    padding:14px;
+
+    margin-top:15px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#3c4d78;
+
+    color:white;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+
+#updateNowBtn:disabled{
+
+    opacity:0.7;
+
+}
+
+
+#updateLaterBtn{
+
+    width:100%;
+
+    padding:12px;
+
+    margin-top:8px;
+
+    border:none;
+
+    background:none;
+
+    color:#777;
+
+    font-size:17px;
+
+    cursor:pointer;
+
+}
+
+
+@keyframes updatePopupIn{
+
+    from{
+
+        opacity:0;
+
+        transform:scale(0.9);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:scale(1);
+
+    }
+
+}
