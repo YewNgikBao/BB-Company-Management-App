@@ -3,27 +3,65 @@
 // AUTO UPDATE SYSTEM
 // ========================================
 
-// 当前版本不再写死在这里
-// 版本号全部由 version.json 管理
+// ========================================
+// REGISTER SERVICE WORKER
+// ========================================
+
+async function registerServiceWorker(){
+
+    if(!("serviceWorker" in navigator)){
+
+        console.log(
+            "Service Worker is not supported."
+        );
+
+        return;
+
+    }
+
+    try{
+
+        const registration =
+            await navigator.serviceWorker.register(
+                "./service-worker.js"
+            );
+
+        console.log(
+            "Service Worker registered:",
+            registration.scope
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "Service Worker registration failed:",
+            error
+        );
+
+    }
+
+}
 
 
 // ========================================
 // CHECK APP VERSION
 // ========================================
 
-async function checkAppUpdate() {
+async function checkAppUpdate(){
 
-    try {
+    try{
 
-        const response = await fetch(
-            "version.json?t=" + Date.now(),
-            {
-                cache: "no-store"
-            }
-        );
+        const response =
+            await fetch(
+                "version.json?t=" + Date.now(),
+                {
+                    cache:"no-store"
+                }
+            );
 
 
-        if (!response.ok) {
+        if(!response.ok){
 
             console.log(
                 "Cannot find version.json"
@@ -42,7 +80,7 @@ async function checkAppUpdate() {
             versionData.version;
 
 
-        if (!latestVersion) {
+        if(!latestVersion){
 
             console.log(
                 "version.json has no version number"
@@ -64,10 +102,10 @@ async function checkAppUpdate() {
 
 
         // ========================================
-        // FIRST TIME
+        // FIRST INSTALL
         // ========================================
 
-        if (!installedVersion) {
+        if(!installedVersion){
 
             localStorage.setItem(
                 "bbAppVersion",
@@ -99,10 +137,10 @@ async function checkAppUpdate() {
         // CHECK UPDATE
         // ========================================
 
-        if (
+        if(
             installedVersion !==
             latestVersion
-        ) {
+        ){
 
             showUpdatePopup(
                 latestVersion,
@@ -111,9 +149,8 @@ async function checkAppUpdate() {
 
         }
 
-
     }
-    catch (error) {
+    catch(error){
 
         console.error(
             "Update check failed:",
@@ -132,15 +169,13 @@ async function checkAppUpdate() {
 function showUpdatePopup(
     latestVersion,
     message
-) {
+){
 
-    // Prevent duplicate popup
-
-    if (
+    if(
         document.getElementById(
             "appUpdatePopup"
         )
-    ) {
+    ){
 
         return;
 
@@ -243,9 +278,9 @@ function showUpdatePopup(
 
 window.updateApp = async function(
     latestVersion
-) {
+){
 
-    try {
+    try{
 
         const button =
             document.querySelector(
@@ -253,7 +288,7 @@ window.updateApp = async function(
             );
 
 
-        if (button) {
+        if(button){
 
             button.innerHTML = `
 
@@ -269,7 +304,7 @@ window.updateApp = async function(
 
 
         // ========================================
-        // SAVE NEW VERSION
+        // UPDATE VERSION
         // ========================================
 
         localStorage.setItem(
@@ -279,12 +314,12 @@ window.updateApp = async function(
 
 
         // ========================================
-        // TELL SERVICE WORKER TO UPDATE
+        // UPDATE SERVICE WORKER
         // ========================================
 
-        if (
+        if(
             "serviceWorker" in navigator
-        ) {
+        ){
 
             const registration =
                 await navigator
@@ -292,7 +327,7 @@ window.updateApp = async function(
                     .getRegistration();
 
 
-            if (registration) {
+            if(registration){
 
                 await registration.update();
 
@@ -302,12 +337,12 @@ window.updateApp = async function(
 
 
         // ========================================
-        // CLEAR OLD CACHE
+        // CLEAR CACHE
         // ========================================
 
-        if (
+        if(
             "caches" in window
-        ) {
+        ){
 
             const cacheNames =
                 await caches.keys();
@@ -332,7 +367,7 @@ window.updateApp = async function(
         // ========================================
 
         setTimeout(
-            function() {
+            function(){
 
                 window.location.reload();
 
@@ -340,9 +375,8 @@ window.updateApp = async function(
             800
         );
 
-
     }
-    catch (error) {
+    catch(error){
 
         console.error(
             "Update error:",
@@ -356,12 +390,13 @@ window.updateApp = async function(
 
 };
 
+
 // ========================================
 // CLOSE UPDATE POPUP
 // ========================================
 
 window.closeUpdatePopup =
-function() {
+function(){
 
     const popup =
         document.getElementById(
@@ -369,7 +404,7 @@ function() {
         );
 
 
-    if (popup) {
+    if(popup){
 
         popup.remove();
 
@@ -382,13 +417,13 @@ function() {
 // UPDATE POPUP STYLE
 // ========================================
 
-function addUpdateStyles() {
+function addUpdateStyles(){
 
-    if (
+    if(
         document.getElementById(
             "updateStyles"
         )
-    ) {
+    ){
 
         return;
 
@@ -407,47 +442,46 @@ function addUpdateStyles() {
 
     style.innerHTML = `
 
-        .update-overlay {
+        .update-overlay{
 
-            position: fixed;
+            position:fixed;
 
-            top: 0;
-            left: 0;
+            top:0;
+            left:0;
 
-            width: 100%;
-            height: 100%;
+            width:100%;
+            height:100%;
 
             background:
                 rgba(0,0,0,0.55);
 
-            display: flex;
+            display:flex;
 
-            align-items: center;
+            align-items:center;
+            justify-content:center;
 
-            justify-content: center;
+            z-index:999999;
 
-            z-index: 999999;
+            padding:20px;
 
-            padding: 20px;
-
-            box-sizing: border-box;
+            box-sizing:border-box;
 
         }
 
 
-        .update-box {
+        .update-box{
 
-            width: 90%;
+            width:90%;
 
-            max-width: 380px;
+            max-width:380px;
 
-            background: white;
+            background:white;
 
-            border-radius: 25px;
+            border-radius:25px;
 
-            padding: 30px 25px;
+            padding:30px 25px;
 
-            text-align: center;
+            text-align:center;
 
             box-shadow:
                 0 10px 40px
@@ -460,147 +494,144 @@ function addUpdateStyles() {
         }
 
 
-        .update-icon {
+        .update-icon{
 
-            width: 70px;
-            height: 70px;
+            width:70px;
+            height:70px;
 
             margin:
                 0 auto 15px;
 
-            border-radius: 50%;
+            border-radius:50%;
 
-            background: #081f63;
+            background:#081f63;
 
-            color: white;
+            color:white;
 
-            display: flex;
+            display:flex;
 
-            align-items: center;
+            align-items:center;
+            justify-content:center;
 
-            justify-content: center;
-
-            font-size: 32px;
-
-        }
-
-
-        .update-box h2 {
-
-            margin: 10px 0;
-
-            color: #081f63;
-
-            font-size: 24px;
+            font-size:32px;
 
         }
 
 
-        .update-box p {
+        .update-box h2{
 
-            color: #666;
+            margin:10px 0;
 
-            line-height: 1.5;
+            color:#081f63;
 
-            font-size: 16px;
-
-        }
-
-
-        .update-version {
-
-            font-weight: bold;
-
-            color: #081f63 !important;
+            font-size:24px;
 
         }
 
 
-        .update-message {
+        .update-box p{
 
-            background: #f1f4fb;
+            color:#666;
 
-            padding: 12px;
+            line-height:1.5;
 
-            border-radius: 12px;
-
-            margin: 15px 0;
-
-            color: #555;
-
-            font-size: 14px;
+            font-size:16px;
 
         }
 
 
-        .update-now {
+        .update-version{
 
-            width: 100%;
+            font-weight:bold;
 
-            border: none;
-
-            border-radius: 15px;
-
-            padding: 15px;
-
-            background: #081f63;
-
-            color: white;
-
-            font-size: 18px;
-
-            font-weight: bold;
-
-            cursor: pointer;
+            color:#081f63 !important;
 
         }
 
 
-        .update-now:disabled {
+        .update-message{
 
-            opacity: 0.7;
+            background:#f1f4fb;
 
-        }
+            padding:12px;
 
+            border-radius:12px;
 
-        .update-later {
+            margin:15px 0;
 
-            width: 100%;
+            color:#555;
 
-            border: none;
-
-            background: none;
-
-            padding: 12px;
-
-            margin-top: 5px;
-
-            font-size: 16px;
-
-            color: #777;
-
-            cursor: pointer;
+            font-size:14px;
 
         }
 
 
-        @keyframes updatePopupIn {
+        .update-now{
 
-            from {
+            width:100%;
 
-                transform:
-                    scale(0.85);
+            border:none;
 
-                opacity: 0;
+            border-radius:15px;
+
+            padding:15px;
+
+            background:#081f63;
+
+            color:white;
+
+            font-size:18px;
+
+            font-weight:bold;
+
+            cursor:pointer;
+
+        }
+
+
+        .update-now:disabled{
+
+            opacity:0.7;
+
+        }
+
+
+        .update-later{
+
+            width:100%;
+
+            border:none;
+
+            background:none;
+
+            padding:12px;
+
+            margin-top:5px;
+
+            font-size:16px;
+
+            color:#777;
+
+            cursor:pointer;
+
+        }
+
+
+        @keyframes updatePopupIn{
+
+            from{
+
+                transform:scale(0.85);
+
+                opacity:0;
 
             }
 
-            to {
+            to{
 
-                transform:
-                    scale(1);
+                transform:scale(1);
 
-                opacity: 1;
+                opacity:1;
 
             }
 
@@ -617,15 +648,18 @@ function addUpdateStyles() {
 
 
 // ========================================
-// START UPDATE CHECK
+// START
 // ========================================
-
-// Wait for page to load first
 
 window.addEventListener(
     "load",
-    function() {
+    function(){
 
+        // Register Service Worker
+        registerServiceWorker();
+
+
+        // Check version
         setTimeout(
             checkAppUpdate,
             1500
