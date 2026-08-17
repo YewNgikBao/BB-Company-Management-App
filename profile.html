@@ -219,14 +219,53 @@ body{
   display:none;
   justify-content:center;
   align-items:center;
+  z-index:9999;
+  overflow:hidden;
 }
 
 .modal-content{
   background:white;
   width:80%;
   max-width:400px;
+  max-height:90vh;
+  overflow-y:auto;
   border-radius:20px;
-  padding:25px;
+  padding:20px;
+  box-sizing:border-box;
+}
+
+@media(max-width:768px){
+
+  #cropModal .modal-content{
+    width:94%;
+    max-height:96vh;
+    padding:12px;
+    overflow:hidden;
+  }
+
+  #cropArea{
+    width:min(75vw, 280px);
+    height:min(75vw, 280px);
+    margin:8px auto;
+  }
+
+  .crop-hint{
+    font-size:12px;
+    margin:5px 0;
+  }
+
+  #cropModal .save-btn{
+    padding:10px;
+    font-size:17px;
+    margin-top:5px;
+  }
+
+  #cropModal .cancel-btn{
+    padding:6px;
+    font-size:17px;
+    margin-top:2px;
+  }
+
 }
 
 .modal-content h1{
