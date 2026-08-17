@@ -467,17 +467,9 @@ window.checkIn = async function(id){
   // TIAN EN METHODIST CHURCH
   // =========================================
 
-  const churchLatitude =
-    2.28796;
-
-  const churchLongitude =
-    111.82779;
-
-
-  // Allow 100 meters
-
-  const allowedRadius =
-    100;
+const churchLatitude = Number(eventData.latitude);
+const churchLongitude = Number(eventData.longitude);
+const allowedRadius = Number(eventData.allowedRadius);
 
 
   // =========================================

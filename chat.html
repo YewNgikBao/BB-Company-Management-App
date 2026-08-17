@@ -337,7 +337,7 @@
 
         .message-input{
             display:flex;
-            flex-wrap:wrap;
+            flex-wrap:nowrap;
             align-items:center;
 
             position:absolute;
@@ -349,34 +349,36 @@
             padding:10px;
             background:white;
             box-sizing:border-box;
+
+            gap:6px;
         }
 
 
         .message-input input {
-            flex: 1;
-            padding: 14px;
-            border-radius: 25px;
-            border: 1px solid #ccc;
-            font-size: 16px;
+            flex:1;
+            min-width:0;
+            width:0;
+
+            padding:14px;
+            border-radius:25px;
+            border:1px solid #ccc;
+            font-size:16px;
+            box-sizing:border-box;
         }
 
         .message-input button{
+            width:45px;
+            height:45px;
+            min-width:45px;
+            flex-shrink:0;
 
-        width:45px;
-        height:45px;
+            border-radius:50%;
+            border:none;
 
-        border-radius:50%;
+            background:#081f63;
+            color:white;
 
-        border:none;
-
-        background:#081f63;
-
-        color:white;
-
-        font-size:18px;
-
-        margin-right:8px;
-
+            font-size:18px;
         }
 
         .member-item {
@@ -487,52 +489,7 @@
             font-size:14px;
             color:#777;
         }
-
-        .attach-menu{
-
-            display:none;
-
-            position:absolute;
-
-            bottom:75px;
-
-            left:50px;
-
-            background:white;
-
-            border-radius:12px;
-
-            box-shadow:0 2px 10px rgba(0,0,0,.2);
-
-            padding:10px;
-
-            z-index:9999;
-
-        }
-
-        .attach-menu button{
-
-            display:block;
-
-            width:180px;
-
-            padding:10px;
-
-            border:none;
-
-            background:white;
-
-            text-align:left;
-
-            cursor:pointer;
-
-        }
-
-        .attach-menu button:hover{
-
-            background:#f5f5f5;
-
-        }
+       
 
 .search-bar{
     display:flex;
@@ -664,6 +621,32 @@
 .friend-arrow{
     color:#081f63;
     font-size:18px;
+}
+
+.chat-unread-dot{
+    display:none;
+
+    position:absolute;
+
+    top:2px;
+    left:50%;
+
+    width:10px;
+    height:10px;
+
+    background:#e53935;
+
+    border-radius:50%;
+
+    border:2px solid white;
+
+    transform:translateX(8px);
+
+    z-index:10;
+}
+
+.chat-unread-dot.show{
+    display:block;
 }
 
     </style>
@@ -886,36 +869,16 @@
         😊
         </button>
 
-        <button id="attachBtn" onclick="toggleAttachMenu()">
-            <i class="fa-solid fa-plus"></i>
-        </button>
-
-
         <input
         type="text"
         id="messageText"
         placeholder="Type message...">
 
-        <button id="voiceBtn">
-            <i class="fa-solid fa-microphone"></i>
-        </button>
 
         <button id="sendBtn" onclick="sendMessage()">
             <i class="fa fa-paper-plane"></i>
         </button>
 
-        <input
-            type="file"
-            id="filePicker"
-            style="display:none">
-
-        </div>
-
-        <input
-            type="file"
-            id="imagePicker"
-            accept="image/*"
-            style="display:none">
 
         <emoji-picker
         id="emojiPicker"
@@ -927,33 +890,7 @@
         z-index:9999;">
         </emoji-picker>
 
-<div id="attachMenu" class="attach-menu">
-
-    <button onclick="takePhoto()">
-        📷 Take Photo
-    </button>
-
-    <button onclick="pickImage()">
-        🖼️ Image
-    </button>
-
-    <button onclick="pickVideo()">
-        🎥 Video
-    </button>
-
-    <button onclick="pickFile()">
-    📄 File
-    </button>
-
-    <button onclick="startVoiceCall()">
-        📞 Voice Call
-    </button>
-
-    <button onclick="startVideoCall()">
-        📹 Video Call
-    </button>
-
-</div>
+        </div>
 
 </div>
 
@@ -969,10 +906,16 @@
             <div>Attendance</div>
         </div>
 
-        <div class="active">
+
+        <div class="active" style="position:relative;">
             <i class="fa-solid fa-comments"></i>
+
+            <!-- New message red dot -->
+            <span id="chatUnreadDot" class="chat-unread-dot"></span>
+
             <div>Chat</div>
         </div>
+
 
         <div onclick="window.location.href='achievements.html'">
             <i class="fa-solid fa-trophy"></i>
@@ -995,6 +938,7 @@
 
             getFirestore,
             collection,
+            collectionGroup,
             getDocs,
             addDoc,
             query,
@@ -1093,6 +1037,77 @@
 
         let currentSearchIndex = 0;
 
+        let unsubscribeUnreadMessages = null;
+
+function startUnreadMessageListener(){
+
+    if(unsubscribeUnreadMessages){
+        unsubscribeUnreadMessages();
+    }
+
+    const q = query(
+        collectionGroup(db, "messages"),
+        where("seen", "==", false)
+    );
+
+    unsubscribeUnreadMessages = onSnapshot(
+        q,
+        (snapshot) => {
+
+            let hasUnread = false;
+
+            snapshot.forEach(docSnap => {
+
+                const msg = docSnap.data();
+
+                // 自己发的讯息不算未读
+                if(msg.senderUid === currentUser){
+                    return;
+                }
+
+                // 被自己隐藏的讯息不算
+                if(msg.hiddenFor?.includes(currentUser)){
+                    return;
+                }
+
+                hasUnread = true;
+
+            });
+
+            updateChatUnreadDot(hasUnread);
+
+        },
+        (error) => {
+
+            console.error(
+                "Unread message listener error:",
+                error
+            );
+
+        }
+    );
+}
+
+
+function updateChatUnreadDot(show){
+
+    const dot =
+        document.getElementById("chatUnreadDot");
+
+    if(!dot) return;
+
+    if(show){
+
+        dot.classList.add("show");
+
+    }else{
+
+        dot.classList.remove("show");
+
+    }
+
+}
+
         function normalizeMalaysiaPhone(phone){
 
     phone = phone.trim().replace(/\s+/g,"");
@@ -1148,105 +1163,134 @@ window.hideChatForMe = hideChatForMe;
 
         function loadLastMessages() {
 
-            function watchChat(chatName, displayName){
+    function watchChat(chatId, displayKey){
 
-    if(!chatName){
+        if(!chatId){
+            console.error("Invalid chatId:", chatId);
+            return;
+        }
 
-        console.error("chatName is invalid:",chatName);
+        const q = query(
+            collection(
+                db,
+                "chats",
+                chatId,
+                "messages"
+            ),
+            orderBy("time", "desc"),
+            limit(20)
+        );
 
-        return;
-    }
+        onSnapshot(q, (snapshot) => {
 
-    const q=query(
-        collection(
-            db,
-            "chats",
-            chatName,
-            "messages"
-        ),
-        orderBy("time","desc")
-    );
+            let latestMessage = null;
 
-    onSnapshot(q,(snapshot)=>{
+            // 从最新开始找第一条自己没有隐藏的讯息
+            for(const docSnap of snapshot.docs){
 
-    if (!snapshot.empty) { 
+                const msg = docSnap.data();
 
-        let latest = null;
+                // 自己隐藏的讯息不要显示
+                if(msg.hiddenFor?.includes(currentUser)){
+                    continue;
+                }
 
+                // 被 block 的人发的讯息不要显示
+                if(
+                    msg.senderUid !== currentUser &&
+                    blockedUsers[msg.senderUid]
+                ){
+                    continue;
+                }
 
-        snapshot.docs.forEach(docSnap=>{
-
-            const msg = docSnap.data();
-
-
-            // 跳过自己删除的讯息
-            if(
-                msg.hiddenFor?.includes(currentUser)
-            ){
-                return;
+                latestMessage = msg;
+                break;
             }
 
 
-            latest = msg;
+            if(!latestMessage){
+
+                lastMessages[displayKey] = "No messages";
+
+            }else{
+
+                let text = latestMessage.text || "";
+
+                // 如果讯息被 recall
+                if(latestMessage.recalled){
+
+                    text = "This message was recalled";
+
+                }
+
+                // 群组显示谁发的
+                if(
+                    latestMessage.senderUid !== currentUser
+                ){
+                    text =
+                        latestMessage.sender +
+                        ": " +
+                        text;
+                }
+
+                lastMessages[displayKey] = text;
+
+            }
+
+            renderChats();
+
+        }, (error) => {
+
+            console.error(
+                "Last message listener error:",
+                error
+            );
 
         });
 
+    }
 
-        if(latest){
 
-            lastMessages[displayName] =
-            latest.text;
+    /* =========================
+       WATCH GROUPS
+    ========================= */
 
-        }else{
+    groups.forEach(group => {
 
-            lastMessages[displayName] =
-            "No messages";
-
+        if(group.name === "Saved Messages"){
+            return;
         }
 
+        watchChat(
+            group.name,
+            group.name
+        );
 
-    } else { 
-
-        lastMessages[displayName] =
-        "No messages";
-
-    } 
+    });
 
 
-    renderChats();
+    /* =========================
+       WATCH FRIENDS
+    ========================= */
 
-});
+    friends.forEach(friend => {
+
+        const uid1 = currentUser;
+        const uid2 = friend.uid;
+
+        const chatId =
+            uid1 < uid2
+            ? uid1 + "_" + uid2
+            : uid2 + "_" + uid1;
+
+        watchChat(
+            chatId,
+            chatId
+        );
+
+    });
 
 }
-
-            groups.forEach(group=>{
-
-                watchChat(
-                    group.name,
-                    group.name
-                );
-
-            });
-
-            friends.forEach(friend=>{
-
-
-                const uid1 = currentUser;
-                const uid2 = friend.uid;
-
-
-                const chatId =
-                uid1 < uid2
-                ? uid1 + "_" + uid2
-                : uid2 + "_" + uid1;
-
-
-                watchChat(chatId, friend.name);
-
-
-            });
-
-        }
 
         let friends = [];
 
@@ -1425,6 +1469,8 @@ if(!phone){
 
             currentUser = user.uid;
 
+            startUnreadMessageListener();
+
             const userDoc = await getDoc(
                 doc(db,"users",currentUser)
             );
@@ -1505,6 +1551,8 @@ if(!phone){
                 }
 
             });
+
+            renderChats();
 
         }
 
@@ -2605,6 +2653,8 @@ ${friend.name}
                       senderUid: currentUser,
                       time: serverTimestamp(),
 
+                      seen: false,
+
                       reply: replyData
                     }
                 ); 
@@ -3185,62 +3235,6 @@ ${friend.name}
                             }
 
             }
-
-            window.toggleAttachMenu = function(){
-
-                const menu = document.getElementById("attachMenu");
-
-                if(menu.style.display === "block"){
-
-                    menu.style.display = "none";
-
-                }else{
-
-                    menu.style.display = "block";
-
-                }
-
-            }
-
-            window.pickFile = function(){
-
-                document
-                .getElementById("filePicker")
-                .click();
-
-            }
-
-            document
-            .getElementById("filePicker")
-            .addEventListener("change", function(){
-
-                const file = this.files[0];
-
-                if(!file) return;
-
-                console.log(file);
-
-            });
-
-            window.pickImage = function(){
-
-                document
-                .getElementById("imagePicker")
-                .click();
-
-            }
-
-            document
-            .getElementById("imagePicker")
-            .addEventListener("change", async function(){
-
-                const image = this.files[0];
-
-                if(!image) return;
-
-                console.log(image);
-
-            });
 
     
     const picker =
