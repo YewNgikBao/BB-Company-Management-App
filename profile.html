@@ -532,6 +532,33 @@ body{
 
 </div>
 
+<!-- ADMIN PANEL -->
+
+<div class="card" id="adminPanel" style="display:none;">
+
+  <div class="card-title">
+    Administration
+  </div>
+
+  <div class="row"
+       onclick="window.location.href='admin.html'">
+
+    <div class="row-left">
+
+      <i class="fa-solid fa-shield-halved"></i>
+
+      <div>
+        Admin Panel
+      </div>
+
+    </div>
+
+    <i class="fa-solid fa-chevron-right"></i>
+
+  </div>
+
+</div>
+
 <!-- LOGOUT -->
 
 <div class="logout">
@@ -987,6 +1014,24 @@ onAuthStateChanged(auth, async(user)=>{
         profileData = data;
 
         currentUserRole = data.role || "member";
+
+        // =========================
+        // ADMIN PANEL
+        // =========================
+
+const adminPanel =
+    document.getElementById("adminPanel");
+
+if(currentUserRole === "admin"){
+
+    adminPanel.style.display = "block";
+
+}
+else{
+
+    adminPanel.style.display = "none";
+
+}
 
         document.getElementById("displayName").innerText =
         data.name || "No Name";
