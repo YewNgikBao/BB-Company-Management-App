@@ -71,6 +71,39 @@ body{
   justify-content:space-between;
   align-items:center;
   box-shadow:0 4px 10px rgba(0,0,0,0.2);
+  box-sizing:border-box;
+  width:100%;
+}
+
+@media (max-width:600px){
+
+  .container{
+    padding:15px;
+  }
+
+  .card{
+    width:100%;
+    box-sizing:border-box;
+    gap:15px;
+  }
+
+  .card > div{
+    min-width:0;
+    flex:1;
+  }
+
+  .card h2,
+  .card p{
+    overflow-wrap:anywhere;
+    word-break:break-word;
+  }
+
+  .check-btn{
+    flex-shrink:0;
+    padding:14px 12px;
+    font-size:16px;
+  }
+
 }
 
 .card h2{
@@ -193,13 +226,21 @@ import {
   getFirestore,
   collection,
   getDocs,
+  getDoc,
+  doc,
   onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+  getAuth,
+  onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 // FIREBASE CONFIG
 const firebaseConfig = {
 
-  apiKey: "AIzaSyAHmIUT6Wbh_lVrMoirhY9Z18xc57fSFZ8",
+  apiKey: "AIzaSyAHmlUT6WBh_lVrMOirhY9Z18xc57fSFZ8",
 
   authDomain: "yb1-ae18e.firebaseapp.com",
 
@@ -220,6 +261,9 @@ initializeApp(firebaseConfig);
 
 const db =
 getFirestore(app);
+
+const auth =
+getAuth(app);
 
 
 // REALTIME ANNOUNCEMENTS
@@ -275,160 +319,485 @@ onSnapshot(
 // LOAD EVENTS
 async function loadEvents(){
 
-  const snapshot =
-  await getDocs(
-    collection(db,"events")
-  );
-
   const container =
-  document.getElementById(
-    "eventsContainer"
-  );
+    document.getElementById("eventsContainer");
 
-  container.innerHTML = "";
+  container.innerHTML = `
+    <p style="text-align:center;color:#777;">
+      Loading attendance...
+    </p>
+  `;
 
-  const dashboardEvents = [];
+  try{
 
-  snapshot.forEach(doc => {
+    // =========================================
+    // GET CURRENT USER
+    // =========================================
 
-  const data = doc.data();
+    const user = auth.currentUser;
 
-  window[`event_${doc.id}`] = data;
+    if(!user){
 
-  dashboardEvents.push({
-    title: data.title,
-    date: data.date,
-    time: data.time,
-    venue: data.venue
-  });
+      container.innerHTML = `
+        <p style="text-align:center;color:#777;">
+          Please log in first.
+        </p>
+      `;
 
-  const notifications = JSON.parse(
-    localStorage.getItem("dashboardNotifications")
-  ) || [];
+      return;
+    }
 
-  const exists = notifications.some(
-    item => item.title === data.title
-  );
 
-  if (!exists) {
+    // =========================================
+    // GET USER PROFILE
+    // =========================================
 
-    notifications.push({
-      title: "Attendance Reminder",
-      message: `${data.title} on ${data.date} at ${data.time}`
-    });
+    const userRef =
+      doc(
+        db,
+        "users",
+        user.uid
+      );
 
-    localStorage.setItem(
-      "dashboardNotifications",
-      JSON.stringify(notifications)
-    );
-  }
+    const userSnap =
+      await getDoc(userRef);
 
-  localStorage.setItem(
-    "events",
-    JSON.stringify(dashboardEvents)
-  );
 
-  const now = new Date();
+    if(!userSnap.exists()){
 
-  const current =
-  now.getHours() * 60 +
-  now.getMinutes();
+      container.innerHTML = `
+        <p style="text-align:center;color:red;">
+          User profile not found.
+        </p>
+      `;
 
-  const start =
-  data.startHour * 60 +
-  data.startMinute;
+      return;
+    }
 
-  const end =
-  data.endHour * 60 +
-  data.endMinute;
 
-  let buttonClass =
-  "disabled";
+    const userData =
+      userSnap.data();
 
-  let disabled =
-  "disabled";
 
-  const today = new Date();
+    // =========================================
+    // GET USER COMPANY
+    // =========================================
 
-  const eventDate = new Date(
-    data.date.split("/").reverse().join("-")
-  );
+    const userCompany =
+      (userData.company || "").trim();
 
-  const sameDay =
-    today.getFullYear() === eventDate.getFullYear() &&
-    today.getMonth() === eventDate.getMonth() &&
-    today.getDate() === eventDate.getDate();
 
     console.log(
-  "Today:",
-  today,
-  "Event:",
-  eventDate,
-  "Same Day:",
-  sameDay
-);                                                        
+      "Current User:",
+      user.uid
+    );
 
-  if (
-    sameDay &&
-    current >= start &&
-    current <= end
-  ){
+    console.log(
+      "Current Company:",
+      userCompany
+    );
 
-    buttonClass = "enabled";
-    disabled = "";
+
+    if(!userCompany){
+
+      container.innerHTML = `
+        <div style="
+          background:white;
+          padding:30px;
+          border-radius:20px;
+          text-align:center;
+          color:#777;
+        ">
+
+          <i
+            class="fa-solid fa-building"
+            style="
+              font-size:45px;
+              color:#3c4d78;
+              margin-bottom:15px;
+            ">
+          </i>
+
+          <h3>
+            No Company Assigned
+          </h3>
+
+          <p>
+            You have not been assigned
+            to a Company yet.
+          </p>
+
+        </div>
+      `;
+
+      return;
+    }
+
+
+    // =========================================
+    // GET ALL EVENTS
+    // =========================================
+
+    const snapshot =
+      await getDocs(
+        collection(db,"events")
+      );
+
+
+    container.innerHTML = "";
+
+    const dashboardEvents = [];
+
+    let visibleEventCount = 0;
+
+
+    // =========================================
+    // FILTER EVENTS BY COMPANY
+    // =========================================
+
+    snapshot.forEach(doc => {
+
+      const data = doc.data();
+
+
+      // IMPORTANT:
+      // Event must have a company field
+
+      const eventCompany =
+        (data.company || "").trim();
+
+
+      console.log(
+        "Event:",
+        data.title,
+        "Company:",
+        eventCompany
+      );
+
+
+      // =======================================
+      // ONLY SHOW SAME COMPANY
+      // =======================================
+
+      if(
+        eventCompany.toLowerCase() !==
+        userCompany.toLowerCase()
+      ){
+
+        return;
+
+      }
+
+
+      visibleEventCount++;
+
+      window[`event_${doc.id}`] = data;
+
+
+      dashboardEvents.push({
+
+        title: data.title,
+
+        date: data.date,
+
+        time: data.time,
+
+        venue: data.venue
+
+      });
+
+
+      // =======================================
+      // DASHBOARD NOTIFICATION
+      // =======================================
+
+      const notifications =
+  JSON.parse(
+    localStorage.getItem(
+      "dashboardNotifications"
+    )
+  ) || [];
+
+
+const exists =
+  notifications.some(
+
+    item =>
+
+      item.eventTitle === data.title &&
+
+      item.date === data.date
+
+  );
+
+
+if(!exists){
+
+  notifications.push({
+
+    title:
+      "Attendance Reminder",
+
+    eventTitle:
+      data.title,
+
+    date:
+      data.date,
+
+    message:
+      `${data.title} on ${data.date} at ${data.time}`
+
+  });
+
+
+  localStorage.setItem(
+
+    "dashboardNotifications",
+
+    JSON.stringify(
+      notifications
+    )
+
+  );
+
+}
+
+
+      localStorage.setItem(
+
+        "events",
+
+        JSON.stringify(
+          dashboardEvents
+        )
+
+      );
+
+
+      // =======================================
+      // CHECK EVENT TIME
+      // =======================================
+
+      const now =
+        new Date();
+
+
+      const current =
+        now.getHours() * 60 +
+        now.getMinutes();
+
+
+      const start =
+        data.startHour * 60 +
+        data.startMinute;
+
+
+      const end =
+        data.endHour * 60 +
+        data.endMinute;
+
+
+      let buttonClass =
+        "disabled";
+
+
+      let disabled =
+        "disabled";
+
+
+      const today =
+        new Date();
+
+
+      const eventDate =
+        new Date(
+          data.date
+            .split("/")
+            .reverse()
+            .join("-")
+        );
+
+
+      const sameDay =
+
+        today.getFullYear() ===
+        eventDate.getFullYear()
+
+        &&
+
+        today.getMonth() ===
+        eventDate.getMonth()
+
+        &&
+
+        today.getDate() ===
+        eventDate.getDate();
+
+
+      if(
+
+        sameDay &&
+
+        current >= start &&
+
+        current <= end
+
+      ){
+
+        buttonClass =
+          "enabled";
+
+        disabled = "";
+
+      }
+
+
+      // =======================================
+      // DISPLAY EVENT
+      // =======================================
+
+      container.innerHTML += `
+
+        <div class="card">
+
+          <div>
+
+            <h2>
+              ${data.title}
+            </h2>
+
+            <p>
+              Company : ${data.company}
+            </p>
+
+            <p>
+              Date : ${data.date}
+            </p>
+
+            <p>
+              Time : ${data.time}
+            </p>
+
+            <p>
+              Clothes : ${data.clothes}
+            </p>
+
+            <p>
+              Venue : ${data.venue}
+            </p>
+
+            <p>
+              Check in :
+              ${data.checkin}
+            </p>
+
+          </div>
+
+
+          <button
+
+            class="check-btn ${buttonClass}"
+
+            ${disabled}
+
+            onclick="
+              checkIn('${doc.id}')
+            ">
+
+            Check In
+
+          </button>
+
+        </div>
+
+      `;
+
+    });
+
+
+    // =========================================
+    // NO EVENTS FOR THIS COMPANY
+    // =========================================
+
+    if(visibleEventCount === 0){
+
+      container.innerHTML = `
+
+        <div style="
+          background:white;
+          padding:40px 20px;
+          border-radius:20px;
+          text-align:center;
+          color:#777;
+        ">
+
+          <i
+            class="fa-regular fa-calendar-xmark"
+            style="
+              font-size:50px;
+              color:#3c4d78;
+              margin-bottom:15px;
+            ">
+          </i>
+
+          <h3>
+            No Attendance Events
+          </h3>
+
+          <p>
+            There are currently no
+            attendance events for
+            <strong>
+              ${userCompany}
+            </strong>.
+          </p>
+
+        </div>
+
+      `;
+
+    }
+
   }
 
-  container.innerHTML += `
+  catch(error){
 
-    <div class="card">
+    console.error(
+      "LOAD EVENTS ERROR:",
+      error
+    );
 
-      <div>
 
-        <h2>${data.title}</h2>
+    container.innerHTML = `
 
-        <p>Date : ${data.date}</p>
+      <div style="
+        background:white;
+        padding:30px;
+        border-radius:20px;
+        text-align:center;
+        color:red;
+      ">
 
-        <p>Time : ${data.time}</p>
+        Failed to load attendance.
 
-        <p>Clothes : ${data.clothes}</p>
+        <br><br>
 
-        <p>Venue : ${data.venue}</p>
-
-        <p>
-        Check in :
-        ${data.checkin}
-        </p>
+        ${error.message}
 
       </div>
 
-      <button
-      class="check-btn ${buttonClass}"
-      ${disabled}
+    `;
 
-      onclick="checkIn('${doc.id}')">
+  }
 
-        Check In
-
-      </button>
-
-    </div>
-
-  `;
-});
-
-// =========================================
-// GOOGLE SHEETS WEB APP
-// =========================================
-
-const SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbxdU2EUTr8UR2gWyJepG68XsgJbgejPnQJl27uth1WGhSCQKrPbuaUwdHVhtR2INfZ20g/exec";
+}
 
 
 // =========================================
 // CHECK IN
 // =========================================
 
-window.checkIn = async function(id){
+window.checkIn = function(id){
 
   const eventData =
     window[`event_${id}`];
@@ -437,34 +806,6 @@ window.checkIn = async function(id){
 
     alert(
       "Event information not found."
-    );
-
-    return;
-  }
-
-
-  // =========================================
-  // GET USER INFORMATION
-  // =========================================
-
-  const uid =
-    localStorage.getItem("uid") || "-";
-
-  const name =
-    localStorage.getItem("name") || "-";
-
-  const squad =
-    localStorage.getItem("squad") || "-";
-
-
-  if(
-    name === "-" ||
-    name.trim() === ""
-  ){
-
-    alert(
-      "Your name could not be found.\n\n" +
-      "Please login again."
     );
 
     return;
@@ -601,10 +942,7 @@ const allowedRadius = Number(eventData.allowedRadius);
         // CHECK LOCATION
         // =====================================
 
-        if(
-          distance >
-          allowedRadius
-        ){
+        if(distance > allowedRadius){
 
           alert(
 
@@ -627,140 +965,32 @@ const allowedRadius = Number(eventData.allowedRadius);
           return;
         }
 
+        localStorage.setItem(
+  "selectedEvent",
+  JSON.stringify(eventData)
+);
 
-        // =====================================
-        // PREPARE DATA FOR GOOGLE SHEET
-        // =====================================
+localStorage.setItem(
+  "checkinLatitude",
+  latitude
+);
 
-        const formData =
-          new URLSearchParams();
+localStorage.setItem(
+  "checkinLongitude",
+  longitude
+);
 
+localStorage.setItem(
+  "checkinDistance",
+  Math.round(distance)
+);
 
-        formData.append(
-          "name",
-          name
-        );
-
-
-        formData.append(
-          "squad",
-          squad
-        );
-
-
-        formData.append(
-          "event",
-          eventData.title || "-"
-        );
-
-
-        formData.append(
-          "latitude",
-          latitude
-        );
-
-
-        formData.append(
-          "longitude",
-          longitude
-        );
-
-
-        formData.append(
-          "distance",
-          Math.round(distance)
-        );
-
-
-        // =====================================
-        // SEND TO GOOGLE SHEETS
-        // =====================================
-
-        const response =
-          await fetch(
-            SCRIPT_URL,
-            {
-              method: "POST",
-
-              body: formData
-            }
-          );
-
-
-        const result =
-          await response.text();
-
-
-        console.log(
-          "Google Sheet response:",
-          result
-        );
-
-
-        // =====================================
-        // ALREADY CHECKED IN
-        // =====================================
-
-        if(
-          result.trim() ===
-          "Already Checked In"
-        ){
-
-          alert(
-
-            "You have already checked in today.\n\n" +
-
-            "Name: " +
-            name
-
-          );
-
-          return;
-        }
-
-
-        // =====================================
-        // SUCCESS
-        // =====================================
-
-        if(
-          result.trim() ===
-          "Success"
-        ){
-
-          localStorage.setItem(
-            "selectedEvent",
-            JSON.stringify(eventData)
-          );
-
-
-          alert(
-
-            "Check-in successful!\n\n" +
-
-            "Name: " +
-            name +
-
-            "\n\nLocation verified."
-
-          );
-
-
-          window.location.href =
-            "checkin.html";
-
-          return;
-        }
+window.location.href = "checkin.html";
 
 
         // =====================================
         // OTHER RESPONSE
         // =====================================
-
-        alert(
-          "Check-in response:\n\n" +
-          result
-        );
 
       }
 
@@ -880,9 +1110,26 @@ const allowedRadius = Number(eventData.allowedRadius);
 
 };
 
-}
+onAuthStateChanged(
+  auth,
+  (user) => {
 
-loadEvents();
+    if(user){
+
+      loadEvents();
+
+    }
+
+    else{
+
+      console.log(
+        "No user logged in."
+      );
+
+    }
+
+  }
+);
 
 
 </script>

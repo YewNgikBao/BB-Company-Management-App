@@ -637,9 +637,38 @@ id="editModal">
 
     </select>
 
-    <input type="text"
-    id="editCompany"
-    placeholder="Company">
+    <select id="editCompany">
+
+      <option value="">
+        Select Company
+      </option>
+
+      <option value="8th Sibu Company">
+        8th Sibu Company
+      </option>
+
+      <option value="88th Sibu Company">
+        88th Sibu Company
+      </option>
+
+    </select>
+
+<button type="button"
+id="requestCompanyBtn"
+class="save-btn"
+onclick="requestCompanyChange()"
+style="background:#e9a23b;">
+  Request Company Change
+</button>
+
+<p id="companyRequestStatus"
+style="
+text-align:center;
+color:#666;
+font-size:14px;
+margin-top:10px;
+">
+</p>
 
     <input type="text"
     id="editPhone"
@@ -876,9 +905,11 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
     getFirestore,
+    collection,
     doc,
     getDoc,
-    updateDoc
+    updateDoc,
+    addDoc
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -921,6 +952,7 @@ window.testAuth = auth;
 
 let currentUser = "";
 let profileData = {};
+let currentUserRole = "member";
 
 onAuthStateChanged(auth, async(user)=>{
 
@@ -953,6 +985,8 @@ onAuthStateChanged(auth, async(user)=>{
         const data = userSnap.data();
 
         profileData = data;
+
+        currentUserRole = data.role || "member";
 
         document.getElementById("displayName").innerText =
         data.name || "No Name";
@@ -1049,15 +1083,107 @@ window.closeEditModal = function(){
   .style.display = "none";
 }
 
+// =========================
+// COMPANY CHANGE REQUEST
+// =========================
+
+window.requestCompanyChange = async function(){
+
+    const requestedCompany =
+        document.getElementById("editCompany").value;
+
+    const currentCompany =
+        profileData.company || "No Company";
+
+    if(requestedCompany === currentCompany){
+
+        alert(
+            "You are already in this Company."
+        );
+
+        return;
+    }
+
+    if(!requestedCompany){
+
+        alert(
+            "Please select a Company."
+        );
+
+        return;
+    }
+
+    const user = auth.currentUser;
+
+    if(!user){
+
+        alert(
+            "User not logged in."
+        );
+
+        return;
+    }
+
+    try{
+
+        const requestRef = collection(
+            db,
+            "companyChangeRequests"
+        );
+
+        await addDoc(
+            requestRef,
+            {
+                uid: user.uid,
+
+                name:
+                    profileData.name || "Unknown",
+
+                currentCompany:
+                    currentCompany,
+
+                requestedCompany:
+                    requestedCompany,
+
+                status:
+                    "pending",
+
+                createdAt:
+                    new Date()
+            }
+        );
+
+        document.getElementById(
+            "companyRequestStatus"
+        ).innerText =
+            "Request submitted. Waiting for admin approval.";
+
+        alert(
+            "Company change request submitted!"
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "COMPANY REQUEST ERROR:",
+            error
+        );
+
+        alert(
+            "Failed to submit request."
+        );
+
+    }
+
+};
+
 
 // SAVE PROFILE
 window.saveProfile = async function(){
 
     const newName =
     document.getElementById("editName").value.trim();
-
-    const newCompany =
-    document.getElementById("editCompany").value.trim();
 
     const newRank =
     document.getElementById("editRank").value;
@@ -1122,7 +1248,6 @@ window.saveProfile = async function(){
             doc(db,"users",currentUser),
             {
                 name: newName,
-                company: newCompany,
                 rank: newRank,
                 gender: newGender,
                 phone: newPhone,
@@ -1138,10 +1263,6 @@ window.saveProfile = async function(){
         document.getElementById(
             "displayName"
         ).innerText = newName;
-
-        document.getElementById(
-            "displayCompany"
-        ).innerText = newCompany;
 
         document.getElementById(
             "displayRank"
@@ -1166,7 +1287,6 @@ window.saveProfile = async function(){
         // Update local profile data
 
         profileData.name = newName;
-        profileData.company = newCompany;
         profileData.rank = newRank;
         profileData.gender = newGender;
         profileData.phone = newPhone;

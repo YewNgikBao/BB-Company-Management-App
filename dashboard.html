@@ -394,12 +394,11 @@ body{
 
     <h3>Verse of the Day</h3>
 
-    <p>
-      “We have this hope as an anchor
-      for the soul, firm and secure.”
-    </p>
+    <p id="dailyVerseEnglish"></p>
 
-    <b>— Hebrews 6:19</b>
+    <p id="dailyVerseChinese"></p>
+
+    <b id="dailyVerseReference"></b>
 
   </div>
 
@@ -627,6 +626,8 @@ if ("serviceWorker" in navigator) {
 
 </script>
 
+<script src="daily-verses.js"></script>
+
 <script type="module">
 
 console.log("NEW DASHBOARD VERSION");
@@ -673,6 +674,53 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
+
+
+/* =========================
+   GET DAY OF YEAR
+========================= */
+
+function loadDailyVerse(){
+
+  const now = new Date();
+
+  const start =
+    new Date(now.getFullYear(), 0, 0);
+
+  const diff =
+    now - start;
+
+  const dayOfYear =
+    Math.floor(
+      diff / (1000 * 60 * 60 * 24)
+    );
+
+  const index =
+    (dayOfYear - 1) % dailyVerses.length;
+
+  const verse =
+    dailyVerses[index];
+
+  document.getElementById(
+    "dailyVerseEnglish"
+  ).innerText =
+    `“${verse.english}”`;
+
+  document.getElementById(
+    "dailyVerseChinese"
+  ).innerText =
+    `“${verse.chinese}”`;
+
+  document.getElementById(
+    "dailyVerseReference"
+  ).innerText =
+    `— ${verse.reference}`;
+
+}
+
+loadDailyVerse();
+
+console.log("Total verses:", dailyVerses.length);
 
 /* =========================
    TIME GREETING

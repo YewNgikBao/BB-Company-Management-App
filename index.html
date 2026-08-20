@@ -170,6 +170,12 @@ button.submit{
     placeholder="Enter your full name"
   >
 
+  <select id="company">
+    <option value="8th Sibu Company">8th Sibu Company</option>
+
+    <option value="88th Sibu Company">88th Sibu Company</option>
+  </select>
+
   <input
     type="email"
     id="email"
@@ -325,7 +331,7 @@ const firebaseConfig = {
 
   messagingSenderId: "278406966206",
 
-  appId: "1:278406966206:web:3db470d1a0c63a8dbe7ef",
+  appId: "1:278406966206:web:3dbf470d1a0c63a8dbe7ef",
 
   measurementId: "G-YZQGS7NTME"
 
@@ -440,6 +446,9 @@ registerBtn.onclick = () => {
 const nameInput =
   document.getElementById("name");
 
+const companyInput =
+  document.getElementById("company");
+
 const phoneInput =
   document.getElementById("phone");
 
@@ -484,6 +493,9 @@ registerSubmit.onclick = async () => {
   const fullName =
     nameInput.value.trim();
 
+  const company =
+    companyInput.value;
+
   let rawPhone =
     phoneInput
       ? phoneInput.value.trim()
@@ -506,6 +518,14 @@ registerSubmit.onclick = async () => {
 
     regError.innerText =
       "Please enter your full name.";
+
+    return;
+  }
+
+  if (!company) {
+
+    regError.innerText =
+      "Please select your company.";
 
     return;
   }
@@ -678,6 +698,10 @@ registerSubmit.onclick = async () => {
 
         email: email,
 
+        company: company,
+
+        companyChangeStatus: "approved",
+
         createdAt: serverTimestamp()
 
       }
@@ -702,6 +726,11 @@ registerSubmit.onclick = async () => {
     localStorage.setItem(
       "email",
       email
+    );
+
+    localStorage.setItem(
+      "company",
+      company
     );
 
     localStorage.setItem(
@@ -981,6 +1010,11 @@ loginSubmit.onclick = async () => {
       localStorage.setItem(
         "phone",
         userData.phone || "-"
+      );
+
+      localStorage.setItem(
+        "company",
+        userData.company || "8th Sibu Company"
       );
 
     }

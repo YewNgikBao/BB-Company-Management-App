@@ -1,19 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
 <title>Check In</title>
 
-<link rel="stylesheet" href="mobile.css">
+<link rel="stylesheet"
+href="mobile.css">
 
-<link rel="icon" type="image/png" href="images/BBapplogo.png">
+<link rel="icon"
+type="image/png"
+href="images/BBapplogo.png">
 
-<link rel="apple-touch-icon" href="images/BBapplogo.png">
+<link rel="apple-touch-icon"
+href="images/BBapplogo.png">
 
-<link rel="manifest" href="manifest.json">
+<link rel="manifest"
+href="manifest.json">
 
 <style>
 
@@ -58,13 +66,15 @@ h1{
   margin:8px 0;
 }
 
-input{
+input,
+select{
   width:90%;
   padding:15px;
   border-radius:10px;
   border:1px solid #ccc;
   font-size:16px;
   margin-top:15px;
+  box-sizing:border-box;
 }
 
 .confirm-btn{
@@ -76,24 +86,39 @@ input{
   font-size:18px;
   cursor:pointer;
   margin-top:20px;
+  width:90%;
+}
+
+.confirm-btn:disabled{
+  background:#aaa;
+  cursor:not-allowed;
 }
 
 </style>
+
 </head>
+
 
 <body>
 
+
 <div class="card">
+
 
   <button
   class="back-btn"
   onclick="window.location.href='attendance.html'">
+
     ← Back
+
   </button>
+
 
   <div style="clear:both;"></div>
 
+
   <h1 id="meetingTitle"></h1>
+
 
   <div class="info">
 
@@ -107,335 +132,411 @@ input{
 
   </div>
 
+
+  <!-- NAME -->
+
   <input
   id="username"
   type="text"
-  placeholder="ENTER YOUR NAME">
+  placeholder="ENTER YOUR NAME"
+  autocomplete="name">
 
-  <br><br>
 
-<select id="squad" style="
-width:90%;
-padding:15px;
-border-radius:10px;
-border:1px solid #ccc;
-font-size:16px;
-">
+  <!-- SQUAD -->
 
-<option value="">SELECT SQUAD</option>
+  <select id="squad">
 
-<option value="Squad 1">Squad 1</option>
+    <option value="">
+      SELECT SQUAD
+    </option>
 
-<option value="Squad 2">Squad 2</option>
+    <option value="Squad 1">
+      Squad 1
+    </option>
 
-<option value="Squad 3">Squad 3</option>
+    <option value="Squad 2">
+      Squad 2
+    </option>
 
-<option value="Squad 4">Squad 4</option>
+    <option value="Squad 3">
+      Squad 3
+    </option>
 
-<option value="Squad 5">Squad 5</option>
+    <option value="Squad 4">
+      Squad 4
+    </option>
 
-<option value="Squad 6">Squad 6</option>
+    <option value="Squad 5">
+      Squad 5
+    </option>
 
-<option value="Squad 7">Squad 7</option>
+    <option value="Squad 6">
+      Squad 6
+    </option>
 
-</select>
+    <option value="Squad 7">
+      Squad 7
+    </option>
+
+  </select>
+
 
   <br>
 
-<button
-class="confirm-btn"
-onclick="alert('Button Clicked'); submitCheckIn();">
 
-Confirm Check In
+  <button
+  id="confirmBtn"
+  class="confirm-btn"
+  onclick="submitCheckIn()">
 
-</button>
+    Confirm Check In
+
+  </button>
+
 
 </div>
 
-<script type="module">
-
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-  getFirestore,
-  collection,
-  addDoc
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-// ================= FIREBASE =================
-
-const firebaseConfig = {
-
-apiKey: "AIzaSyAHmIUT6Wbh_lVrMoirhY9Z18xc57fSFZ8",
-
-authDomain: "yb1-ae18e.firebaseapp.com",
-
-projectId: "yb1-ae18e",
-
-storageBucket: "yb1-ae18e.firebasestorage.app",
-
-messagingSenderId: "278406966206",
-
-appId: "1:278406966206:web:3dbf470d1a0c63a8dbe7ef"
-
-};
+<script>
 
 
-const app = initializeApp(firebaseConfig);
-
-const db = getFirestore(app);
-
-
-
-// ================= GET EVENT =================
+// =========================================
+// GET EVENT
+// =========================================
 
 const eventData = JSON.parse(
-localStorage.getItem("selectedEvent")
+
+  localStorage.getItem("selectedEvent")
+
 );
 
 
-console.log("Selected Event:",eventData);
+// =========================================
+// GOOGLE SHEET WEB APP
+// =========================================
+
+const SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbzIQuj5hJZAhS9gDT7QLJ3AuZMpw4q3tXvKocJilHD8P9NmHdmJe6e3xxgzoNrVV6p5/exec";
 
 
-// 如果没有活动资料
+// =========================================
+// CHECK EVENT
+// =========================================
+
 if(!eventData){
 
-alert("No event selected.");
+  alert("No event selected.");
 
-window.location.href="attendance.html";
+  window.location.href =
+    "attendance.html";
 
 }
 
 
+// =========================================
+// DISPLAY EVENT
+// =========================================
 
-// ================= DISPLAY =================
+else{
 
-
-document.getElementById("meetingTitle").innerText =
-eventData.title || "Event";
-
-
-document.getElementById("eventDate").innerText =
-"Date : " + (eventData.date || "-");
-
-
-document.getElementById("eventTime").innerText =
-"Time : " + (eventData.time || "-");
+  document.getElementById(
+    "meetingTitle"
+  ).innerText =
+    eventData.title || "Event";
 
 
-document.getElementById("eventVenue").innerText =
-"Venue : " + (eventData.venue || "-");
+  document.getElementById(
+    "eventDate"
+  ).innerText =
+    "Date : " +
+    (eventData.date || "-");
 
 
-document.getElementById("eventCheckin").innerText =
-"Check In : " + (eventData.checkin || "-");
+  document.getElementById(
+    "eventTime"
+  ).innerText =
+    "Time : " +
+    (eventData.time || "-");
 
 
+  document.getElementById(
+    "eventVenue"
+  ).innerText =
+    "Venue : " +
+    (eventData.venue || "-");
 
 
-// ================= NAME UPPERCASE =================
+  document.getElementById(
+    "eventCheckin"
+  ).innerText =
+    "Check In : " +
+    (eventData.checkin || "-");
 
+}
+
+
+// =========================================
+// NAME UPPERCASE
+// =========================================
 
 const usernameInput =
 document.getElementById("username");
 
 
 usernameInput.addEventListener(
-"input",
-()=>{
+  "input",
+  function(){
 
-usernameInput.value =
-usernameInput.value.toUpperCase();
+    usernameInput.value =
+      usernameInput.value.toUpperCase();
 
-});
-
-
-
-
-
-// ================= DISTANCE FUNCTION =================
-
-
-function getDistance(
-lat1,
-lng1,
-lat2,
-lng2
-){
-
-const R = 6371000;
-
-
-const dLat =
-(lat2-lat1)*Math.PI/180;
-
-
-const dLng =
-(lng2-lng1)*Math.PI/180;
-
-
-const a =
-Math.sin(dLat/2) *
-Math.sin(dLat/2)
-
-+
-
-Math.cos(lat1*Math.PI/180) *
-Math.cos(lat2*Math.PI/180) *
-
-Math.sin(dLng/2) *
-Math.sin(dLng/2);
-
-
-
-const c =
-2*Math.atan2(
-Math.sqrt(a),
-Math.sqrt(1-a)
+  }
 );
 
 
-return R*c;
-
-}
-
-
-
-
-// ================= CHECK IN =================
-
+// =========================================
+// SUBMIT CHECK IN
+// =========================================
 
 window.submitCheckIn = async function(){
 
-
-alert("Submit Check In");
-
-
-const username =
-document.getElementById("username")
-.value
-.trim();
-
-const squad =
-document.getElementById("squad")
-.value;
+  const username =
+    document.getElementById("username")
+    .value
+    .trim();
 
 
-if(!username){
-
-alert("Please enter your name.");
-
-return;
-
-}
-
-if(!squad){
-
-alert("Please select your squad.");
-
-return;
-
-}
+  const squad =
+    document.getElementById("squad")
+    .value;
 
 
-const now = new Date();
+  // =======================================
+  // CHECK NAME
+  // =======================================
+
+  if(!username){
+
+    alert(
+      "Please enter your name."
+    );
+
+    return;
+
+  }
 
 
+  // =======================================
+  // CHECK SQUAD
+  // =======================================
 
-try{
+  if(!squad){
 
+    alert(
+      "Please select your squad."
+    );
 
-// ================= FIREBASE SAVE =================
+    return;
 
-
-await addDoc(
-
-collection(db,"attendance"),
-
-{
-
-name: username,
-
-squad: squad,
-
-event: eventData.title,
-
-date: now.toLocaleDateString(),
-
-time: now.toLocaleTimeString(),
-
-}
-
-);
+  }
 
 
+  const button =
+    document.getElementById(
+      "confirmBtn"
+    );
 
 
+  button.disabled = true;
 
-// ================= GOOGLE SHEET =================
-
-
-const formData = new FormData();
-
-formData.append("name", username);
-formData.append("squad", squad);
-formData.append("event", eventData.title);
-formData.append("date", now.toLocaleDateString());
-formData.append("time", now.toLocaleTimeString());
-
-fetch(
-
-"https://script.google.com/macros/s/AKfycbzIQuj5hJZAhS9gDT7QLJ3AuZMpw4q3tXvKocJilHD8P9NmHdmJe6e3xxgzoNrVV6p5/exec",
-
-{
-
-method:"POST",
-
-body:formData
-
-}
-
-)
-.catch(error=>{
-
-console.log(
-"Google Sheet Error:",
-error
-);
-
-});
+  button.innerText =
+    "Checking In...";
 
 
-
-alert("Check In Success!");
-
-setTimeout(() => {
-    window.location.href = "attendance.html";
-}, 500);
-
-}catch(error){
+  try{
 
 
-console.log(error);
+    // =====================================
+    // PREPARE GOOGLE SHEET DATA
+    // =====================================
+
+    const formData =
+      new URLSearchParams();
 
 
-alert(
-"Check In Error: "
-+
-error
-);
+    formData.append(
+      "name",
+      username
+    );
 
 
-}
+    formData.append(
+      "squad",
+      squad
+    );
 
+
+    formData.append(
+      "event",
+      eventData.title || "-"
+    );
+
+    formData.append(
+      "company",
+      eventData.company || "-"
+    );
+
+    formData.append(
+      "latitude",
+      localStorage.getItem("checkinLatitude") || "-"
+    );
+
+    formData.append(
+      "longitude",
+      localStorage.getItem("checkinLongitude") || "-"
+    );
+
+    formData.append(
+      "distance",
+      localStorage.getItem("checkinDistance") || "-"
+    );
+
+    // =====================================
+    // SEND TO GOOGLE SHEET
+    // =====================================
+
+    const response =
+      await fetch(
+
+        SCRIPT_URL,
+
+        {
+
+          method:"POST",
+
+          body:formData
+
+        }
+
+      );
+
+
+    const result =
+      await response.text();
+
+
+    console.log(
+      "Google Sheet response:",
+      result
+    );
+
+
+    // =====================================
+    // ALREADY CHECKED IN
+    // =====================================
+
+    if(
+      result.trim() ===
+      "Already Checked In"
+    ){
+
+      alert(
+
+        "You have already checked in.\n\n" +
+        "Name: " +
+        username
+
+      );
+
+
+      button.disabled = false;
+
+      button.innerText =
+        "Confirm Check In";
+
+      return;
+
+    }
+
+
+    // =====================================
+    // SUCCESS
+    // =====================================
+
+    if(
+      result.trim() ===
+      "Success"
+    ){
+
+      alert(
+        "Check In Successful!\n\n" +
+        "Name: " +
+        username +
+        "\nSquad: " +
+        squad
+      );
+
+
+      window.location.href =
+        "attendance.html";
+
+
+      return;
+
+    }
+
+
+    // =====================================
+    // OTHER RESPONSE
+    // =====================================
+
+    alert(
+
+      "Check-in response:\n\n" +
+      result
+
+    );
+
+
+    button.disabled = false;
+
+    button.innerText =
+      "Confirm Check In";
+
+
+  }
+
+
+  catch(error){
+
+    console.error(
+      "CHECK-IN ERROR:",
+      error
+    );
+
+
+    alert(
+
+      "Unable to submit your check-in.\n\n" +
+      "Please check your internet connection " +
+      "and try again."
+
+    );
+
+
+    button.disabled = false;
+
+    button.innerText =
+      "Confirm Check In";
+
+  }
 
 };
 
-
 </script>
 
+
 </body>
+
 </html>

@@ -16,7 +16,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
 <link rel="apple-touch-icon" href="images/BBapplogo.png">
 
-<link rel="manifest" href="manifest.json">s
+<link rel="manifest" href="manifest.json">
 
 <style>
 
@@ -188,8 +188,26 @@ body{
 }
 
 .small-left img{
-    width:42px;
-    height:42px;
+    width:38px;
+    height:38px;
+}
+
+@media (max-width:600px){
+
+    .left-bottom{
+        display:grid;
+        grid-template-columns:repeat(10,minmax(0,1fr));
+        gap:5px;
+        width:100%;
+        min-width:0;
+        justify-items:center;
+    }
+
+    .small-left img{
+        width:30px;
+        height:30px;
+    }
+
 }
 
 .check{
@@ -592,16 +610,57 @@ body {
         padding: 12px;
     }
 
-    /* Right award selection */
-    .right-grid {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 15px 5px;
-    }
+    /* ================= RIGHT AWARD SELECTION ================= */
 
-    .award img {
-        width: 55px;
-        height: 55px;
-    }
+.right-grid{
+    display:grid;
+    grid-template-columns:repeat(5, minmax(0, 1fr));
+    gap:12px 3px;
+    width:100%;
+    max-width:100%;
+    overflow:hidden;
+}
+
+.award{
+    width:100%;
+    min-width:0;
+    max-width:100%;
+    text-align:center;
+    overflow:hidden;
+}
+
+.award img{
+    display:block;
+    width:min(60px, 100%);
+    height:auto;
+    aspect-ratio:1 / 1;
+    object-fit:contain;
+    margin:0 auto;
+}
+
+/* B / A buttons */
+
+.btn-row{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:2px;
+    margin-top:6px;
+    width:100%;
+}
+
+.btn{
+    width:clamp(22px, 6vw, 32px);
+    height:28px;
+    padding:0;
+    border-radius:6px;
+    border:2px solid #333;
+    background:white;
+    font-weight:bold;
+    cursor:pointer;
+    font-size:13px;
+    flex-shrink:1;
+}
 
     /* Left award selection */
     .left-middle,
@@ -613,7 +672,7 @@ body {
     }
 
     .left-bottom {
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(10, 1fr);
         gap: 10px;
         width: 100%;
     }
@@ -666,11 +725,16 @@ body {
         height: 55px;
     }
 
-    .preview-left-middle,
-    .preview-left-middle2,
-    .preview-left-scholastic {
-        gap: 8px;
-        flex-wrap: wrap;
+    .left-middle,
+    .left-middle2,
+    .left-scholastic{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+        gap:8px;
+    }
+
+    .left-item img{
+        width:clamp(45px,18vw,65px);
+        height:clamp(45px,18vw,65px);
     }
 
     .preview-left-bottom {
@@ -691,6 +755,220 @@ body {
         right: 10px;
         font-size: 22px;
     }
+}
+
+/* =====================================================
+   YOUR AWARDS - MOBILE
+   根据手机宽度调整黑色袖子
+   减少白边，但保持奖章较大
+===================================================== */
+
+@media (max-width: 600px) {
+
+    .preview-page {
+        padding: 8px 4px;
+    }
+
+    .preview-container {
+        width: 100%;
+        gap: 20px;
+    }
+
+    /* ================= RIGHT ARM ================= */
+
+    .black-right {
+
+        width: calc(100vw - 40px);
+        max-width: 420px;
+
+        min-height: 0;
+
+        padding: 8px 5px 15px 5px;
+
+        margin-left: auto;
+        margin-right: auto;
+
+        box-sizing: border-box;
+    }
+
+    .preview-right {
+
+        width: 100%;
+
+        gap: 6px;
+
+        padding: 0;
+
+        box-sizing: border-box;
+    }
+
+    /* 一排永远5粒 */
+
+    .preview-right > div {
+
+        width: 100% !important;
+
+        display: flex !important;
+
+        flex-wrap: nowrap !important;
+
+        justify-content: center !important;
+
+        align-items: center !important;
+
+        gap: 4px !important;
+    }
+
+    /*
+       手机奖章大小
+       不跟着黑袖子一起过度缩小
+    */
+
+    .preview-badge {
+
+        width: clamp(48px, 14vw, 58px);
+
+        height: clamp(48px, 14vw, 58px);
+
+        flex: 0 0 clamp(48px, 14vw, 58px);
+
+    }
+
+    .preview-right img {
+
+        width: clamp(40px, 12vw, 48px);
+
+        height: clamp(40px, 12vw, 48px);
+
+    }
+
+    /* ================= RANK ================= */
+
+    .rank-preview {
+
+        width: 100%;
+
+        margin-top: 12px;
+
+    }
+
+    .rank-strip {
+
+        height: 24px;
+
+        margin-top: 7px;
+
+    }
+
+
+    /* ================= LEFT ARM ================= */
+
+    .black-left {
+
+        width: calc(100vw - 40px);
+
+        max-width: 420px;
+
+        min-height: 0;
+
+        padding: 8px 5px 15px 5px;
+
+        margin-left: auto;
+        margin-right: auto;
+
+        box-sizing: border-box;
+
+    }
+
+    .preview-left {
+
+        width: 100%;
+
+    }
+
+    /* 第一排 */
+
+    .preview-left-top {
+
+        margin-bottom: 8px;
+
+    }
+
+    /* 中间几排 */
+
+    .preview-left-middle,
+    .preview-left-middle2,
+    .preview-left-scholastic {
+
+        gap: 5px;
+
+        margin-top: 8px;
+
+        flex-wrap: nowrap;
+
+    }
+
+    .preview-left img {
+
+        width: clamp(48px, 15vw, 62px);
+
+        height: clamp(48px, 15vw, 62px);
+
+    }
+
+    /* 最下面 One-Year */
+
+    .preview-left-bottom {
+
+        width: 100%;
+
+        margin-top: 10px;
+
+        padding: 0;
+
+        display: flex;
+
+        flex-wrap: nowrap;
+
+        justify-content: center;
+
+        align-items: center;
+
+        gap: 2px !important;
+
+    }
+
+    .preview-left-bottom img {
+
+        width: clamp(25px, 8vw, 34px) !important;
+
+        height: clamp(25px, 8vw, 34px) !important;
+
+    }
+
+}
+
+@media (max-width:400px){
+
+    .right-grid{
+        gap:10px 1px;
+    }
+
+    .award img{
+        width:100%;
+        max-width:48px;
+    }
+
+    .btn-row{
+        gap:1px;
+    }
+
+    .btn{
+        width:24px;
+        height:25px;
+        font-size:11px;
+    }
+
 }
 
 </style>
@@ -881,8 +1159,6 @@ id="rankPreview"></div>
     <h2 style="text-align:center;color:#0b1d63;">
         Left Arm
     </h2>
-
-    <div class="black-left">
 
 <div class="black-left">
 
@@ -1945,8 +2221,11 @@ const count = bottomDiv.children.length;
 
 if(count>0){
 
-    const badgeWidth = 34;
-    const clothWidth = 380;
+    const clothWidth =
+        document.getElementById("previewLeftBottom").clientWidth;
+
+    const badgeWidth =
+        Math.min(34, clothWidth / Math.max(count, 1));
 
     let gap = (clothWidth - badgeWidth*count)/(count-1);
 

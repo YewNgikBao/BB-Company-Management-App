@@ -1,0 +1,2498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>BB Company Admin</title>
+
+<link rel="stylesheet" href="mobile.css">
+
+<link rel="icon"
+type="image/png"
+href="images/BBapplogo.png">
+
+<link rel="apple-touch-icon"
+href="images/BBapplogo.png">
+
+<link rel="manifest"
+href="manifest.json">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
+<style>
+
+body{
+
+    margin:0;
+
+    font-family:Arial,sans-serif;
+
+    background:#f3efff;
+
+    padding-bottom:40px;
+
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+
+    background:rgba(0,0,50,0.85);
+
+    color:white;
+
+    padding:18px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+}
+
+.header img{
+
+    width:60px;
+
+    height:60px;
+
+    object-fit:contain;
+
+}
+
+.header-text h1{
+
+    margin:0;
+
+    font-size:25px;
+
+}
+
+.header-text p{
+
+    margin:3px 0 0;
+
+    font-size:13px;
+
+}
+
+
+/* =========================
+   ADMIN TITLE
+========================= */
+
+.admin-title{
+
+    margin:20px;
+
+}
+
+.admin-title h2{
+
+    margin:0;
+
+    color:#0a2b60;
+
+}
+
+.admin-title p{
+
+    color:#666;
+
+}
+
+
+/* =========================
+   REQUEST COUNT
+========================= */
+
+.request-count{
+
+    margin:20px;
+
+    background:#3c4d78;
+
+    color:white;
+
+    border-radius:18px;
+
+    padding:20px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+}
+
+.request-count-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+}
+
+.request-count i{
+
+    font-size:32px;
+
+}
+
+#pendingCount{
+
+    font-size:28px;
+
+    font-weight:bold;
+
+}
+
+
+/* =========================
+   REQUEST CARD
+========================= */
+
+.request-card{
+
+    background:white;
+
+    margin:20px;
+
+    border-radius:20px;
+
+    padding:20px;
+
+    box-shadow:
+    0 4px 12px rgba(0,0,0,0.08);
+
+}
+
+.request-header{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+}
+
+.request-header h3{
+
+    margin:0;
+
+    color:#0a2b60;
+
+}
+
+.status{
+
+    padding:6px 12px;
+
+    border-radius:20px;
+
+    font-size:13px;
+
+    font-weight:bold;
+
+}
+
+.status.pending{
+
+    background:#fff3cd;
+
+    color:#856404;
+
+}
+
+.status.approved{
+
+    background:#d4edda;
+
+    color:#155724;
+
+}
+
+.status.rejected{
+
+    background:#f8d7da;
+
+    color:#721c24;
+
+}
+
+
+/* =========================
+   INFO
+========================= */
+
+.request-info{
+
+    margin-top:15px;
+
+}
+
+.info-row{
+
+    display:flex;
+
+    gap:8px;
+
+    margin:10px 0;
+
+    flex-wrap:wrap;
+
+}
+
+.info-label{
+
+    font-weight:bold;
+
+    color:#444;
+
+}
+
+.company-box{
+
+    background:#eef3ff;
+
+    padding:10px;
+
+    border-radius:10px;
+
+    margin-top:5px;
+
+}
+
+.reason-box{
+
+    background:#f7f7f7;
+
+    padding:12px;
+
+    border-radius:12px;
+
+    margin-top:8px;
+
+    color:#555;
+
+    white-space:pre-wrap;
+
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+.action-buttons{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-top:20px;
+
+}
+
+.action-buttons button{
+
+    flex:1;
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:13px;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+.approve-btn{
+
+    background:#2cbfa3;
+
+    color:white;
+
+}
+
+.reject-btn{
+
+    background:#e94a8b;
+
+    color:white;
+
+}
+
+.delete-btn{
+
+    background:#6c757d;
+
+    color:white;
+
+}
+
+.refresh-btn{
+
+    width:calc(100% - 40px);
+
+    margin:0 20px 20px;
+
+    border:none;
+
+    border-radius:14px;
+
+    padding:14px;
+
+    background:#0a2b60;
+
+    color:white;
+
+    font-size:17px;
+
+    cursor:pointer;
+
+}
+
+
+/* =========================
+   EMPTY
+========================= */
+
+.empty{
+
+    background:white;
+
+    margin:20px;
+
+    padding:40px 20px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    color:#777;
+
+}
+
+.empty i{
+
+    font-size:50px;
+
+    margin-bottom:15px;
+
+    color:#2cbfa3;
+
+}
+
+
+/* =========================
+   LOADING
+========================= */
+
+.loading{
+
+    text-align:center;
+
+    padding:40px;
+
+    color:#777;
+
+}
+
+
+/* =========================
+   UNAUTHORIZED
+========================= */
+
+#unauthorizedPage{
+
+    display:none;
+
+    text-align:center;
+
+    padding:80px 20px;
+
+}
+
+#unauthorizedPage i{
+
+    font-size:60px;
+
+    color:#e94a8b;
+
+    margin-bottom:20px;
+
+}
+
+#unauthorizedPage h2{
+
+    color:#0a2b60;
+
+}
+
+/* =========================
+   ATTENDANCE RECORDS
+========================= */
+
+.attendance-card{
+
+    background:white;
+
+    margin:20px;
+
+    border-radius:20px;
+
+    padding:20px;
+
+    box-shadow:
+    0 4px 12px rgba(0,0,0,0.08);
+
+}
+
+.attendance-company{
+
+    background:#eef3ff;
+
+    color:#0a2b60;
+
+    padding:12px 15px;
+
+    border-radius:12px;
+
+    font-weight:bold;
+
+    margin-bottom:15px;
+
+}
+
+.attendance-event{
+
+    background:#f7f7f7;
+
+    padding:15px;
+
+    border-radius:14px;
+
+    margin-bottom:15px;
+
+}
+
+.attendance-event h3{
+
+    margin:0 0 8px;
+
+    color:#0a2b60;
+
+}
+
+.attendance-event p{
+
+    margin:5px 0;
+
+    color:#555;
+
+}
+
+.attendance-table-wrapper{
+
+    overflow-x:auto;
+
+    margin-top:15px;
+
+}
+
+.attendance-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    min-width:700px;
+
+}
+
+.attendance-table th{
+
+    background:#0a2b60;
+
+    color:white;
+
+    padding:12px;
+
+    text-align:left;
+
+    white-space:nowrap;
+
+}
+
+.attendance-table td{
+
+    padding:12px;
+
+    border-bottom:1px solid #eee;
+
+    white-space:nowrap;
+
+}
+
+.attendance-table tr:hover{
+
+    background:#f8f9ff;
+
+}
+
+.attendance-empty{
+
+    background:white;
+
+    margin:20px;
+
+    padding:40px 20px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    color:#777;
+
+}
+
+.attendance-empty i{
+
+    font-size:50px;
+
+    color:#2cbfa3;
+
+    margin-bottom:15px;
+
+}
+
+.attendance-distance{
+
+    font-weight:bold;
+
+    color:#0a2b60;
+
+}
+
+.attendance-loading{
+
+    text-align:center;
+
+    padding:40px;
+
+    color:#777;
+
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px){
+
+    .request-header{
+
+        align-items:flex-start;
+
+    }
+
+    .action-buttons{
+
+        flex-direction:column;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<div class="header">
+
+    <img src="images/bb.logo.png">
+
+    <div class="header-text">
+
+        <h1>BB COMPANY</h1>
+
+        <p>ADMIN MANAGEMENT</p>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     UNAUTHORIZED
+========================= -->
+
+<div id="unauthorizedPage">
+
+    <i class="fa-solid fa-lock"></i>
+
+    <h2>Access Denied</h2>
+
+    <p>
+        You do not have permission
+        to access the Admin Page.
+    </p>
+
+</div>
+
+
+<!-- =========================
+     ADMIN CONTENT
+========================= -->
+
+<div id="adminContent"
+style="display:none;">
+
+
+    <div class="admin-title">
+
+        <h2>
+            Company Change Requests
+        </h2>
+
+        <p>
+            Review and manage member
+            Company change applications.
+        </p>
+
+    </div>
+
+
+    <!-- REQUEST COUNT -->
+
+    <div class="request-count">
+
+        <div class="request-count-left">
+
+            <i class="fa-solid fa-building"></i>
+
+            <div>
+
+                <div>
+                    Pending Requests
+                </div>
+
+                <div id="pendingCount">
+                    0
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- REFRESH -->
+
+    <button
+    class="refresh-btn"
+    onclick="loadRequests()">
+
+        <i class="fa-solid fa-rotate"></i>
+
+        Refresh Requests
+
+    </button>
+
+    <button
+    class="refresh-btn"
+    onclick="standardize8thCompany()"
+    style="background:#3c4d78;">
+
+        <i class="fa-solid fa-building"></i>
+
+        Standardize 8th Sibu Company
+
+</button>
+
+
+    <!-- REQUEST LIST -->
+
+    <div id="requestList">
+
+        <div class="loading">
+
+            Loading requests...
+
+        </div>
+
+    </div>
+
+
+</div>
+
+<!-- =========================
+     ATTENDANCE RECORDS
+========================= -->
+
+<div class="admin-title" style="margin-top:40px;">
+
+    <h2>
+        Attendance Records
+    </h2>
+
+    <p id="attendanceCompanyText">
+        Loading your Company...
+    </p>
+
+</div>
+
+
+<!-- ATTENDANCE REFRESH -->
+
+<button
+class="refresh-btn"
+onclick="loadAttendanceRecords()">
+
+    <i class="fa-solid fa-rotate"></i>
+
+    Refresh Attendance
+
+</button>
+
+
+<!-- ATTENDANCE LIST -->
+
+<div id="attendanceList">
+
+    <div class="loading">
+
+        Loading attendance records...
+
+    </div>
+
+</div>
+
+
+<script src="app-update.js"></script>
+
+
+<script type="module">
+
+
+/* =========================
+   FIREBASE
+========================= */
+
+import {
+
+    initializeApp
+
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+
+import {
+
+    getFirestore,
+
+    collection,
+
+    getDocs,
+
+    doc,
+
+    getDoc,
+
+    updateDoc,
+
+    deleteDoc,
+
+    writeBatch
+
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+import {
+
+    getAuth,
+
+    onAuthStateChanged
+
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+/* =========================
+   FIREBASE CONFIG
+========================= */
+
+const firebaseConfig = {
+
+    apiKey:
+    "AIzaSyAHmlUT6WBh_lVrMOirhY9Z18xc57fSFZ8",
+
+    authDomain:
+    "yb1-ae18e.firebaseapp.com",
+
+    projectId:
+    "yb1-ae18e",
+
+    storageBucket:
+    "yb1-ae18e.firebasestorage.app",
+
+    messagingSenderId:
+    "278406966206",
+
+    appId:
+    "1:278406966206:web:3dbf470d1a0c63a8dbe7ef",
+
+    measurementId:
+    "G-YZQGS7NTME"
+
+};
+
+
+/* =========================
+   INIT
+========================= */
+
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getFirestore(app);
+
+const auth =
+getAuth(app);
+
+/* =========================
+   CURRENT ADMIN COMPANY
+========================= */
+
+let currentAdminCompany = "";
+
+
+/* =========================
+   ADMIN UID
+=========================
+
+   IMPORTANT:
+
+   Put the Firebase UID of
+   your administrator here.
+
+========================= */
+
+const ADMIN_UIDS = [
+
+    "87hJXFNFbseI8Blkcc0oya10jJx2"
+
+];
+
+/* =========================
+   GOOGLE APPS SCRIPT
+   ATTENDANCE API
+========================= */
+
+const ATTENDANCE_SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbxg6oy2y7wbw2HCUfkzbNE27v2We-BXdj7wxyAZxhAYJ2agOoRF0Jp_uj4iSJhwGzAK9g/exec";
+
+
+/* =========================
+   CHECK ADMIN
+========================= */
+
+onAuthStateChanged(
+    auth,
+    async(user)=>{
+
+        if(!user){
+
+            document.getElementById(
+                "unauthorizedPage"
+            ).style.display = "block";
+
+            return;
+
+        }
+
+
+        console.log(
+            "LOGIN UID:",
+            user.uid
+        );
+
+
+        /* =========================
+           ADMIN CHECK
+        ========================= */
+
+        if(
+            !ADMIN_UIDS.includes(
+                user.uid
+            )
+        ){
+
+            document.getElementById(
+                "unauthorizedPage"
+            ).style.display = "block";
+
+            return;
+
+        }
+
+
+        /* =========================
+           SHOW ADMIN
+        ========================= */
+
+        document.getElementById(
+    "adminContent"
+).style.display = "block";
+
+
+/* =========================
+   GET ADMIN COMPANY
+========================= */
+
+try{
+
+    const userRef =
+        doc(
+            db,
+            "users",
+            user.uid
+        );
+
+    const userSnap =
+        await getDoc(userRef);
+
+
+    if(!userSnap.exists()){
+
+        console.error(
+            "Admin user document not found."
+        );
+
+        document.getElementById(
+            "attendanceCompanyText"
+        ).innerText =
+            "Company information not found.";
+
+        loadRequests();
+
+        return;
+
+    }
+
+
+    const userData =
+        userSnap.data();
+
+
+    currentAdminCompany =
+        (userData.company || "")
+        .trim();
+
+
+    console.log(
+        "ADMIN COMPANY:",
+        currentAdminCompany
+    );
+
+
+    /* =========================
+       CHECK COMPANY
+    ========================= */
+
+    if(!currentAdminCompany){
+
+        document.getElementById(
+            "attendanceCompanyText"
+        ).innerText =
+            "No Company assigned to this Admin.";
+
+        loadRequests();
+
+        return;
+
+    }
+
+
+    /* =========================
+       SHOW COMPANY
+    ========================= */
+
+    document.getElementById(
+        "attendanceCompanyText"
+    ).innerText =
+        "Company: " +
+        currentAdminCompany;
+
+
+    /* =========================
+       LOAD BOTH
+    ========================= */
+
+    loadRequests();
+
+    loadAttendanceRecords();
+
+}
+catch(error){
+
+    console.error(
+        "GET ADMIN COMPANY ERROR:",
+        error
+    );
+
+    document.getElementById(
+        "attendanceCompanyText"
+    ).innerText =
+        "Unable to load Company.";
+
+    loadRequests();
+
+}
+
+    }
+);
+
+
+/* =========================
+   LOAD REQUESTS
+========================= */
+
+window.loadRequests =
+async function(){
+
+    const container =
+    document.getElementById(
+        "requestList"
+    );
+
+
+    const count =
+    document.getElementById(
+        "pendingCount"
+    );
+
+
+    container.innerHTML = `
+
+        <div class="loading">
+
+            Loading requests...
+
+        </div>
+
+    `;
+
+
+    try{
+
+        const snapshot =
+        await getDocs(
+            collection(
+                db,
+                "companyChangeRequests"
+            )
+        );
+
+
+        let requests = [];
+
+
+        snapshot.forEach(
+            requestDoc => {
+
+                const data =
+                requestDoc.data();
+
+
+                requests.push({
+
+                    id:
+                    requestDoc.id,
+
+                    ...data
+
+                });
+
+            }
+        );
+
+// =========================
+// STANDARDIZE 8TH SIBU COMPANY
+// =========================
+
+window.standardize8thCompany = async function(){
+
+    const confirmStandardize = confirm(
+        "This will change all variations of \"8th Sibu Company\" to:\n\n" +
+        "8th Sibu Company\n\n" +
+        "88th Sibu Company and other Companies will NOT be changed.\n\n" +
+        "Continue?"
+    );
+
+    if(!confirmStandardize){
+        return;
+    }
+
+    try{
+
+        const usersSnapshot = await getDocs(
+            collection(db, "users")
+        );
+
+        let updateCount = 0;
+
+        const batch = writeBatch(db);
+
+        usersSnapshot.forEach(userDoc => {
+
+            const data = userDoc.data();
+
+            const company =
+                (data.company || "").trim();
+
+            if(
+                company.toLowerCase() ===
+                "8th sibu company"
+            ){
+
+                batch.update(
+                    doc(db, "users", userDoc.id),
+                    {
+                        company: "8th Sibu Company"
+                    }
+                );
+
+                updateCount++;
+
+            }
+
+        });
+
+        if(updateCount === 0){
+
+            alert(
+                "No Company names need to be standardized."
+            );
+
+            return;
+
+        }
+
+        await batch.commit();
+
+        alert(
+            "Done!\n\n" +
+            updateCount +
+            " member(s) have been updated to:\n" +
+            "8th Sibu Company"
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "STANDARDIZE COMPANY ERROR:",
+            error
+        );
+
+        alert(
+            "Failed to standardize Company names:\n\n" +
+            error.message
+        );
+
+    }
+
+};
+
+
+        /* =========================
+           SORT NEWEST FIRST
+        ========================= */
+
+        requests.sort(
+            (a,b)=>{
+
+                const aTime =
+                a.createdAt?.toMillis
+                ? a.createdAt.toMillis()
+                : 0;
+
+                const bTime =
+                b.createdAt?.toMillis
+                ? b.createdAt.toMillis()
+                : 0;
+
+                return bTime - aTime;
+
+            }
+        );
+
+
+        /* =========================
+           PENDING COUNT
+        ========================= */
+
+        const pending =
+        requests.filter(
+            request =>
+            request.status === "pending"
+        );
+
+
+        count.innerText =
+        pending.length;
+
+
+        /* =========================
+           NO REQUEST
+        ========================= */
+
+        if(requests.length === 0){
+
+            container.innerHTML = `
+
+                <div class="empty">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    <h3>
+                        No Company Change Requests
+                    </h3>
+
+                    <p>
+                        There are currently
+                        no applications.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        /* =========================
+   DISPLAY
+========================= */
+
+container.innerHTML = "";
+
+
+for (const request of requests) {
+
+    /* =========================
+   GET MEMBER NAME
+========================= */
+
+// Support both old requests (userId)
+// and new requests (uid)
+
+const memberUID =
+    request.uid ||
+    request.userId ||
+    null;
+
+let memberName =
+    request.name ||
+    request.userName ||
+    "Unknown Member";
+
+
+if(memberUID){
+
+    try{
+
+        const userSnap =
+        await getDoc(
+            doc(
+                db,
+                "users",
+                memberUID
+            )
+        );
+
+
+        if(userSnap.exists()){
+
+            const userData =
+            userSnap.data();
+
+
+            memberName =
+                userData.name ||
+                userData.fullName ||
+                userData.displayName ||
+                memberName;
+
+        }
+
+    }
+    catch(error){
+
+        console.error(
+            "GET MEMBER ERROR:",
+            error
+        );
+
+    }
+
+}
+
+
+console.log(
+    "REQUEST:",
+    request.id,
+    "MEMBER UID:",
+    memberUID,
+    "MEMBER NAME:",
+    memberName
+);
+
+
+    console.log(
+        "REQUEST:",
+        request.id,
+        "USER ID:",
+        request.userId,
+        "MEMBER NAME:",
+        memberName
+    );
+
+
+    /* =========================
+       CREATE CARD
+    ========================= */
+
+    const card =
+    document.createElement(
+        "div"
+    );
+
+
+    card.className =
+    "request-card";
+
+
+    const status =
+    request.status ||
+    "pending";
+
+
+    let dateText =
+    "Unknown";
+
+
+    if(
+        request.createdAt &&
+        request.createdAt.toDate
+    ){
+
+        dateText =
+        request.createdAt
+        .toDate()
+        .toLocaleString();
+
+    }
+
+
+    card.innerHTML = `
+
+        <div class="request-header">
+
+            <h3>
+
+                ${escapeHTML(
+                    memberName
+                )}
+
+            </h3>
+
+
+            <div class="
+                status
+                ${status}
+            ">
+
+                ${status.toUpperCase()}
+
+            </div>
+
+        </div>
+
+
+        <div class="request-info">
+
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    Current Company:
+                </span>
+
+                <span>
+
+                    ${escapeHTML(
+                        request.currentCompany ||
+                        "No Company"
+                    )}
+
+                </span>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    Requested Company:
+                </span>
+
+                <div class="company-box">
+
+                    <i class="
+                        fa-solid
+                        fa-building
+                    "></i>
+
+                    ${escapeHTML(
+                        request.requestedCompany ||
+                        "No Company"
+                    )}
+
+                </div>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    Request Time:
+                </span>
+
+                <span>
+
+                    ${dateText}
+
+                </span>
+
+            </div>
+
+
+            ${
+                status === "pending"
+
+                ?
+
+                `
+
+                <div class="action-buttons">
+
+                    <button
+                    class="approve-btn"
+                    onclick="
+                    approveRequest(
+                        '${request.id}'
+                    )">
+
+                        <i class="
+                            fa-solid
+                            fa-check
+                        "></i>
+
+                        Approve
+
+                    </button>
+
+
+                    <button
+                    class="reject-btn"
+                    onclick="
+                    rejectRequest(
+                        '${request.id}'
+                    )">
+
+                        <i class="
+                            fa-solid
+                            fa-xmark
+                        "></i>
+
+                        Reject
+
+                    </button>
+
+
+                    <button
+                    class="delete-btn"
+                    onclick="
+                    deleteRequest(
+                        '${request.id}'
+                    )">
+
+                        <i class="
+                            fa-solid
+                            fa-trash
+                        "></i>
+
+                        Delete
+
+                    </button>
+
+                </div>
+
+                `
+
+                :
+
+                `
+
+                <div class="action-buttons">
+
+                    <button
+                    class="delete-btn"
+                    onclick="
+                    deleteRequest(
+                        '${request.id}'
+                    )">
+
+                        <i class="
+                            fa-solid
+                            fa-trash
+                        "></i>
+
+                        Delete
+
+                    </button>
+
+                </div>
+
+                `
+
+            }
+
+
+        </div>
+
+    `;
+
+
+    container.appendChild(
+        card
+    );
+
+}
+
+    }
+    catch(error){
+
+        console.error(
+            "LOAD REQUEST ERROR:",
+            error
+        );
+
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <i class="
+                    fa-solid
+                    fa-triangle-exclamation
+                "></i>
+
+                <h3>
+                    Failed to Load Requests
+                </h3>
+
+                <p>
+                    ${escapeHTML(
+                        error.message
+                    )}
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+};
+
+/* =========================
+   LOAD ATTENDANCE RECORDS
+========================= */
+
+window.loadAttendanceRecords =
+async function(){
+
+    const container =
+        document.getElementById(
+            "attendanceList"
+        );
+
+
+    const companyText =
+        document.getElementById(
+            "attendanceCompanyText"
+        );
+
+
+    /* =========================
+       CHECK COMPANY
+    ========================= */
+
+    if(!currentAdminCompany){
+
+        companyText.innerText =
+            "No Company assigned to this Admin.";
+
+        container.innerHTML = `
+
+            <div class="attendance-empty">
+
+                <i class="fa-solid fa-building"></i>
+
+                <h3>
+                    No Company
+                </h3>
+
+                <p>
+                    This Admin does not have
+                    a Company assigned.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    /* =========================
+       SHOW COMPANY
+    ========================= */
+
+    companyText.innerText =
+        "Company: " +
+        currentAdminCompany;
+
+
+    /* =========================
+       LOADING
+    ========================= */
+
+    container.innerHTML = `
+
+        <div class="attendance-loading">
+
+            <i class="fa-solid fa-spinner fa-spin"></i>
+
+            <p>
+                Loading attendance records...
+            </p>
+
+        </div>
+
+    `;
+
+
+    try{
+
+        /* =========================
+           CREATE API URL
+        ========================= */
+
+        const apiURL =
+            ATTENDANCE_SCRIPT_URL +
+            "?company=" +
+            encodeURIComponent(
+                currentAdminCompany
+            );
+
+
+        console.log(
+            "ATTENDANCE API:",
+            apiURL
+        );
+
+
+        /* =========================
+           GET DATA
+        ========================= */
+
+        const response =
+            await fetch(apiURL);
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "HTTP Error: " +
+                response.status
+            );
+
+        }
+
+
+        const result =
+            await response.json();
+
+
+        console.log(
+            "ATTENDANCE RESULT:",
+            result
+        );
+
+
+        /* =========================
+           API ERROR
+        ========================= */
+
+        if(!result.success){
+
+            throw new Error(
+                result.message ||
+                "Unable to load attendance records."
+            );
+
+        }
+
+
+        /* =========================
+           RECORDS
+        ========================= */
+
+        const records =
+            result.records || [];
+
+
+        /* =========================
+           NO RECORDS
+        ========================= */
+
+        if(records.length === 0){
+
+            container.innerHTML = `
+
+                <div class="attendance-empty">
+
+                    <i class="fa-solid fa-clipboard-check"></i>
+
+                    <h3>
+                        No Attendance Records
+                    </h3>
+
+                    <p>
+                        There are currently
+                        no attendance records for
+                        ${escapeHTML(
+                            currentAdminCompany
+                        )}.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        /* =========================
+           GROUP BY EVENT
+        ========================= */
+
+        const eventGroups = {};
+
+
+        records.forEach(record => {
+
+            const eventName =
+                record.event ||
+                "Unknown Event";
+
+
+            if(!eventGroups[eventName]){
+
+                eventGroups[eventName] = [];
+
+            }
+
+
+            eventGroups[eventName].push(
+                record
+            );
+
+        });
+
+
+        /* =========================
+           DISPLAY
+        ========================= */
+
+        container.innerHTML = "";
+
+
+        Object.keys(eventGroups)
+        .forEach(eventName => {
+
+            const eventRecords =
+                eventGroups[eventName];
+
+
+            const firstRecord =
+                eventRecords[0];
+
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "attendance-card";
+
+
+            let rowsHTML = "";
+
+
+            eventRecords.forEach(
+                record => {
+
+                    rowsHTML += `
+
+                        <tr>
+
+                            <td>
+                                ${escapeHTML(
+                                    record.name
+                                )}
+                            </td>
+
+                            <td>
+                                ${escapeHTML(
+                                    record.company
+                                )}
+                            </td>
+
+                            <td>
+                                ${escapeHTML(
+                                    record.squad
+                                )}
+                            </td>
+
+                            <td>
+                                ${escapeHTML(
+                                    record.date
+                                )}
+                            </td>
+
+                            <td>
+                                ${escapeHTML(
+                                    record.time
+                                )}
+                            </td>
+
+                            <td>
+                                <span
+                                class="attendance-distance">
+
+                                    ${escapeHTML(
+                                        record.distance
+                                    )}
+
+                                </span>
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                }
+            );
+
+
+            card.innerHTML = `
+
+                <div class="attendance-company">
+
+                    <i class="fa-solid fa-building"></i>
+
+                    ${escapeHTML(
+                        currentAdminCompany
+                    )}
+
+                </div>
+
+
+                <div class="attendance-event">
+
+                    <h3>
+
+                        ${escapeHTML(
+                            eventName
+                        )}
+
+                    </h3>
+
+
+                    <p>
+
+                        <strong>
+                            Attendance:
+                        </strong>
+
+                        ${eventRecords.length}
+
+                        member(s)
+
+                    </p>
+
+
+                </div>
+
+
+                <div class="attendance-table-wrapper">
+
+                    <table
+                    class="attendance-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Name
+                                </th>
+
+                                <th>
+                                    Company
+                                </th>
+
+                                <th>
+                                    Squad
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th>
+                                    Check In Time
+                                </th>
+
+                                <th>
+                                    Distance
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            ${rowsHTML}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                card
+            );
+
+        });
+
+
+    }
+    catch(error){
+
+        console.error(
+            "LOAD ATTENDANCE ERROR:",
+            error
+        );
+
+
+        container.innerHTML = `
+
+            <div class="attendance-empty">
+
+                <i
+                class="fa-solid fa-triangle-exclamation">
+                </i>
+
+                <h3>
+                    Failed to Load Attendance
+                </h3>
+
+                <p>
+                    ${escapeHTML(
+                        error.message
+                    )}
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+};
+
+
+/* =========================
+   APPROVE REQUEST
+========================= */
+
+window.approveRequest =
+async function(requestId){
+
+    const confirmApprove =
+    confirm(
+        "Are you sure you want to APPROVE this Company change?"
+    );
+
+
+    if(!confirmApprove){
+
+        return;
+
+    }
+
+
+    try{
+
+        const requestRef =
+        doc(
+            db,
+            "companyChangeRequests",
+            requestId
+        );
+
+
+        const requestSnap =
+        await getDoc(
+            requestRef
+        );
+
+
+        if(!requestSnap.exists()){
+
+            alert(
+                "This request no longer exists."
+            );
+
+            return;
+
+        }
+
+
+        const request =
+        requestSnap.data();
+
+
+        /* =========================
+           PREVENT DUPLICATE ACTION
+        ========================= */
+
+        if(
+            request.status !==
+            "pending"
+        ){
+
+            alert(
+                "This request has already been processed."
+            );
+
+            loadRequests();
+
+            return;
+
+        }
+
+        const memberUID =
+            request.uid ||
+            request.userId ||
+            null;
+
+
+        if(!request.uid){
+
+            alert(
+                "This request does not have a member UID."
+            );
+
+            return;
+
+        }
+
+
+        if(!request.requestedCompany){
+
+            alert(
+                "Requested Company is missing."
+            );
+
+            return;
+
+        }
+
+
+        /* =========================
+           UPDATE USER + REQUEST
+        ========================= */
+
+        const batch =
+        writeBatch(db);
+
+
+        const userRef =
+        doc(
+            db,
+            "users",
+            memberUID
+        );
+
+
+        batch.update(
+
+            userRef,
+
+            {
+
+                company:
+                request.requestedCompany
+
+            }
+
+        );
+
+
+        batch.update(
+
+            requestRef,
+
+            {
+
+                status:
+                "approved",
+
+                reviewedBy:
+                auth.currentUser.uid,
+
+                reviewedAt:
+                new Date()
+
+            }
+
+        );
+
+
+        await batch.commit();
+
+
+        alert(
+            "Company change approved."
+        );
+
+
+        loadRequests();
+
+
+    }
+    catch(error){
+
+        console.error(
+            "APPROVE ERROR:",
+            error
+        );
+
+
+        alert(
+            "Failed to approve request:\n\n" +
+            error.message
+        );
+
+    }
+
+};
+
+
+/* =========================
+   REJECT REQUEST
+========================= */
+
+window.rejectRequest =
+async function(requestId){
+
+    const confirmReject =
+    confirm(
+        "Are you sure you want to REJECT this Company change?"
+    );
+
+
+    if(!confirmReject){
+
+        return;
+
+    }
+
+
+    try{
+
+        const requestRef =
+        doc(
+            db,
+            "companyChangeRequests",
+            requestId
+        );
+
+
+        const requestSnap =
+        await getDoc(
+            requestRef
+        );
+
+
+        if(!requestSnap.exists()){
+
+            alert(
+                "This request no longer exists."
+            );
+
+            return;
+
+        }
+
+
+        const request =
+        requestSnap.data();
+
+
+        /* =========================
+           PREVENT DUPLICATE ACTION
+        ========================= */
+
+        if(
+            request.status !==
+            "pending"
+        ){
+
+            alert(
+                "This request has already been processed."
+            );
+
+            loadRequests();
+
+            return;
+
+        }
+
+
+        /* =========================
+           ONLY CHANGE REQUEST STATUS
+        ========================= */
+
+        await updateDoc(
+
+            requestRef,
+
+            {
+
+                status:
+                "rejected",
+
+                reviewedBy:
+                auth.currentUser.uid,
+
+                reviewedAt:
+                new Date()
+
+            }
+
+        );
+
+
+        alert(
+            "Company change rejected."
+        );
+
+
+        loadRequests();
+
+
+    }
+    catch(error){
+
+        console.error(
+            "REJECT ERROR:",
+            error
+        );
+
+
+        alert(
+            "Failed to reject request:\n\n" +
+            error.message
+        );
+
+    }
+
+};
+
+/* =========================
+   DELETE REQUEST
+========================= */
+
+window.deleteRequest =
+async function(requestId){
+
+    const confirmDelete =
+    confirm(
+        "Are you sure you want to DELETE this request?\n\n" +
+        "This will permanently remove the request from the Admin Page."
+    );
+
+
+    if(!confirmDelete){
+
+        return;
+
+    }
+
+
+    try{
+
+        const requestRef =
+        doc(
+            db,
+            "companyChangeRequests",
+            requestId
+        );
+
+
+        const requestSnap =
+        await getDoc(
+            requestRef
+        );
+
+
+        if(!requestSnap.exists()){
+
+            alert(
+                "This request no longer exists."
+            );
+
+            loadRequests();
+
+            return;
+
+        }
+
+
+        await deleteDoc(
+            requestRef
+        );
+
+
+        alert(
+            "Request deleted successfully."
+        );
+
+
+        loadRequests();
+
+
+    }
+    catch(error){
+
+        console.error(
+            "DELETE REQUEST ERROR:",
+            error
+        );
+
+
+        alert(
+            "Failed to delete request:\n\n" +
+            error.message
+        );
+
+    }
+
+};
+
+/* =========================
+   HTML SECURITY
+========================= */
+
+function escapeHTML(value){
+
+    return String(value)
+
+        .replaceAll("&","&amp;")
+
+        .replaceAll("<","&lt;")
+
+        .replaceAll(">","&gt;")
+
+        .replaceAll('"',"&quot;")
+
+        .replaceAll("'","&#039;");
+
+}
+
+
+</script>
+
+</body>
+
+</html>
