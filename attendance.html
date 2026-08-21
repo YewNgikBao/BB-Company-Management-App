@@ -91,7 +91,7 @@ body{
     display:flex;
     align-items:center;
 
-    gap:6px;
+    gap:12px;
 
     padding:12px;
 
@@ -128,41 +128,61 @@ body{
     white-space:nowrap;
   }
 
-  /* =========================
-     CHECK IN
-  ========================= */
+}
 
-  .check-btn{
-    flex:0 1 auto;
+.card{
+  background:white;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 4px 10px rgba(0,0,0,0.2);
+  box-sizing:border-box;
+  width:100%;
+}
 
-    width:clamp(52px, 17vw, 65px);
 
-    min-width:52px;
-    max-width:65px;
+/* =========================
+   CHECK IN BUTTON
+========================= */
 
-    padding:clamp(7px, 2vw, 10px) 2px;
+.check-btn{
+  width:110px;
+  min-width:110px;
+  height:42px;
 
-    margin:0;
+  padding:0 16px;
 
-    font-size:clamp(10px, 3vw, 13px);
+  margin:0;
 
-    line-height:1.1;
+  border:none;
+  border-radius:8px;
 
-    border-radius:8px;
+  background:#0066ff;
+  color:white;
 
-    box-sizing:border-box;
+  font-size:14px;
+  font-weight:normal;
 
-    white-space:nowrap;
-  }
+  cursor:pointer;
 
+  box-sizing:border-box;
+
+  white-space:nowrap;
+
+  flex-shrink:0;
 }
 
 .enabled{
   background:#0066ff;
+  color:white;
 }
 
 .disabled{
   background:#bfbfbf;
+  color:white;
   cursor:not-allowed;
 }
 
