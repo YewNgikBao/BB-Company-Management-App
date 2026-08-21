@@ -627,6 +627,280 @@ body{
 
 }
 
+/* =========================
+   ADMIN MENU BUTTON
+========================= */
+
+.menu-button{
+
+    position:fixed;
+
+    top:18px;
+
+    right:18px;
+
+    width:48px;
+
+    height:48px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:white;
+
+    color:#0a2b60;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+    z-index:1001;
+
+    box-shadow:
+    0 4px 12px rgba(0,0,0,0.15);
+
+}
+
+
+/* =========================
+   MENU
+========================= */
+
+.admin-menu{
+
+    position:fixed;
+
+    top:0;
+
+    left:-320px;
+
+    width:300px;
+
+    height:100vh;
+
+    background:white;
+
+    z-index:1000;
+
+    box-shadow:
+    4px 0 20px rgba(0,0,0,0.15);
+
+    transition:
+    left 0.25s ease;
+
+    overflow-y:auto;
+
+}
+
+
+.admin-menu.open{
+
+    left:0;
+
+}
+
+
+/* =========================
+   OVERLAY
+========================= */
+
+.admin-menu-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,0.4);
+
+    z-index:999;
+
+    display:none;
+
+}
+
+
+.admin-menu-overlay.open{
+
+    display:block;
+
+}
+
+
+/* =========================
+   MENU HEADER
+========================= */
+
+.admin-menu-header{
+
+    background:#0a2b60;
+
+    color:white;
+
+    padding:20px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+}
+
+
+.admin-menu-header h2{
+
+    margin:0;
+
+    font-size:20px;
+
+}
+
+
+.admin-menu-header button{
+
+    border:none;
+
+    background:none;
+
+    color:white;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+}
+
+
+/* =========================
+   COMPANY
+========================= */
+
+.admin-company-menu{
+
+    margin:15px;
+
+    padding:15px;
+
+    border-radius:14px;
+
+    background:#eef3ff;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+
+.admin-company-menu i{
+
+    font-size:25px;
+
+    color:#0a2b60;
+
+}
+
+
+.admin-company-menu small{
+
+    display:block;
+
+    color:#777;
+
+}
+
+
+.admin-company-menu strong{
+
+    display:block;
+
+    color:#0a2b60;
+
+    margin-top:3px;
+
+}
+
+
+/* =========================
+   MENU ITEM
+========================= */
+
+.admin-menu-item{
+
+    width:calc(100% - 20px);
+
+    margin:5px 10px;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:white;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:13px;
+
+    text-align:left;
+
+    color:#444;
+
+    font-size:15px;
+
+    cursor:pointer;
+
+}
+
+
+.admin-menu-item i{
+
+    width:25px;
+
+    font-size:18px;
+
+}
+
+
+.admin-menu-item:hover{
+
+    background:#f1f4ff;
+
+}
+
+
+.admin-menu-item.active{
+
+    background:#0a2b60;
+
+    color:white;
+
+}
+
+
+/* =========================
+   ADMIN PAGES
+========================= */
+
+.admin-page{
+
+    display:none;
+
+}
+
+
+.admin-page.active{
+
+    display:block;
+
+}
+
 </style>
 
 </head>
@@ -634,6 +908,107 @@ body{
 
 <body>
 
+<!-- =========================
+     ADMIN MENU
+========================= -->
+
+<button
+    id="menuButton"
+    class="menu-button"
+    onclick="toggleAdminMenu()">
+
+    <i class="fa-solid fa-bars"></i>
+
+</button>
+
+
+<div
+    id="adminMenuOverlay"
+    class="admin-menu-overlay"
+    onclick="closeAdminMenu()">
+</div>
+
+
+<div
+    id="adminMenu"
+    class="admin-menu">
+
+    <div class="admin-menu-header">
+
+        <h2>Admin Menu</h2>
+
+        <button
+            onclick="closeAdminMenu()">
+
+            <i class="fa-solid fa-xmark"></i>
+
+        </button>
+
+    </div>
+
+
+    <div class="admin-company-menu">
+
+        <i class="fa-solid fa-building"></i>
+
+        <div>
+
+            <small>Company</small>
+
+            <strong id="menuCompany">
+                Loading...
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- COMPANY CHANGE -->
+
+    <button
+        class="admin-menu-item active"
+        onclick="showAdminPage('company')">
+
+        <i class="fa-solid fa-building-circle-arrow-right"></i>
+
+        <span>
+            Company Change Requirement
+        </span>
+
+    </button>
+
+
+    <!-- EVENT -->
+
+    <button
+        class="admin-menu-item"
+        onclick="showAdminPage('event')">
+
+        <i class="fa-solid fa-calendar-days"></i>
+
+        <span>
+            Event Management
+        </span>
+
+    </button>
+
+
+    <!-- ATTENDANCE -->
+
+    <button
+        class="admin-menu-item"
+        onclick="showAdminPage('attendance')">
+
+        <i class="fa-solid fa-clipboard-check"></i>
+
+        <span>
+            Attendance Record
+        </span>
+
+    </button>
+
+</div>
 
 <!-- =========================
      HEADER
@@ -676,8 +1051,15 @@ body{
      ADMIN CONTENT
 ========================= -->
 
-<div id="adminContent"
-style="display:none;">
+<div id="adminContent">
+
+    <!-- =========================
+         PAGE 1
+    ========================= -->
+
+    <div
+        id="companyPage"
+        class="admin-page active">
 
 
     <div class="admin-title">
@@ -755,8 +1137,71 @@ style="display:none;">
 
     </div>
 
+    </div>
 
-</div>
+    <!-- =========================
+         PAGE 2
+    ========================= -->
+
+    <div
+        id="eventPage"
+        class="admin-page">
+
+        <div class="admin-title">
+
+            <h2>
+                Event Management
+            </h2>
+
+            <p id="eventCompanyText">
+                Loading your Company...
+            </p>
+
+        </div>
+
+
+        <button
+            class="refresh-btn"
+            onclick="loadCompanyEvents()">
+
+            <i class="fa-solid fa-rotate"></i>
+
+            Refresh Events
+
+        </button>
+
+
+        <button
+            class="refresh-btn"
+            onclick="openCreateEvent()"
+            style="background:#2cbfa3;">
+
+            <i class="fa-solid fa-plus"></i>
+
+            Create New Event
+
+        </button>
+
+
+        <div id="eventList">
+
+            <div class="loading">
+
+                Loading events...
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =========================
+         PAGE 3
+    ========================= -->
+
+    <div
+    id="attendancePage"
+    class="admin-page">
 
 <!-- =========================
      ATTENDANCE RECORDS
@@ -800,6 +1245,9 @@ onclick="loadAttendanceRecords()">
 
 </div>
 
+</div>
+
+</div>
 
 <script src="app-update.js"></script>
 
@@ -836,7 +1284,11 @@ import {
 
     deleteDoc,
 
-    writeBatch
+    writeBatch,
+
+    onSnapshot,
+
+    addDoc
 
 }
 from
@@ -903,6 +1355,142 @@ getAuth(app);
 
 let currentAdminCompany = "";
 
+let companyEventsUnsubscribe = null;
+
+/* =========================
+   ADMIN PAGE NAVIGATION
+========================= */
+
+window.showAdminPage =
+function(page){
+
+    const pages = [
+
+        "company",
+        "event",
+        "attendance"
+
+    ];
+
+
+    pages.forEach(
+        pageName => {
+
+            const pageElement =
+                document.getElementById(
+                    pageName + "Page"
+                );
+
+            if(pageElement){
+
+                pageElement.classList.remove(
+                    "active"
+                );
+
+            }
+
+        }
+    );
+
+
+    document
+        .querySelectorAll(
+            ".admin-menu-item"
+        )
+        .forEach(
+            button => {
+
+                button.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+    const selectedPage =
+        document.getElementById(
+            page + "Page"
+        );
+
+
+    if(selectedPage){
+
+        selectedPage.classList.add(
+            "active"
+        );
+
+    }
+
+
+    const menuItems =
+        document.querySelectorAll(
+            ".admin-menu-item"
+        );
+
+
+    if(page === "company"){
+
+        menuItems[0]
+            ?.classList.add("active");
+
+    }
+
+    if(page === "event"){
+
+        menuItems[1]
+            ?.classList.add("active");
+
+        loadCompanyEvents();
+
+    }
+
+    if(page === "attendance"){
+
+        menuItems[2]
+            ?.classList.add("active");
+
+        loadAttendanceRecords();
+
+    }
+
+
+    closeAdminMenu();
+
+};
+
+/* =========================
+   MENU
+========================= */
+
+window.toggleAdminMenu =
+function(){
+
+    document
+        .getElementById("adminMenu")
+        .classList.toggle("open");
+
+
+    document
+        .getElementById("adminMenuOverlay")
+        .classList.toggle("open");
+
+};
+
+
+window.closeAdminMenu =
+function(){
+
+    document
+        .getElementById("adminMenu")
+        .classList.remove("open");
+
+
+    document
+        .getElementById("adminMenuOverlay")
+        .classList.remove("open");
+
+};
 
 /* =========================
    ADMIN UID
@@ -1025,6 +1613,11 @@ try{
     currentAdminCompany =
         (userData.company || "")
         .trim();
+
+    document.getElementById(
+    "menuCompany"
+    ).innerText =
+    currentAdminCompany;
 
 
     console.log(
@@ -1154,94 +1747,6 @@ async function(){
             }
         );
 
-// =========================
-// STANDARDIZE 8TH SIBU COMPANY
-// =========================
-
-window.standardize8thCompany = async function(){
-
-    const confirmStandardize = confirm(
-        "This will change all variations of \"8th Sibu Company\" to:\n\n" +
-        "8th Sibu Company\n\n" +
-        "88th Sibu Company and other Companies will NOT be changed.\n\n" +
-        "Continue?"
-    );
-
-    if(!confirmStandardize){
-        return;
-    }
-
-    try{
-
-        const usersSnapshot = await getDocs(
-            collection(db, "users")
-        );
-
-        let updateCount = 0;
-
-        const batch = writeBatch(db);
-
-        usersSnapshot.forEach(userDoc => {
-
-            const data = userDoc.data();
-
-            const company =
-                (data.company || "").trim();
-
-            if(
-                company.toLowerCase() ===
-                "8th sibu company"
-            ){
-
-                batch.update(
-                    doc(db, "users", userDoc.id),
-                    {
-                        company: "8th Sibu Company"
-                    }
-                );
-
-                updateCount++;
-
-            }
-
-        });
-
-        if(updateCount === 0){
-
-            alert(
-                "No Company names need to be standardized."
-            );
-
-            return;
-
-        }
-
-        await batch.commit();
-
-        alert(
-            "Done!\n\n" +
-            updateCount +
-            " member(s) have been updated to:\n" +
-            "8th Sibu Company"
-        );
-
-    }
-    catch(error){
-
-        console.error(
-            "STANDARDIZE COMPANY ERROR:",
-            error
-        );
-
-        alert(
-            "Failed to standardize Company names:\n\n" +
-            error.message
-        );
-
-    }
-
-};
-
 
         /* =========================
            SORT NEWEST FIRST
@@ -1311,7 +1816,7 @@ window.standardize8thCompany = async function(){
         }
 
 
-        /* =========================
+/* =========================
    DISPLAY
 ========================= */
 
@@ -1658,6 +2163,2889 @@ console.log(
 
 };
 
+window.standardize8thCompany = async function(){
+
+    const confirmStandardize = confirm(
+        "This will change all variations of \"8th Sibu Company\" to:\n\n" +
+        "8th Sibu Company\n\n" +
+        "88th Sibu Company and other Companies will NOT be changed.\n\n" +
+        "Continue?"
+    );
+
+    if(!confirmStandardize){
+        return;
+    }
+
+    try{
+
+        const usersSnapshot = await getDocs(
+            collection(db, "users")
+        );
+
+        let updateCount = 0;
+
+        const batch = writeBatch(db);
+
+        usersSnapshot.forEach(userDoc => {
+
+            const data = userDoc.data();
+
+            const company =
+                (data.company || "").trim();
+
+            if(
+                company.toLowerCase() ===
+                "8th sibu company"
+            ){
+
+                batch.update(
+                    doc(db, "users", userDoc.id),
+                    {
+                        company: "8th Sibu Company"
+                    }
+                );
+
+                updateCount++;
+
+            }
+
+        });
+
+        if(updateCount === 0){
+
+            alert(
+                "No Company names need to be standardized."
+            );
+
+            return;
+
+        }
+
+        await batch.commit();
+
+        alert(
+            "Done!\n\n" +
+            updateCount +
+            " member(s) have been updated to:\n" +
+            "8th Sibu Company"
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "STANDARDIZE COMPANY ERROR:",
+            error
+        );
+
+        alert(
+            "Failed to standardize Company names:\n\n" +
+            error.message
+        );
+
+    }
+
+};
+
+
+/* =========================
+   LOAD COMPANY EVENTS
+   REAL-TIME FIREBASE SYNC
+========================= */
+
+window.loadCompanyEvents =
+function(){
+
+    const container =
+        document.getElementById(
+            "eventList"
+        );
+
+    const companyText =
+        document.getElementById(
+            "eventCompanyText"
+        );
+
+
+    /* =========================
+       CHECK COMPANY
+    ========================= */
+
+    if(!currentAdminCompany){
+
+        companyText.innerText =
+            "No Company assigned to this Admin.";
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <i class="
+                    fa-solid
+                    fa-building
+                "></i>
+
+                <h3>
+                    No Company
+                </h3>
+
+                <p>
+                    This Admin does not have
+                    a Company assigned.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    /* =========================
+       SHOW COMPANY
+    ========================= */
+
+    companyText.innerText =
+        "Company: " +
+        currentAdminCompany;
+
+
+    /* =========================
+       STOP OLD LISTENER
+    ========================= */
+
+    if(companyEventsUnsubscribe){
+
+        companyEventsUnsubscribe();
+
+        companyEventsUnsubscribe = null;
+
+    }
+
+
+    /* =========================
+       LOADING
+    ========================= */
+
+    container.innerHTML = `
+
+        <div class="loading">
+
+            <i class="
+                fa-solid
+                fa-spinner
+                fa-spin
+            "></i>
+
+            <p>
+                Loading events...
+            </p>
+
+        </div>
+
+    `;
+
+
+    /* =========================
+       FIREBASE REAL-TIME LISTENER
+    ========================= */
+
+    const eventsRef =
+        collection(
+            db,
+            "events"
+        );
+
+
+    companyEventsUnsubscribe =
+        onSnapshot(
+
+            eventsRef,
+
+            (snapshot)=>{
+
+                try{
+
+                    let events = [];
+
+
+                    /* =========================
+                       GET EVENTS
+                    ========================= */
+
+                    snapshot.forEach(
+                        eventDoc => {
+
+                            const data =
+                                eventDoc.data();
+
+
+                            events.push({
+
+                                id:
+                                    eventDoc.id,
+
+                                ...data
+
+                            });
+
+                        }
+                    );
+
+
+                    console.log(
+                        "REAL-TIME ALL EVENTS:",
+                        events
+                    );
+
+
+                    /* =========================
+                       FILTER COMPANY
+                    ========================= */
+
+                    const adminCompany =
+                        (currentAdminCompany || "")
+                        .trim()
+                        .toLowerCase();
+
+
+                    const companyEvents =
+                        events.filter(
+                            event => {
+
+                                const eventCompany =
+                                    (event.company || "")
+                                    .trim()
+                                    .toLowerCase();
+
+
+                                return (
+                                    eventCompany ===
+                                    adminCompany
+                                );
+
+                            }
+                        );
+
+
+                    console.log(
+                        "REAL-TIME COMPANY EVENTS:",
+                        companyEvents
+                    );
+
+
+                    /* =========================
+                       SORT DATE
+                    ========================= */
+
+                    companyEvents.sort(
+                        (a,b)=>{
+
+                            function parseDate(
+                                dateString
+                            ){
+
+                                if(!dateString){
+
+                                    return 0;
+
+                                }
+
+
+                                const parts =
+                                    dateString
+                                    .split("/");
+
+
+                                if(
+                                    parts.length !== 3
+                                ){
+
+                                    return 0;
+
+                                }
+
+
+                                const day =
+                                    parseInt(
+                                        parts[0]
+                                    );
+
+
+                                const month =
+                                    parseInt(
+                                        parts[1]
+                                    );
+
+
+                                const year =
+                                    parseInt(
+                                        parts[2]
+                                    );
+
+
+                                return new Date(
+                                    year,
+                                    month - 1,
+                                    day
+                                ).getTime();
+
+                            }
+
+
+                            return (
+                                parseDate(a.date) -
+                                parseDate(b.date)
+                            );
+
+                        }
+                    );
+
+
+                    /* =========================
+                       NO EVENTS
+                    ========================= */
+
+                    if(
+                        companyEvents.length === 0
+                    ){
+
+                        container.innerHTML = `
+
+                            <div class="empty">
+
+                                <i class="
+                                    fa-solid
+                                    fa-calendar-xmark
+                                "></i>
+
+                                <h3>
+                                    No Events
+                                </h3>
+
+                                <p>
+                                    There are currently
+                                    no events for
+                                    ${escapeHTML(
+                                        currentAdminCompany
+                                    )}.
+                                </p>
+
+                            </div>
+
+                        `;
+
+                        return;
+
+                    }
+
+
+                    /* =========================
+                       DISPLAY EVENTS
+                    ========================= */
+
+                    container.innerHTML = "";
+
+
+                    companyEvents.forEach(
+                        event => {
+
+                            const card =
+                                document.createElement(
+                                    "div"
+                                );
+
+
+                            card.className =
+                                "request-card";
+
+
+                            /* =========================
+                               VALUES
+                            ========================= */
+
+                            const title =
+                                event.title ||
+                                "";
+
+
+                            const date =
+                                event.date ||
+                                "";
+
+
+                            const time =
+                                event.time ||
+                                "";
+
+
+                            const month =
+                                event.month ||
+                                "";
+
+
+                            const venue =
+                                event.venue ||
+                                "";
+
+
+                            const checkin =
+                                event.checkin ||
+                                "";
+
+
+                            const clothes =
+                                event.clothes ||
+                                "";
+
+
+                            const allowedRadius =
+                                event.allowedRadius ??
+                                100;
+
+
+                            const latitude =
+                                event.latitude ??
+                                "";
+
+
+                            const longitude =
+                                event.longitude ??
+                                "";
+
+
+                            const startHour =
+                                event.startHour ??
+                                "";
+
+
+                            const startMinute =
+                                event.startMinute ??
+                                "";
+
+
+                            const endHour =
+                                event.endHour ??
+                                "";
+
+
+                            const endMinute =
+                                event.endMinute ??
+                                "";
+
+
+                            /* =========================
+                               CARD
+                            ========================= */
+
+                            card.innerHTML = `
+
+                                <div class="request-header">
+
+                                    <h3>
+
+                                        <i class="
+                                            fa-solid
+                                            fa-calendar-days
+                                        "></i>
+
+                                        ${escapeHTML(
+                                            title ||
+                                            "Untitled Event"
+                                        )}
+
+                                    </h3>
+
+                                </div>
+
+
+                                <div class="request-info">
+
+
+                                    <!-- TITLE -->
+
+                                    <div class="info-row">
+
+                                        <span class="info-label">
+
+                                            Event Title:
+
+                                        </span>
+
+                                        <span>
+
+                                            ${escapeHTML(
+                                                title ||
+                                                "No Title"
+                                            )}
+
+                                        </span>
+
+                                    </div>
+
+
+                                    <!-- DATE -->
+
+                                    <div class="info-row">
+
+                                        <span class="info-label">
+
+                                            <i class="
+                                                fa-regular
+                                                fa-calendar
+                                            "></i>
+
+                                            Date:
+
+                                        </span>
+
+                                        <span>
+
+                                            ${escapeHTML(
+                                                date ||
+                                                "No Date"
+                                            )}
+
+                                        </span>
+
+                                    </div>
+
+
+                                    <!-- EVENT TIME -->
+
+                                    <div class="info-row">
+
+                                        <span class="info-label">
+
+                                            <i class="
+                                                fa-regular
+                                                fa-clock
+                                            "></i>
+
+                                            Event Time:
+
+                                        </span>
+
+                                        <span>
+
+                                            ${escapeHTML(
+                                                time ||
+                                                "No Time"
+                                            )}
+
+                                        </span>
+
+                                    </div>
+
+
+                                    <!-- MONTH -->
+
+                                    <div class="info-row">
+
+                                        <span class="info-label">
+
+                                            Month:
+
+                                        </span>
+
+                                        <span>
+
+                                            ${escapeHTML(
+                                                month ||
+                                                "No Month"
+                                            )}
+
+                                        </span>
+
+                                    </div>
+
+
+                                    <!-- VENUE -->
+
+                                    <div class="info-row">
+
+                                        <span class="info-label">
+
+                                            <i class="
+                                                fa-solid
+                                                fa-location-dot
+                                            "></i>
+
+                                            Venue:
+
+                                        </span>
+
+                                        <span>
+
+                                            ${escapeHTML(
+                                                venue ||
+                                                "No Venue"
+                                            )}
+
+                                        </span>
+
+                                    </div>
+
+
+                                    <!-- CHECK-IN LOCATION -->
+
+                                    <div class="info-row">
+
+                                        <span class="info-label">
+
+                                            <i class="
+                                                fa-solid
+                                                fa-location-crosshairs
+                                            "></i>
+
+                                            Check-in:
+
+                                        </span>
+
+                                        <span>
+
+                                            ${escapeHTML(
+                                                checkin ||
+                                                "No Check-in Location"
+                                            )}
+
+                                        </span>
+
+                                    </div>
+
+
+                                    <!-- CLOTHES -->
+
+                                    <div class="info-row">
+
+                                        <span class="info-label">
+
+                                            <i class="
+                                                fa-solid
+                                                fa-shirt
+                                            "></i>
+
+                                            Clothes:
+
+                                        </span>
+
+                                        <span>
+
+                                            ${escapeHTML(
+                                                clothes ||
+                                                "Not specified"
+                                            )}
+
+                                        </span>
+
+                                    </div>
+
+
+                                    <!-- ALLOWED RADIUS -->
+
+                                    <div class="info-row">
+
+                                        <span class="info-label">
+
+                                            Allowed Radius:
+
+                                        </span>
+
+                                        <span>
+
+                                            ${escapeHTML(
+                                                String(
+                                                    allowedRadius
+                                                )
+                                            )} m
+
+                                        </span>
+
+                                    </div>
+
+
+                                    <!-- COORDINATES -->
+
+                                    <div class="info-row">
+
+                                        <span class="info-label">
+
+                                            Coordinates:
+
+                                        </span>
+
+                                        <span>
+
+                                            ${escapeHTML(
+                                                String(
+                                                    latitude
+                                                )
+                                            )},
+
+                                            ${escapeHTML(
+                                                String(
+                                                    longitude
+                                                )
+                                            )}
+
+                                        </span>
+
+                                    </div>
+
+
+                                    <!-- CHECK-IN SCHEDULE -->
+
+                                    <div class="info-row">
+
+                                        <span class="info-label">
+
+                                            <i class="
+                                                fa-solid
+                                                fa-clock
+                                            "></i>
+
+                                            Check-in Schedule:
+
+                                        </span>
+
+                                        <span>
+
+                                            ${escapeHTML(
+                                                String(
+                                                    startHour
+                                                ).padStart(
+                                                    2,
+                                                    "0"
+                                                )
+                                            )}:
+
+                                            ${escapeHTML(
+                                                String(
+                                                    startMinute
+                                                ).padStart(
+                                                    2,
+                                                    "0"
+                                                )
+                                            )}
+
+                                            -
+
+                                            ${escapeHTML(
+                                                String(
+                                                    endHour
+                                                ).padStart(
+                                                    2,
+                                                    "0"
+                                                )
+                                            )}:
+
+                                            ${escapeHTML(
+                                                String(
+                                                    endMinute
+                                                ).padStart(
+                                                    2,
+                                                    "0"
+                                                )
+                                            )}
+
+                                        </span>
+
+                                    </div>
+
+
+                                    <!-- EDIT -->
+
+                                    <div
+                                    class="action-buttons">
+
+                                        <button
+                                        class="approve-btn"
+                                        onclick="
+                                            editCompanyEvent(
+                                                '${event.id}'
+                                            )
+                                        ">
+
+                                            <i class="
+                                                fa-solid
+                                                fa-pen
+                                            "></i>
+
+                                            Edit Event
+
+                                        </button>
+
+                                    </div>
+
+
+                                </div>
+
+                            `;
+
+
+                            container.appendChild(
+                                card
+                            );
+
+                        }
+                    );
+
+
+                }
+                catch(error){
+
+                    console.error(
+                        "DISPLAY EVENTS ERROR:",
+                        error
+                    );
+
+
+                    container.innerHTML = `
+
+                        <div class="empty">
+
+                            <i class="
+                                fa-solid
+                                fa-triangle-exclamation
+                            "></i>
+
+                            <h3>
+                                Failed to Display Events
+                            </h3>
+
+                            <p>
+
+                                ${escapeHTML(
+                                    error.message
+                                )}
+
+                            </p>
+
+                        </div>
+
+                    `;
+
+                }
+
+            },
+
+            (error)=>{
+
+                console.error(
+                    "REAL-TIME EVENTS ERROR:",
+                    error
+                );
+
+
+                container.innerHTML = `
+
+                    <div class="empty">
+
+                        <i class="
+                            fa-solid
+                            fa-triangle-exclamation
+                        "></i>
+
+                        <h3>
+                            Failed to Load Events
+                        </h3>
+
+                        <p>
+
+                            ${escapeHTML(
+                                error.message
+                            )}
+
+                        </p>
+
+                    </div>
+
+                `;
+
+            }
+
+        );
+
+};
+
+
+/* =========================
+   EDIT EVENT
+========================= */
+
+window.editCompanyEvent =
+async function(eventId){
+
+    try{
+
+        const eventRef =
+            doc(
+                db,
+                "events",
+                eventId
+            );
+
+
+        const eventSnap =
+            await getDoc(
+                eventRef
+            );
+
+
+        if(!eventSnap.exists()){
+
+            alert(
+                "This event no longer exists."
+            );
+
+            loadCompanyEvents();
+
+            return;
+
+        }
+
+
+        const event =
+            eventSnap.data();
+
+
+        /* =========================
+           SECURITY CHECK
+        ========================= */
+
+        const eventCompany =
+            (event.company || "")
+            .trim()
+            .toLowerCase();
+
+
+        const adminCompany =
+            (currentAdminCompany || "")
+            .trim()
+            .toLowerCase();
+
+
+        if(
+            eventCompany !==
+            adminCompany
+        ){
+
+            alert(
+                "You do not have permission to edit this event."
+            );
+
+            return;
+
+        }
+
+
+        /* =========================
+           CREATE EDIT CARD
+        ========================= */
+
+        const container =
+            document.getElementById(
+                "eventList"
+            );
+
+
+        container.innerHTML = `
+
+            <div class="request-card">
+
+                <div class="request-header">
+
+                    <h3>
+
+                        <i class="
+                            fa-solid
+                            fa-pen
+                        "></i>
+
+                        Edit Event
+
+                    </h3>
+
+                </div>
+
+
+                <div class="request-info">
+
+
+                    <!-- TITLE -->
+
+                    <div class="info-row">
+
+                        <span class="info-label">
+                            Event Title
+                        </span>
+
+                        <input
+                            id="editEventTitle"
+                            type="text"
+                            value="${escapeHTML(
+                                event.title || ""
+                            )}"
+                            style="
+                                width:100%;
+                                box-sizing:border-box;
+                                padding:12px;
+                                border:1px solid #ddd;
+                                border-radius:10px;
+                                font-size:15px;
+                            "
+                        >
+
+                    </div>
+
+
+                    <!-- DATE -->
+
+                    <div class="info-row">
+
+                        <span class="info-label">
+                            Date
+                        </span>
+
+                        <input
+                            id="editEventDate"
+                            type="text"
+                            placeholder="DD/MM/YYYY"
+                            value="${escapeHTML(
+                                event.date || ""
+                            )}"
+                            style="
+                                width:100%;
+                                box-sizing:border-box;
+                                padding:12px;
+                                border:1px solid #ddd;
+                                border-radius:10px;
+                                font-size:15px;
+                            "
+                        >
+
+                    </div>
+
+
+                    <!-- TIME -->
+
+                    <div class="info-row">
+
+                        <span class="info-label">
+                            Time
+                        </span>
+
+                        <input
+                            id="editEventTime"
+                            type="text"
+                            placeholder="2:00 PM - 4:30 PM"
+                            value="${escapeHTML(
+                                event.time || ""
+                            )}"
+                            style="
+                                width:100%;
+                                box-sizing:border-box;
+                                padding:12px;
+                                border:1px solid #ddd;
+                                border-radius:10px;
+                                font-size:15px;
+                            "
+                        >
+
+                    </div>
+
+
+                    <!-- MONTH -->
+
+                    <div class="info-row">
+
+                        <span class="info-label">
+                            Month
+                        </span>
+
+                        <input
+                            id="editEventMonth"
+                            type="text"
+                            value="${escapeHTML(
+                                event.month || ""
+                            )}"
+                            style="
+                                width:100%;
+                                box-sizing:border-box;
+                                padding:12px;
+                                border:1px solid #ddd;
+                                border-radius:10px;
+                                font-size:15px;
+                            "
+                        >
+
+                    </div>
+
+
+                    <!-- VENUE -->
+
+                    <div class="info-row">
+
+                        <span class="info-label">
+                            Venue
+                        </span>
+
+                        <input
+                            id="editEventVenue"
+                            type="text"
+                            value="${escapeHTML(
+                                event.venue || ""
+                            )}"
+                            style="
+                                width:100%;
+                                box-sizing:border-box;
+                                padding:12px;
+                                border:1px solid #ddd;
+                                border-radius:10px;
+                                font-size:15px;
+                            "
+                        >
+
+                    </div>
+
+
+                    <!-- CHECK IN -->
+
+                    <div class="info-row">
+
+                        <span class="info-label">
+                            Check-in Location
+                        </span>
+
+                        <input
+                            id="editEventCheckin"
+                            type="text"
+                            value="${escapeHTML(
+                                event.checkin || ""
+                            )}"
+                            style="
+                                width:100%;
+                                box-sizing:border-box;
+                                padding:12px;
+                                border:1px solid #ddd;
+                                border-radius:10px;
+                                font-size:15px;
+                            "
+                        >
+
+                    </div>
+
+
+                    <!-- CLOTHES -->
+
+                    <div class="info-row">
+
+                        <span class="info-label">
+                            Clothes
+                        </span>
+
+                        <input
+                            id="editEventClothes"
+                            type="text"
+                            value="${escapeHTML(
+                                event.clothes || ""
+                            )}"
+                            style="
+                                width:100%;
+                                box-sizing:border-box;
+                                padding:12px;
+                                border:1px solid #ddd;
+                                border-radius:10px;
+                                font-size:15px;
+                            "
+                        >
+
+                    </div>
+
+
+                    <!-- RADIUS -->
+
+                    <div class="info-row">
+
+                        <span class="info-label">
+                            Allowed Radius (m)
+                        </span>
+
+                        <input
+                            id="editEventRadius"
+                            type="number"
+                            min="0"
+                            value="${escapeHTML(
+                                String(
+                                    event.allowedRadius ??
+                                    100
+                                )
+                            )}"
+                            style="
+                                width:100%;
+                                box-sizing:border-box;
+                                padding:12px;
+                                border:1px solid #ddd;
+                                border-radius:10px;
+                                font-size:15px;
+                            "
+                        >
+
+                    </div>
+
+
+                    <!-- LATITUDE -->
+
+                    <div class="info-row">
+
+                        <span class="info-label">
+                            Latitude
+                        </span>
+
+                        <input
+                            id="editEventLatitude"
+                            type="number"
+                            step="any"
+                            value="${escapeHTML(
+                                String(
+                                    event.latitude ??
+                                    ""
+                                )
+                            )}"
+                            style="
+                                width:100%;
+                                box-sizing:border-box;
+                                padding:12px;
+                                border:1px solid #ddd;
+                                border-radius:10px;
+                                font-size:15px;
+                            "
+                        >
+
+                    </div>
+
+
+                    <!-- LONGITUDE -->
+
+                    <div class="info-row">
+
+                        <span class="info-label">
+                            Longitude
+                        </span>
+
+                        <input
+                            id="editEventLongitude"
+                            type="number"
+                            step="any"
+                            value="${escapeHTML(
+                                String(
+                                    event.longitude ??
+                                    ""
+                                )
+                            )}"
+                            style="
+                                width:100%;
+                                box-sizing:border-box;
+                                padding:12px;
+                                border:1px solid #ddd;
+                                border-radius:10px;
+                                font-size:15px;
+                            "
+                        >
+
+                    </div>
+
+
+                    <!-- START HOUR -->
+
+                    <div class="info-row">
+
+                        <span class="info-label">
+                            Start Hour
+                        </span>
+
+                        <input
+                            id="editStartHour"
+                            type="number"
+                            min="0"
+                            max="23"
+                            value="${escapeHTML(
+                                String(
+                                    event.startHour ??
+                                    ""
+                                )
+                            )}"
+                            style="
+                                width:100%;
+                                box-sizing:border-box;
+                                padding:12px;
+                                border:1px solid #ddd;
+                                border-radius:10px;
+                                font-size:15px;
+                            "
+                        >
+
+                    </div>
+
+
+                    <!-- START MINUTE -->
+
+                    <div class="info-row">
+
+                        <span class="info-label">
+                            Start Minute
+                        </span>
+
+                        <input
+                            id="editStartMinute"
+                            type="number"
+                            min="0"
+                            max="59"
+                            value="${escapeHTML(
+                                String(
+                                    event.startMinute ??
+                                    ""
+                                )
+                            )}"
+                            style="
+                                width:100%;
+                                box-sizing:border-box;
+                                padding:12px;
+                                border:1px solid #ddd;
+                                border-radius:10px;
+                                font-size:15px;
+                            "
+                        >
+
+                    </div>
+
+
+                    <!-- END HOUR -->
+
+                    <div class="info-row">
+
+                        <span class="info-label">
+                            End Hour
+                        </span>
+
+                        <input
+                            id="editEndHour"
+                            type="number"
+                            min="0"
+                            max="23"
+                            value="${escapeHTML(
+                                String(
+                                    event.endHour ??
+                                    ""
+                                )
+                            )}"
+                            style="
+                                width:100%;
+                                box-sizing:border-box;
+                                padding:12px;
+                                border:1px solid #ddd;
+                                border-radius:10px;
+                                font-size:15px;
+                            "
+                        >
+
+                    </div>
+
+
+                    <!-- END MINUTE -->
+
+                    <div class="info-row">
+
+                        <span class="info-label">
+                            End Minute
+                        </span>
+
+                        <input
+                            id="editEndMinute"
+                            type="number"
+                            min="0"
+                            max="59"
+                            value="${escapeHTML(
+                                String(
+                                    event.endMinute ??
+                                    ""
+                                )
+                            )}"
+                            style="
+                                width:100%;
+                                box-sizing:border-box;
+                                padding:12px;
+                                border:1px solid #ddd;
+                                border-radius:10px;
+                                font-size:15px;
+                            "
+                        >
+
+                    </div>
+
+
+                    <!-- COMPANY -->
+
+                    <div class="info-row">
+
+                        <span class="info-label">
+                            Company
+                        </span>
+
+                        <div class="company-box">
+
+                            ${escapeHTML(
+                                currentAdminCompany
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- BUTTONS -->
+
+                    <div
+                    class="action-buttons"
+                    style="
+                        margin-top:20px;
+                    ">
+
+                        <button
+                            class="approve-btn"
+                            onclick="
+                                saveCompanyEvent(
+                                    '${eventId}'
+                                )
+                            ">
+
+                            <i class="
+                                fa-solid
+                                fa-floppy-disk
+                            "></i>
+
+                            Save Changes
+
+                        </button>
+
+
+                        <button
+                            class="delete-btn"
+                            onclick="
+                                loadCompanyEvents()
+                            ">
+
+                            <i class="
+                                fa-solid
+                                fa-xmark
+                            "></i>
+
+                            Cancel
+
+                        </button>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+    catch(error){
+
+        console.error(
+            "EDIT EVENT ERROR:",
+            error
+        );
+
+
+        alert(
+            "Failed to open Event:\n\n" +
+            error.message
+        );
+
+    }
+
+};
+
+
+/* =========================
+   SAVE EVENT
+========================= */
+
+window.saveCompanyEvent =
+async function(eventId){
+
+    /* =========================
+       GET VALUES
+    ========================= */
+
+    const title =
+        document
+        .getElementById(
+            "editEventTitle"
+        )
+        .value
+        .trim();
+
+
+    const date =
+        document
+        .getElementById(
+            "editEventDate"
+        )
+        .value
+        .trim();
+
+
+    const time =
+        document
+        .getElementById(
+            "editEventTime"
+        )
+        .value
+        .trim();
+
+
+    const month =
+        document
+        .getElementById(
+            "editEventMonth"
+        )
+        .value
+        .trim();
+
+
+    const venue =
+        document
+        .getElementById(
+            "editEventVenue"
+        )
+        .value
+        .trim();
+
+
+    const checkin =
+        document
+        .getElementById(
+            "editEventCheckin"
+        )
+        .value
+        .trim();
+
+
+    const clothes =
+        document
+        .getElementById(
+            "editEventClothes"
+        )
+        .value
+        .trim();
+
+
+    const allowedRadius =
+        Number(
+            document
+            .getElementById(
+                "editEventRadius"
+            )
+            .value
+        );
+
+
+    const latitude =
+        Number(
+            document
+            .getElementById(
+                "editEventLatitude"
+            )
+            .value
+        );
+
+
+    const longitude =
+        Number(
+            document
+            .getElementById(
+                "editEventLongitude"
+            )
+            .value
+        );
+
+
+    const startHour =
+        Number(
+            document
+            .getElementById(
+                "editStartHour"
+            )
+            .value
+        );
+
+
+    const startMinute =
+        Number(
+            document
+            .getElementById(
+                "editStartMinute"
+            )
+            .value
+        );
+
+
+    const endHour =
+        Number(
+            document
+            .getElementById(
+                "editEndHour"
+            )
+            .value
+        );
+
+
+    const endMinute =
+        Number(
+            document
+            .getElementById(
+                "editEndMinute"
+            )
+            .value
+        );
+
+
+    /* =========================
+       VALIDATION
+    ========================= */
+
+    if(!title){
+
+        alert(
+            "Please enter Event Title."
+        );
+
+        return;
+
+    }
+
+
+    if(!date){
+
+        alert(
+            "Please enter Event Date."
+        );
+
+        return;
+
+    }
+
+
+    if(!time){
+
+        alert(
+            "Please enter Event Time."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !Number.isFinite(
+            allowedRadius
+        ) ||
+        allowedRadius < 0
+    ){
+
+        alert(
+            "Allowed Radius must be a valid number."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !Number.isFinite(
+            latitude
+        )
+    ){
+
+        alert(
+            "Latitude must be a valid number."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !Number.isFinite(
+            longitude
+        )
+    ){
+
+        alert(
+            "Longitude must be a valid number."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !Number.isInteger(
+            startHour
+        ) ||
+        startHour < 0 ||
+        startHour > 23
+    ){
+
+        alert(
+            "Start Hour must be between 0 and 23."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !Number.isInteger(
+            startMinute
+        ) ||
+        startMinute < 0 ||
+        startMinute > 59
+    ){
+
+        alert(
+            "Start Minute must be between 0 and 59."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !Number.isInteger(
+            endHour
+        ) ||
+        endHour < 0 ||
+        endHour > 23
+    ){
+
+        alert(
+            "End Hour must be between 0 and 23."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !Number.isInteger(
+            endMinute
+        ) ||
+        endMinute < 0 ||
+        endMinute > 59
+    ){
+
+        alert(
+            "End Minute must be between 0 and 59."
+        );
+
+        return;
+
+    }
+
+
+    /* =========================
+       CONFIRM
+    ========================= */
+
+    const confirmSave =
+        confirm(
+            "Save these Event changes to Firebase?"
+        );
+
+
+    if(!confirmSave){
+
+        return;
+
+    }
+
+
+    try{
+
+        /* =========================
+           GET EVENT
+        ========================= */
+
+        const eventRef =
+            doc(
+                db,
+                "events",
+                eventId
+            );
+
+
+        const eventSnap =
+            await getDoc(
+                eventRef
+            );
+
+
+        if(!eventSnap.exists()){
+
+            alert(
+                "This Event no longer exists."
+            );
+
+            loadCompanyEvents();
+
+            return;
+
+        }
+
+
+        const existingEvent =
+            eventSnap.data();
+
+
+        /* =========================
+           SECURITY CHECK
+        ========================= */
+
+        const eventCompany =
+            (existingEvent.company || "")
+            .trim()
+            .toLowerCase();
+
+
+        const adminCompany =
+            (currentAdminCompany || "")
+            .trim()
+            .toLowerCase();
+
+
+        if(
+            eventCompany !==
+            adminCompany
+        ){
+
+            alert(
+                "You do not have permission to edit this Event."
+            );
+
+            return;
+
+        }
+
+
+        /* =========================
+           UPDATE FIREBASE
+        ========================= */
+
+        await updateDoc(
+
+            eventRef,
+
+            {
+
+                title:
+                    title,
+
+                date:
+                    date,
+
+                time:
+                    time,
+
+                month:
+                    month,
+
+                venue:
+                    venue,
+
+                checkin:
+                    checkin,
+
+                clothes:
+                    clothes,
+
+                allowedRadius:
+                    allowedRadius,
+
+                latitude:
+                    latitude,
+
+                longitude:
+                    longitude,
+
+                startHour:
+                    startHour,
+
+                startMinute:
+                    startMinute,
+
+                endHour:
+                    endHour,
+
+                endMinute:
+                    endMinute
+
+            }
+
+        );
+
+
+        /* =========================
+           SUCCESS
+        ========================= */
+
+        alert(
+            "Event updated successfully!"
+        );
+
+
+        /* =========================
+           RELOAD
+        ========================= */
+
+        loadCompanyEvents();
+
+
+    }
+    catch(error){
+
+        console.error(
+            "SAVE EVENT ERROR:",
+            error
+        );
+
+
+        alert(
+            "Failed to save Event:\n\n" +
+            error.message
+        );
+
+    }
+
+};
+
+/* =========================
+   CREATE NEW EVENT
+========================= */
+
+window.openCreateEvent =
+function(){
+
+    if(!currentAdminCompany){
+
+        alert(
+            "No Company assigned to this Admin."
+        );
+
+        return;
+
+    }
+
+
+    const container =
+        document.getElementById(
+            "eventList"
+        );
+
+
+    container.innerHTML = `
+
+        <div class="request-card">
+
+            <div class="request-header">
+
+                <h3>
+
+                    <i class="
+                        fa-solid
+                        fa-calendar-plus
+                    "></i>
+
+                    Create New Event
+
+                </h3>
+
+            </div>
+
+
+            <div class="request-info">
+
+
+                <!-- TITLE -->
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Event Title
+                    </span>
+
+                    <input
+                        id="createEventTitle"
+                        type="text"
+                        placeholder="Award Class (CE & Communication)"
+                        style="
+                            width:100%;
+                            box-sizing:border-box;
+                            padding:12px;
+                            border:1px solid #ddd;
+                            border-radius:10px;
+                            font-size:15px;
+                        "
+                    >
+
+                </div>
+
+
+                <!-- DATE -->
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Date
+                    </span>
+
+                    <input
+                        id="createEventDate"
+                        type="text"
+                        placeholder="22/8/2026"
+                        style="
+                            width:100%;
+                            box-sizing:border-box;
+                            padding:12px;
+                            border:1px solid #ddd;
+                            border-radius:10px;
+                            font-size:15px;
+                        "
+                    >
+
+                </div>
+
+
+                <!-- TIME -->
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Event Time
+                    </span>
+
+                    <input
+                        id="createEventTime"
+                        type="text"
+                        placeholder="2:00 PM - 4:30 PM"
+                        style="
+                            width:100%;
+                            box-sizing:border-box;
+                            padding:12px;
+                            border:1px solid #ddd;
+                            border-radius:10px;
+                            font-size:15px;
+                        "
+                    >
+
+                </div>
+
+
+                <!-- MONTH -->
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Month
+                    </span>
+
+                    <input
+                        id="createEventMonth"
+                        type="text"
+                        placeholder="Ogos"
+                        style="
+                            width:100%;
+                            box-sizing:border-box;
+                            padding:12px;
+                            border:1px solid #ddd;
+                            border-radius:10px;
+                            font-size:15px;
+                        "
+                    >
+
+                </div>
+
+
+                <!-- VENUE -->
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Venue
+                    </span>
+
+                    <input
+                        id="createEventVenue"
+                        type="text"
+                        placeholder="Tian En Methodist Church"
+                        style="
+                            width:100%;
+                            box-sizing:border-box;
+                            padding:12px;
+                            border:1px solid #ddd;
+                            border-radius:10px;
+                            font-size:15px;
+                        "
+                    >
+
+                </div>
+
+
+                <!-- CHECK-IN -->
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Check-in Location
+                    </span>
+
+                    <input
+                        id="createEventCheckin"
+                        type="text"
+                        placeholder="Tian En Methodist Church（副堂）"
+                        style="
+                            width:100%;
+                            box-sizing:border-box;
+                            padding:12px;
+                            border:1px solid #ddd;
+                            border-radius:10px;
+                            font-size:15px;
+                        "
+                    >
+
+                </div>
+
+
+                <!-- CLOTHES -->
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Clothes
+                    </span>
+
+                    <input
+                        id="createEventClothes"
+                        type="text"
+                        placeholder="Uniform"
+                        style="
+                            width:100%;
+                            box-sizing:border-box;
+                            padding:12px;
+                            border:1px solid #ddd;
+                            border-radius:10px;
+                            font-size:15px;
+                        "
+                    >
+
+                </div>
+
+
+                <!-- RADIUS -->
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Allowed Radius (m)
+                    </span>
+
+                    <input
+                        id="createEventRadius"
+                        type="number"
+                        min="0"
+                        value="100"
+                        style="
+                            width:100%;
+                            box-sizing:border-box;
+                            padding:12px;
+                            border:1px solid #ddd;
+                            border-radius:10px;
+                            font-size:15px;
+                        "
+                    >
+
+                </div>
+
+
+                <!-- LATITUDE -->
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Latitude
+                    </span>
+
+                    <input
+                        id="createEventLatitude"
+                        type="number"
+                        step="any"
+                        placeholder="2.241193"
+                        style="
+                            width:100%;
+                            box-sizing:border-box;
+                            padding:12px;
+                            border:1px solid #ddd;
+                            border-radius:10px;
+                            font-size:15px;
+                        "
+                    >
+
+                </div>
+
+
+                <!-- LONGITUDE -->
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Longitude
+                    </span>
+
+                    <input
+                        id="createEventLongitude"
+                        type="number"
+                        step="any"
+                        placeholder="111.848375"
+                        style="
+                            width:100%;
+                            box-sizing:border-box;
+                            padding:12px;
+                            border:1px solid #ddd;
+                            border-radius:10px;
+                            font-size:15px;
+                        "
+                    >
+
+                </div>
+
+
+                <!-- START HOUR -->
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Check-in Start Hour
+                    </span>
+
+                    <input
+                        id="createStartHour"
+                        type="number"
+                        min="0"
+                        max="23"
+                        placeholder="3"
+                        style="
+                            width:100%;
+                            box-sizing:border-box;
+                            padding:12px;
+                            border:1px solid #ddd;
+                            border-radius:10px;
+                            font-size:15px;
+                        "
+                    >
+
+                </div>
+
+
+                <!-- START MINUTE -->
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Check-in Start Minute
+                    </span>
+
+                    <input
+                        id="createStartMinute"
+                        type="number"
+                        min="0"
+                        max="59"
+                        placeholder="40"
+                        style="
+                            width:100%;
+                            box-sizing:border-box;
+                            padding:12px;
+                            border:1px solid #ddd;
+                            border-radius:10px;
+                            font-size:15px;
+                        "
+                    >
+
+                </div>
+
+
+                <!-- END HOUR -->
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Check-in End Hour
+                    </span>
+
+                    <input
+                        id="createEndHour"
+                        type="number"
+                        min="0"
+                        max="23"
+                        placeholder="23"
+                        style="
+                            width:100%;
+                            box-sizing:border-box;
+                            padding:12px;
+                            border:1px solid #ddd;
+                            border-radius:10px;
+                            font-size:15px;
+                        "
+                    >
+
+                </div>
+
+
+                <!-- END MINUTE -->
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Check-in End Minute
+                    </span>
+
+                    <input
+                        id="createEndMinute"
+                        type="number"
+                        min="0"
+                        max="59"
+                        placeholder="15"
+                        style="
+                            width:100%;
+                            box-sizing:border-box;
+                            padding:12px;
+                            border:1px solid #ddd;
+                            border-radius:10px;
+                            font-size:15px;
+                        "
+                    >
+
+                </div>
+
+
+                <!-- COMPANY -->
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Company
+                    </span>
+
+                    <div class="company-box">
+
+                        ${escapeHTML(
+                            currentAdminCompany
+                        )}
+
+                    </div>
+
+                </div>
+
+
+                <!-- BUTTONS -->
+
+                <div
+                class="action-buttons">
+
+                    <button
+                    class="approve-btn"
+                    onclick="
+                        createCompanyEvent()
+                    ">
+
+                        <i class="
+                            fa-solid
+                            fa-floppy-disk
+                        "></i>
+
+                        Create Event
+
+                    </button>
+
+
+                    <button
+                    class="delete-btn"
+                    onclick="
+                        loadCompanyEvents()
+                    ">
+
+                        <i class="
+                            fa-solid
+                            fa-xmark
+                        "></i>
+
+                        Cancel
+
+                    </button>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    `;
+
+};
+
+/* =========================
+   SAVE NEW EVENT
+========================= */
+
+window.createCompanyEvent =
+async function(){
+
+    const title =
+        document
+        .getElementById(
+            "createEventTitle"
+        )
+        .value
+        .trim();
+
+
+    const date =
+        document
+        .getElementById(
+            "createEventDate"
+        )
+        .value
+        .trim();
+
+
+    const time =
+        document
+        .getElementById(
+            "createEventTime"
+        )
+        .value
+        .trim();
+
+
+    const month =
+        document
+        .getElementById(
+            "createEventMonth"
+        )
+        .value
+        .trim();
+
+
+    const venue =
+        document
+        .getElementById(
+            "createEventVenue"
+        )
+        .value
+        .trim();
+
+
+    const checkin =
+        document
+        .getElementById(
+            "createEventCheckin"
+        )
+        .value
+        .trim();
+
+
+    const clothes =
+        document
+        .getElementById(
+            "createEventClothes"
+        )
+        .value
+        .trim();
+
+
+    const allowedRadius =
+        Number(
+            document
+            .getElementById(
+                "createEventRadius"
+            )
+            .value
+        );
+
+
+    const latitude =
+        Number(
+            document
+            .getElementById(
+                "createEventLatitude"
+            )
+            .value
+        );
+
+
+    const longitude =
+        Number(
+            document
+            .getElementById(
+                "createEventLongitude"
+            )
+            .value
+        );
+
+
+    const startHour =
+        Number(
+            document
+            .getElementById(
+                "createStartHour"
+            )
+            .value
+        );
+
+
+    const startMinute =
+        Number(
+            document
+            .getElementById(
+                "createStartMinute"
+            )
+            .value
+        );
+
+
+    const endHour =
+        Number(
+            document
+            .getElementById(
+                "createEndHour"
+            )
+            .value
+        );
+
+
+    const endMinute =
+        Number(
+            document
+            .getElementById(
+                "createEndMinute"
+            )
+            .value
+        );
+
+
+    /* =========================
+       VALIDATION
+    ========================= */
+
+    if(!title){
+
+        alert("Please enter Event Title.");
+
+        return;
+
+    }
+
+
+    if(!date){
+
+        alert("Please enter Event Date.");
+
+        return;
+
+    }
+
+
+    if(!time){
+
+        alert("Please enter Event Time.");
+
+        return;
+
+    }
+
+
+    if(!month){
+
+        alert("Please enter Month.");
+
+        return;
+
+    }
+
+
+    if(!venue){
+
+        alert("Please enter Venue.");
+
+        return;
+
+    }
+
+
+    if(!checkin){
+
+        alert("Please enter Check-in Location.");
+
+        return;
+
+    }
+
+
+    if(!clothes){
+
+        alert("Please enter Clothes.");
+
+        return;
+
+    }
+
+
+    if(
+        !Number.isFinite(
+            allowedRadius
+        ) ||
+        allowedRadius < 0
+    ){
+
+        alert(
+            "Allowed Radius must be valid."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !Number.isFinite(latitude)
+    ){
+
+        alert(
+            "Latitude must be valid."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !Number.isFinite(longitude)
+    ){
+
+        alert(
+            "Longitude must be valid."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !Number.isInteger(startHour) ||
+        startHour < 0 ||
+        startHour > 23
+    ){
+
+        alert(
+            "Start Hour must be between 0 and 23."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !Number.isInteger(startMinute) ||
+        startMinute < 0 ||
+        startMinute > 59
+    ){
+
+        alert(
+            "Start Minute must be between 0 and 59."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !Number.isInteger(endHour) ||
+        endHour < 0 ||
+        endHour > 23
+    ){
+
+        alert(
+            "End Hour must be between 0 and 23."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !Number.isInteger(endMinute) ||
+        endMinute < 0 ||
+        endMinute > 59
+    ){
+
+        alert(
+            "End Minute must be between 0 and 59."
+        );
+
+        return;
+
+    }
+
+
+    /* =========================
+       CONFIRM
+    ========================= */
+
+    const confirmCreate =
+        confirm(
+            "Create this Event and save it to Firebase?"
+        );
+
+
+    if(!confirmCreate){
+
+        return;
+
+    }
+
+
+    try{
+
+        /* =========================
+           CREATE FIREBASE DOCUMENT
+        ========================= */
+
+        await addDoc(
+
+            collection(
+                db,
+                "events"
+            ),
+
+            {
+
+                allowedRadius:
+                    allowedRadius,
+
+                checkin:
+                    checkin,
+
+                clothes:
+                    clothes,
+
+                company:
+                    currentAdminCompany,
+
+                date:
+                    date,
+
+                endHour:
+                    endHour,
+
+                endMinute:
+                    endMinute,
+
+                latitude:
+                    latitude,
+
+                longitude:
+                    longitude,
+
+                month:
+                    month,
+
+                startHour:
+                    startHour,
+
+                startMinute:
+                    startMinute,
+
+                time:
+                    time,
+
+                title:
+                    title,
+
+                venue:
+                    venue
+
+            }
+
+        );
+
+
+        /* =========================
+           SUCCESS
+        ========================= */
+
+        alert(
+            "Event created successfully!"
+        );
+
+
+        /*
+         * Do NOT manually reload.
+         *
+         * onSnapshot() will automatically
+         * detect the new Firebase document.
+         */
+
+        loadCompanyEvents();
+
+
+    }
+    catch(error){
+
+        console.error(
+            "CREATE EVENT ERROR:",
+            error
+        );
+
+
+        alert(
+            "Failed to create Event:\n\n" +
+            error.message
+        );
+
+    }
+
+};
+
 /* =========================
    LOAD ATTENDANCE RECORDS
 ========================= */
@@ -1783,6 +5171,26 @@ async function(){
         console.log(
             "ATTENDANCE RESULT:",
             result
+        );
+
+        console.log(
+            "ATTENDANCE SUCCESS:",
+            result.success
+        );
+
+        console.log(
+            "ATTENDANCE COMPANY:",
+            result.company
+        );
+
+        console.log(
+            "ATTENDANCE COUNT:",
+            result.count
+        );
+
+        console.log(
+            "ATTENDANCE RECORDS:",
+            result.records
         );
 
 
@@ -2166,7 +5574,7 @@ async function(requestId){
             null;
 
 
-        if(!request.uid){
+        if(!memberUID){
 
             alert(
                 "This request does not have a member UID."
@@ -2490,6 +5898,45 @@ function escapeHTML(value){
 
 }
 
+/* =========================
+   FORMAT CHECK-IN TIME
+========================= */
+
+function formatCheckinTime(hour, minute){
+
+    hour = Number(hour);
+    minute = Number(minute);
+
+    if(
+        !Number.isFinite(hour) ||
+        !Number.isFinite(minute)
+    ){
+
+        return "Not specified";
+
+    }
+
+    const period =
+        hour >= 12
+        ? "PM"
+        : "AM";
+
+    let displayHour =
+        hour % 12;
+
+    if(displayHour === 0){
+        displayHour = 12;
+    }
+
+    return (
+        displayHour +
+        ":" +
+        String(minute).padStart(2,"0") +
+        " " +
+        period
+    );
+
+}
 
 </script>
 

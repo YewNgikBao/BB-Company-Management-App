@@ -104,6 +104,10 @@ body{
 .avatar{
   width:90px;
   height:90px;
+  min-width:90px;
+  min-height:90px;
+  flex:0 0 90px;
+
   border-radius:50%;
   overflow:hidden;
   background:#ccc;
@@ -112,7 +116,10 @@ body{
 .avatar img{
   width:100%;
   height:100%;
+  min-width:100%;
+  min-height:100%;
   object-fit:cover;
+  display:block;
 }
 
 .verse{
@@ -640,7 +647,8 @@ import {
   collection,
   getDocs,
   doc,
-  getDoc
+  getDoc,
+  onSnapshot
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -764,47 +772,208 @@ updateGreeting();
 
 async function loadUpcomingEvents() {
 
-  const snapshot = await getDocs(collection(db, "events"));
+  const container =
+    document.getElementById("upcomingEvents");
 
-  const container = document.getElementById("upcomingEvents");
-  container.innerHTML = "";
+  container.innerHTML = `
+    <p style="text-align:center;color:#777;">
+      Loading events...
+    </p>
+  `;
 
-  if (snapshot.empty) {
-    container.innerHTML = `
-      <div class="event-card">
-        <div class="event-date">
-          <div>No</div>
-          <div style="font-size:14px;">Event</div>
-        </div>
-        <div class="event-info">
-          <h3>No Upcoming Events</h3>
-        </div>
-      </div>
-    `;
-    return;
-  }
+  try {
 
-  snapshot.forEach(doc => {
+    const user = auth.currentUser;
 
-    const data = doc.data();
+    if(!user){
 
-    container.innerHTML += `
-      <div class="event-card">
-
-        <div class="event-date">
-          <div>EVENT</div>
-          <div style="font-size:14px;">
-            ${data.date || ""}
+      container.innerHTML = `
+        <div class="event-card">
+          <div class="event-info">
+            <h3>Please log in first</h3>
           </div>
         </div>
+      `;
+
+      return;
+    }
+
+
+    // =========================
+    // GET USER PROFILE
+    // =========================
+
+    const userRef =
+      doc(db,"users",user.uid);
+
+    const userSnap =
+      await getDoc(userRef);
+
+
+    if(!userSnap.exists()){
+
+      container.innerHTML = `
+        <div class="event-card">
+          <div class="event-info">
+            <h3>User profile not found</h3>
+          </div>
+        </div>
+      `;
+
+      return;
+    }
+
+
+    const userData =
+      userSnap.data();
+
+    const userCompany =
+      (userData.company || "").trim();
+
+
+    if(!userCompany){
+
+      container.innerHTML = `
+        <div class="event-card">
+          <div class="event-info">
+            <h3>No Company Assigned</h3>
+          </div>
+        </div>
+      `;
+
+      return;
+    }
+
+
+    // =========================
+    // GET EVENTS
+    // =========================
+
+    const snapshot =
+      await getDocs(
+        collection(db,"events")
+      );
+
+
+    container.innerHTML = "";
+
+    let visibleEvents = 0;
+
+
+    // =========================
+    // FILTER COMPANY
+    // =========================
+
+    snapshot.forEach(doc => {
+
+      const data = doc.data();
+
+      const eventCompany =
+        (data.company || "").trim();
+
+
+      // ONLY SAME COMPANY
+
+      if(
+        eventCompany.toLowerCase() !==
+        userCompany.toLowerCase()
+      ){
+
+        return;
+
+      }
+
+
+      visibleEvents++;
+
+
+      container.innerHTML += `
+
+        <div class="event-card">
+
+          <div class="event-date">
+
+            <div>
+              EVENT
+            </div>
+
+            <div style="font-size:14px;">
+              ${data.date || ""}
+            </div>
+
+          </div>
+
+          <div class="event-info">
+
+            <h3>
+              ${data.title || ""}
+            </h3>
+
+          </div>
+
+        </div>
+
+      `;
+
+    });
+
+
+    // =========================
+    // NO EVENTS
+    // =========================
+
+    if(visibleEvents === 0){
+
+      container.innerHTML = `
+
+        <div class="event-card">
+
+          <div class="event-info">
+
+            <h3>
+              No Upcoming Events
+            </h3>
+
+            <p>
+              There are no upcoming events
+              for ${userCompany}.
+            </p>
+
+          </div>
+
+        </div>
+
+      `;
+
+    }
+
+  }
+
+  catch(error){
+
+    console.error(
+      "LOAD UPCOMING EVENTS ERROR:",
+      error
+    );
+
+    container.innerHTML = `
+
+      <div class="event-card">
 
         <div class="event-info">
-          <h3>${data.title || ""}</h3>
+
+          <h3>
+            Failed to load events
+          </h3>
+
         </div>
 
       </div>
+
     `;
-  });
+
+  }
+
 }
 
 /* =========================
@@ -819,6 +988,7 @@ onAuthStateChanged(auth, async(user)=>{
     console.log("No user login");
     return;
   }
+
 
   console.log("Dashboard UID:", user.uid);
 
@@ -860,7 +1030,14 @@ onAuthStateChanged(auth, async(user)=>{
 
   }
 
+  // =========================
+  // LOAD USER'S EVENTS
+  // =========================
+
+  loadUpcomingEvents();
+
 });
+
 
 /* =========================
    NOTIFICATIONS SYSTEM
@@ -868,8 +1045,12 @@ onAuthStateChanged(auth, async(user)=>{
 
 let currentEvents = [];
 
+let eventVersions = {};
 
-/* OPEN NOTIFICATIONS */
+
+/* =========================
+   OPEN NOTIFICATIONS
+========================= */
 
 window.openNotifications = function () {
 
@@ -877,14 +1058,12 @@ window.openNotifications = function () {
     "notificationPage"
   ).style.display = "flex";
 
-
-  loadNotifications();
-
 };
 
 
-
-/* CLOSE NOTIFICATIONS */
+/* =========================
+   CLOSE NOTIFICATIONS
+========================= */
 
 window.closeNotifications = function () {
 
@@ -895,167 +1074,382 @@ window.closeNotifications = function () {
 };
 
 
+/* =========================
+   CREATE EVENT VERSION
+========================= */
 
-/* MARK ALL READ */
+function createEventVersion(data){
+
+  return JSON.stringify({
+
+    title:
+      data.title || "",
+
+    date:
+      data.date || "",
+
+    time:
+      data.time || "",
+
+    venue:
+      data.venue || "",
+
+    clothes:
+      data.clothes || "",
+
+    checkin:
+      data.checkin || "",
+
+    company:
+      data.company || ""
+
+  });
+
+}
+
+
+/* =========================
+   MARK ALL AS READ
+========================= */
 
 window.markAllAsRead = function () {
 
-
   localStorage.setItem(
-    "readEvents",
-    JSON.stringify(currentEvents)
+    "readEventVersions",
+    JSON.stringify(eventVersions)
   );
 
 
   const badge =
-  document.getElementById(
-    "notifyBadge"
-  );
+    document.getElementById(
+      "notifyBadge"
+    );
 
 
-  badge.style.display="none";
+  badge.style.display = "none";
 
 
   document.getElementById(
     "notificationList"
   ).innerHTML = `
 
-  <div class="notification-item">
+    <div class="notification-item">
 
-    <h3>
-    No New Notifications
-    </h3>
+      <h3>
+        No New Notifications
+      </h3>
 
-    <p>
-    All notifications have been read.
-    </p>
+      <p>
+        All notifications have been read.
+      </p>
 
-  </div>
+    </div>
 
   `;
-
 
 };
 
 
-/* LOAD NOTIFICATIONS */
+/* =========================
+   LOAD REALTIME NOTIFICATIONS
+========================= */
 
-async function loadNotifications() {
+async function loadNotifications(){
 
-  const snapshot = await getDocs(
-    collection(db,"events")
-  );
+  const user = auth.currentUser;
 
+  if(!user){
 
-  const container =
-  document.getElementById(
-    "notificationList"
-  );
+    console.log(
+      "No user. Cannot load notifications."
+    );
 
+    return;
 
-  const badge =
-  document.getElementById(
-    "notifyBadge"
-  );
+  }
 
 
-  container.innerHTML = "";
+  /* =========================
+     GET USER PROFILE
+  ========================= */
+
+  const userRef =
+    doc(
+      db,
+      "users",
+      user.uid
+    );
 
 
-  currentEvents = [];
+  const userSnap =
+    await getDoc(userRef);
 
 
-  snapshot.forEach(doc => {
+  if(!userSnap.exists()){
+
+    console.log(
+      "User profile not found."
+    );
+
+    return;
+
+  }
 
 
-    const data = doc.data();
+  const userData =
+    userSnap.data();
 
 
-    currentEvents.push(doc.id);
+  const userCompany =
+    (userData.company || "").trim();
 
 
-    const oldRead =
-    JSON.parse(
-      localStorage.getItem("readEvents")
-    ) || [];
+  if(!userCompany){
+
+    console.log(
+      "User has no company."
+    );
+
+    return;
+
+  }
 
 
-    // 如果已经读过，就不要显示
-    if(oldRead.includes(doc.id)){
-      return;
+  /* =========================
+     REALTIME FIRESTORE LISTENER
+  ========================= */
+
+  onSnapshot(
+
+    collection(
+      db,
+      "events"
+    ),
+
+    (snapshot) => {
+
+      const container =
+        document.getElementById(
+          "notificationList"
+        );
+
+
+      const badge =
+        document.getElementById(
+          "notifyBadge"
+        );
+
+
+      container.innerHTML = "";
+
+      currentEvents = [];
+
+      eventVersions = {};
+
+
+      /* =========================
+         OLD READ VERSIONS
+      ========================= */
+
+      const oldReadVersions =
+        JSON.parse(
+          localStorage.getItem(
+            "readEventVersions"
+          )
+        ) || {};
+
+
+      let unreadCount = 0;
+
+
+      /* =========================
+         CHECK EVENTS
+      ========================= */
+
+      snapshot.forEach(eventDoc => {
+
+        const data =
+          eventDoc.data();
+
+
+        const id =
+          eventDoc.id;
+
+
+        /* =========================
+           COMPANY FILTER
+        ========================= */
+
+        const eventCompany =
+          (data.company || "").trim();
+
+
+        if(
+          eventCompany.toLowerCase() !==
+          userCompany.toLowerCase()
+        ){
+
+          return;
+
+        }
+
+
+        currentEvents.push(id);
+
+
+        /* =========================
+           CREATE EVENT VERSION
+        ========================= */
+
+        const currentVersion =
+          createEventVersion(data);
+
+
+        eventVersions[id] =
+          currentVersion;
+
+
+        /* =========================
+           OLD VERSION
+        ========================= */
+
+        const oldVersion =
+          oldReadVersions[id];
+
+
+        /* =========================
+           NEW OR MODIFIED
+        ========================= */
+
+        const isNewOrModified =
+          !oldVersion ||
+          oldVersion !== currentVersion;
+
+
+        /* =========================
+           SHOW NOTIFICATION
+        ========================= */
+
+        if(isNewOrModified){
+
+          unreadCount++;
+
+
+          container.innerHTML += `
+
+            <div class="notification-item">
+
+              <h3>
+                Event Updated
+              </h3>
+
+              <p>
+
+                <strong>
+                  ${data.title || "Event"}
+                </strong>
+
+                <br>
+
+                Date :
+                ${data.date || "-"}
+
+                <br>
+
+                Time :
+                ${data.time || "-"}
+
+                <br>
+
+                Venue :
+                ${data.venue || "-"}
+
+              </p>
+
+            </div>
+
+          `;
+
+        }
+
+      });
+
+
+      /* =========================
+         RED BADGE
+      ========================= */
+
+      if(unreadCount > 0){
+
+        badge.style.display =
+          "flex";
+
+        badge.innerText =
+          unreadCount;
+
+      }
+      else{
+
+        badge.style.display =
+          "none";
+
+      }
+
+
+      /* =========================
+         NO NEW NOTIFICATION
+      ========================= */
+
+      if(unreadCount === 0){
+
+        container.innerHTML = `
+
+          <div class="notification-item">
+
+            <h3>
+              No New Notifications
+            </h3>
+
+            <p>
+              All notifications have been read.
+            </p>
+
+          </div>
+
+        `;
+
+      }
+
+
+      console.log(
+        "Notifications updated.",
+        "Company:",
+        userCompany,
+        "Unread:",
+        unreadCount
+      );
+
+    },
+
+    (error) => {
+
+      console.error(
+        "Notification listener error:",
+        error
+      );
+
     }
 
-
-
-    container.innerHTML += `
-
-      <div class="notification-item">
-
-        <h3>
-        New Event Announcement
-        </h3>
-
-
-        <p>
-        ${data.title || ""}
-        <br>
-        ${data.date || ""}
-        <br>
-        ${data.time || ""}
-        </p>
-
-
-      </div>
-
-    `;
-
-
-});
-
-
-
-  const oldRead =
-  JSON.parse(
-    localStorage.getItem("readEvents")
-  ) || [];
-
-
-
-  const newEvents =
-  currentEvents.filter(
-    id => !oldRead.includes(id)
   );
 
-
-
-  if(newEvents.length > 0){
-
-
-    badge.style.display="flex";
-
-
-    badge.innerText =
-    newEvents.length;
-
-
-  }
-  else{
-
-
-    badge.style.display="none";
-
-
-  }
-
-
 }
-
 
 /* =========================
    START
 ========================= */
 
-loadUpcomingEvents();
+
+loadNotifications();
 
 </script>
 

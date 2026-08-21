@@ -131,14 +131,16 @@ body{
     font-size:15px;
 }
 
-.b-active{
-    background:#ffd500;
+.btn.b-active {
+    background-color: #ffd500 !important;
+    color: #111 !important;
+    border: 2px solid #ffd500 !important;
 }
 
-.a-active{
-    background:red;
-    color:white;
-    border:2px solid red;
+.btn.a-active {
+    background-color: #ff0000 !important;
+    color: white !important;
+    border: 2px solid #ff0000 !important;
 }
 
 /* ================= LEFT ARM ================= */
@@ -464,23 +466,27 @@ body{
     margin-top:18px;
 }
 
-.preview-left-bottom{
-    width:100%;
-    display:flex;
-    justify-content:flex-start;
-    align-items:center;
-    flex-wrap:nowrap;
-    margin-top:18px;
-    overflow:visible;
-    box-sizing:border-box;
+.preview-left-bottom {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    margin-top: 18px;
+    box-sizing: border-box;
+    overflow: hidden;
+    gap: 0 !important;
 }
 
-.preview-left-bottom img{
-    width:34px;
-    height:34px;
-    object-fit:contain;
-    flex:0 0 auto;
+.preview-left-bottom img {
+    width: clamp(20px, 7vw, 34px);
+    height: clamp(20px, 7vw, 34px);
+    object-fit: contain;
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 34px;
 }
+
 
 .preview-left img{
     width:62px;
@@ -511,7 +517,10 @@ body{
     z-index:999;
 }
 
-/* ================= MOBILE RESPONSIVE ================= */
+/* =====================================================
+   MOBILE - YOUR AWARDS
+   两个袖子固定左右，不横向滑动
+===================================================== */
 
 * {
     box-sizing: border-box;
@@ -524,64 +533,8 @@ body {
     overflow-x: hidden;
 }
 
-/* Main box */
-.main-box {
-    width: calc(100% - 30px);
-    max-width: 100%;
-    margin: 15px auto;
-}
+/* ================= MOBILE ================= */
 
-/* Preview */
-.preview-page {
-    width: 100%;
-    padding: 15px;
-    box-sizing: border-box;
-}
-
-.preview-container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
-}
-
-/* Right arm */
-.black-right {
-    width: min(420px, 100%);
-    max-width: 100%;
-    height: auto;
-    min-height: 500px;
-}
-
-/* Left arm */
-.black-left {
-    width: min(420px, 100%);
-    max-width: 100%;
-    min-height: 520px;
-}
-
-/* Left preview */
-.preview-left {
-    width: 100%;
-    max-width: 100%;
-}
-
-/* Bottom badges */
-.preview-left-bottom {
-    width: 100%;
-    max-width: 100%;
-    overflow: visible;
-    flex-wrap: nowrap;
-}
-
-/* Right badges */
-.preview-right {
-    width: 100%;
-    box-sizing: border-box;
-}
-
-/* Mobile */
 @media (max-width: 600px) {
 
     .header {
@@ -601,6 +554,12 @@ body {
         font-size: 14px;
     }
 
+    .main-box {
+        width: calc(100% - 20px);
+        margin: 10px auto;
+        border-radius: 20px;
+    }
+
     .tab {
         font-size: 16px;
         padding: 18px 5px;
@@ -610,365 +569,378 @@ body {
         padding: 12px;
     }
 
-    /* ================= RIGHT AWARD SELECTION ================= */
+    /* ================= RIGHT AWARDS ================= */
 
-.right-grid{
-    display:grid;
-    grid-template-columns:repeat(5, minmax(0, 1fr));
-    gap:12px 3px;
-    width:100%;
-    max-width:100%;
-    overflow:hidden;
-}
+    .right-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 12px 3px;
+        width: 100%;
+        overflow: hidden;
+    }
 
-.award{
-    width:100%;
-    min-width:0;
-    max-width:100%;
-    text-align:center;
-    overflow:hidden;
-}
+    .award {
+        min-width: 0;
+        width: 100%;
+        text-align: center;
+    }
 
-.award img{
-    display:block;
-    width:min(60px, 100%);
-    height:auto;
-    aspect-ratio:1 / 1;
-    object-fit:contain;
-    margin:0 auto;
-}
+    .award img {
+        width: min(55px, 100%);
+        height: auto;
+        aspect-ratio: 1 / 1;
+        object-fit: contain;
+        margin: auto;
+    }
 
-/* B / A buttons */
+    .btn-row {
+        display: flex;
+        justify-content: center;
+        gap: 2px;
+        margin-top: 5px;
+    }
 
-.btn-row{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:2px;
-    margin-top:6px;
-    width:100%;
-}
+    .btn {
+        width: 28px;
+        height: 27px;
+        padding: 0;
+        font-size: 12px;
+    }
 
-.btn{
-    width:clamp(22px, 6vw, 32px);
-    height:28px;
-    padding:0;
-    border-radius:6px;
-    border:2px solid #333;
-    background:white;
-    font-weight:bold;
-    cursor:pointer;
-    font-size:13px;
-    flex-shrink:1;
-}
+    /* ================= LEFT AWARDS ================= */
 
-    /* Left award selection */
     .left-middle,
     .left-middle2,
     .left-scholastic {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 15px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
         width: 100%;
     }
 
     .left-bottom {
-        grid-template-columns: repeat(10, 1fr);
-        gap: 10px;
+        grid-template-columns: repeat(10, minmax(0, 1fr));
+        gap: 0;
         width: 100%;
+        overflow: hidden;
     }
 
-    /* Ranking */
+    .left-item img {
+        width: clamp(45px, 16vw, 65px);
+        height: clamp(45px, 16vw, 65px);
+    }
+
+    .small-left img {
+        width: clamp(22px, 7vw, 30px);
+        height: clamp(22px, 7vw, 30px);
+    }
+
+    .check {
+        width: 28px;
+        height: 28px;
+        font-size: 18px;
+    }
+
+    /* ================= RANKING ================= */
+
     .rank-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 20px;
     }
 
-    /* Preview */
+    /* ================= PREVIEW ================= */
+
+    .preview-page {
+        width: 100%;
+        padding: 8px 3px;
+        overflow: hidden;
+    }
+
     .preview-title {
         font-size: 24px;
+        margin-bottom: 10px;
     }
+
+    /*
+       两个袖子固定左右
+    */
 
     .preview-container {
-        gap: 25px;
+        width: 100%;
+        max-width: 100%;
+
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+
+        justify-content: space-between;
+        align-items: flex-start;
+
+        gap: 5px;
+        padding: 0;
+        margin: 0;
+
+        overflow: hidden;
     }
+
+    /*
+       每个袖子占一半
+    */
+
+    .preview-arm {
+        flex: 0 0 calc(50% - 2.5px);
+
+        width: calc(50% - 2.5px);
+        max-width: calc(50% - 2.5px);
+
+        min-width: 0;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        box-sizing: border-box;
+    }
+
+    .preview-arm h2 {
+        font-size: 14px;
+        margin: 4px 0 6px;
+
+        white-space: nowrap;
+    }
+
+    /* ================= RIGHT BLACK ARM ================= */
 
     .black-right {
-        width: 100%;
-        max-width: 380px;
-        min-height: 500px;
-    }
+        width: 100% !important;
+        max-width: 100% !important;
 
-    .black-left {
-        width: 100%;
-        max-width: 380px;
-        min-height: 500px;
+        height: auto !important;
+        min-height: 0 !important;
+
+        padding: 8px 3px 10px;
+
+        margin: 0;
+
+        background: #000;
+
+        border-radius: 0 0 30px 30px;
+
+        overflow: visible;
     }
 
     .preview-right {
-        grid-template-columns: repeat(5, 1fr);
+        width: 100%;
+        max-width: 100%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
         gap: 5px;
-        padding: 20px 10px;
+
+        overflow: visible;
+    }
+
+    /*
+       每排最多5个
+    */
+
+    .preview-right > div {
+        width: 100% !important;
+
+        display: flex !important;
+        flex-wrap: nowrap !important;
+
+        justify-content: center !important;
+        align-items: center !important;
+
+        gap: 2px !important;
+
+        min-width: 0;
     }
 
     .preview-badge {
-        width: 55px;
-        height: 55px;
+        width: clamp(28px, 8vw, 38px);
+        height: clamp(28px, 8vw, 38px);
+
+        flex: 0 0 clamp(28px, 8vw, 38px);
+
+        min-width: 0;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .preview-right img {
-        width: 45px;
-        height: 45px;
+        width: 82%;
+        height: 82%;
+
+        object-fit: contain;
     }
+
+    /* ================= RANK PREVIEW ================= */
+
+    .rank-preview {
+        width: 100%;
+        margin-top: 8px;
+        padding: 0;
+    }
+
+    .rank-strip {
+        width: 100%;
+        height: 7px;
+        margin-top: 3px;
+    }
+
+    /* ================= LEFT BLACK ARM ================= */
+
+    .black-left {
+        width: 100% !important;
+        max-width: 100% !important;
+
+        height: auto !important;
+        min-height: 0 !important;
+
+        padding: 8px 3px 10px;
+
+        margin: 0;
+
+        background: #000;
+
+        border-radius: 8px;
+
+        overflow: visible;
+    }
+
+    .preview-left {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .preview-left-top,
+.preview-left-middle,
+.preview-left-middle2,
+.preview-left-scholastic {
+
+    width: 100%;
+
+    display: flex;
+    flex-wrap: nowrap;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 2px;
+
+    margin-top: 2px;
+}
+
+/* Founder 单独缩小，并减少与第二排的距离 */
+.preview-left-top {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.preview-left-top img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
 
     .preview-left img {
-        width: 55px;
-        height: 55px;
+        width: clamp(32px, 9vw, 42px);
+        height: clamp(32px, 9vw, 42px);
+
+        object-fit: contain;
+
+        flex: 0 1 auto;
+        min-width: 0;
     }
 
-    .left-middle,
-    .left-middle2,
-    .left-scholastic{
-        grid-template-columns:repeat(3,minmax(0,1fr));
-        gap:8px;
-    }
-
-    .left-item img{
-        width:clamp(45px,18vw,65px);
-        height:clamp(45px,18vw,65px);
-    }
+    /* ================= ONE YEAR ================= */
 
     .preview-left-bottom {
-        overflow: visible;
+
+        width: 100%;
+
+        display: flex;
+        flex-wrap: nowrap;
+
         justify-content: center;
-        gap: 3px !important;
+        align-items: center;
+
+        gap: 0;
+
+        margin-top: 6px;
+
+        padding: 0;
+
+        overflow: hidden;
     }
 
     .preview-left-bottom img {
-        width: 30px !important;
-        height: 30px !important;
+
+        width: 10%;
+        height: auto;
+
+        max-width: 22px;
+        min-width: 0;
+
+        object-fit: contain;
+
+        flex: 0 1 10%;
     }
+
+    /* ================= BACK BUTTON ================= */
 
     .back-btn {
         width: 50px;
         height: 50px;
+
         top: 75px;
         right: 10px;
+
         font-size: 22px;
     }
 }
 
+
 /* =====================================================
-   YOUR AWARDS - MOBILE
-   根据手机宽度调整黑色袖子
-   减少白边，但保持奖章较大
+   VERY SMALL PHONE
 ===================================================== */
 
-@media (max-width: 600px) {
+@media (max-width: 400px) {
 
-    .preview-page {
-        padding: 8px 4px;
+    .preview-arm h2 {
+        font-size: 13px;
     }
-
-    .preview-container {
-        width: 100%;
-        gap: 20px;
-    }
-
-    /* ================= RIGHT ARM ================= */
-
-    .black-right {
-
-        width: calc(100vw - 40px);
-        max-width: 420px;
-
-        min-height: 0;
-
-        padding: 8px 5px 15px 5px;
-
-        margin-left: auto;
-        margin-right: auto;
-
-        box-sizing: border-box;
-    }
-
-    .preview-right {
-
-        width: 100%;
-
-        gap: 6px;
-
-        padding: 0;
-
-        box-sizing: border-box;
-    }
-
-    /* 一排永远5粒 */
-
-    .preview-right > div {
-
-        width: 100% !important;
-
-        display: flex !important;
-
-        flex-wrap: nowrap !important;
-
-        justify-content: center !important;
-
-        align-items: center !important;
-
-        gap: 4px !important;
-    }
-
-    /*
-       手机奖章大小
-       不跟着黑袖子一起过度缩小
-    */
 
     .preview-badge {
+        width: 25px;
+        height: 25px;
 
-        width: clamp(48px, 14vw, 58px);
-
-        height: clamp(48px, 14vw, 58px);
-
-        flex: 0 0 clamp(48px, 14vw, 58px);
-
+        flex-basis: 25px;
     }
 
     .preview-right img {
-
-        width: clamp(40px, 12vw, 48px);
-
-        height: clamp(40px, 12vw, 48px);
-
-    }
-
-    /* ================= RANK ================= */
-
-    .rank-preview {
-
-        width: 100%;
-
-        margin-top: 12px;
-
-    }
-
-    .rank-strip {
-
-        height: 24px;
-
-        margin-top: 7px;
-
-    }
-
-
-    /* ================= LEFT ARM ================= */
-
-    .black-left {
-
-        width: calc(100vw - 40px);
-
-        max-width: 420px;
-
-        min-height: 0;
-
-        padding: 8px 5px 15px 5px;
-
-        margin-left: auto;
-        margin-right: auto;
-
-        box-sizing: border-box;
-
-    }
-
-    .preview-left {
-
-        width: 100%;
-
-    }
-
-    /* 第一排 */
-
-    .preview-left-top {
-
-        margin-bottom: 8px;
-
-    }
-
-    /* 中间几排 */
-
-    .preview-left-middle,
-    .preview-left-middle2,
-    .preview-left-scholastic {
-
-        gap: 5px;
-
-        margin-top: 8px;
-
-        flex-wrap: nowrap;
-
+        width: 19px;
+        height: 19px;
     }
 
     .preview-left img {
-
-        width: clamp(48px, 15vw, 62px);
-
-        height: clamp(48px, 15vw, 62px);
-
-    }
-
-    /* 最下面 One-Year */
-
-    .preview-left-bottom {
-
-        width: 100%;
-
-        margin-top: 10px;
-
-        padding: 0;
-
-        display: flex;
-
-        flex-wrap: nowrap;
-
-        justify-content: center;
-
-        align-items: center;
-
-        gap: 2px !important;
-
+        width: 26px;
+        height: 26px;
     }
 
     .preview-left-bottom img {
-
-        width: clamp(25px, 8vw, 34px) !important;
-
-        height: clamp(25px, 8vw, 34px) !important;
-
+        max-width: 17px;
     }
 
-}
-
-@media (max-width:400px){
-
-    .right-grid{
-        gap:10px 1px;
+    .btn {
+        width: 25px;
+        height: 25px;
+        font-size: 11px;
     }
-
-    .award img{
-        width:100%;
-        max-width:48px;
-    }
-
-    .btn-row{
-        gap:1px;
-    }
-
-    .btn{
-        width:24px;
-        height:25px;
-        font-size:11px;
-    }
-
 }
 
 </style>
@@ -2216,33 +2188,6 @@ bottom +=
 const bottomDiv = document.getElementById("previewLeftBottom");
 
 bottomDiv.innerHTML = bottom;
-
-const count = bottomDiv.children.length;
-
-if(count>0){
-
-    const clothWidth =
-        document.getElementById("previewLeftBottom").clientWidth;
-
-    const badgeWidth =
-        Math.min(34, clothWidth / Math.max(count, 1));
-
-    let gap = (clothWidth - badgeWidth*count)/(count-1);
-
-    if(count==1) gap = 0;
-
-    if(gap<0) gap = 0;
-
-    bottomDiv.style.gap = gap + "px";
-
-    [...bottomDiv.children].forEach(img=>{
-
-        img.style.width = badgeWidth + "px";
-        img.style.height = badgeWidth + "px";
-
-    });
-
-}
 
 }
 
